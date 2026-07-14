@@ -1,0 +1,150 @@
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.bookCard {
+  background-color: #c0c0c0;
+  border: 1px solid #e0e0e0;
+  border-radius: 28px;
+  border-color: #004085;
+  border-style: solid;
+  border-width: 4px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  width: 80%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 14px 18px rgba(0, 0, 0, 1.1);
+  gap: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.bookCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.bookCardTitle {
+  width: 100%;
+  text-align: center;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.bookCardTitle h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.bookCardContent {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.coverArtSection {
+  flex: 0 0 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.coverArtSection img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 0px;
+  border: 1px solid #ddd;
+}
+
+.coverArt {
+  width: 100%;
+  height: auto;
+  border-radius: 0px;
+}
+
+.detailsSection {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.tagsDisplay {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tag {
+  background-color: #e0e0e0;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.9rem;
+}
+
+.tagsSection {
+  margin-top: 1rem;
+}
+
+.tagInputContainer {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.tagInputContainer input {
+  flex-grow: 1;
+}
+
+.formContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.formGroup label {
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.formGroup input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.formActions {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  border-top: 1px solid #eee;
+}
