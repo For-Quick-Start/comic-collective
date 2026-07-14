@@ -5,7 +5,7 @@ import EmployeeLayout from '../components/EmployeeLayout';
 import globalStyles from '../styles/global.module.css';
 import buttonsStyles from '../styles/buttons.module.css';
 // import layout2Styles from '../styles/layout2.module.css';
-// import userCardsStyles from '../styles/userCards.module.css';
+import userCardsStyles from '../styles/userCards.module.css';
 
 function CustomersListPage() {
   const [users, setUsers] = useState([]);
@@ -69,34 +69,30 @@ function CustomersListPage() {
       <a href="/regcust">
         <button className={buttonsStyles.submitButton}>Add a New Customer</button>
       </a>
-      <div>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user._id}>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.status}</td>
-                <td>
-                  <button onClick={() => handleStatusChange(user._id, user.status === 'active' ? 'disabled' : 'active')}>
-                    {user.status === 'active' ? 'Disable' : 'Enable'}
-                  </button>
-                  <button onClick={() => navigate(`/custedit/${user._id}`)}>Edit</button>
-                  <button onClick={() => navigate(`/admin-reset-password/${user._id}`)}>Reset Password</button>
-                  <button onClick={() => handleDelete(user._id)}>Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className={userCardsStyles.cardContainer}>
+        {users.map((user) => (
+          <div key={user._id} className={userCardsStyles.userCard}>
+            <div className={userCardsStyles.userCardTitle}>
+              <h2>{user.name}</h2>
+            </div>
+            <div className={userCardsStyles.userCardContent}>
+              <div className={userCardsStyles.detailsRow}>
+                <div className={userCardsStyles.detailsSection}>
+                  <p><strong>Email:</strong> {user.email}</p>
+                  <p><strong>Status:</strong> {user.status}</p>
+                </div>
+              </div>
+              <div className={userCardsStyles.actionsRow}>
+                <button onClick={() => navigate(`/custedit/${user._id}`)} className={buttonsStyles.editButton}>Edit</button>
+                <button onClick={() => navigate(`/admin-reset-password/${user._id}`)} className={buttonsStyles.resetButton}>Reset Password</button>
+                <button onClick={() => handleStatusChange(user._id, user.status === 'active' ? 'disabled' : 'active')} className={buttonsStyles.disableButton}>
+                  {user.status === 'active' ? 'Disable' : 'Enable'}
+                </button>
+                <button onClick={() => handleDelete(user._id)} className={buttonsStyles.deleteButton}>Delete</button>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </EmployeeLayout>
   );

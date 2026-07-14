@@ -1,0 +1,52 @@
+.cardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+.userCard {
+  border: 1px solid #e0e0e0;
+  border-color: #004085;
+  border-style: solid;
+  border-width: 4px;
+  border-radius: 28px;
+  padding: 1.5rem;
+  background-color: #c0c0c0;
+  width: 80%;
+  box-shadow: 0 14px 18px rgba(0, 0, 0, 1.1);
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin: 10px;
+}
+
+.userCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.userCardTitle {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0rem;
+    margin-bottom: 0rem;
+}
+
+.userCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 0rem;
+}
+
+.detailsRow {
+    display: flex;
+    justify-content: space-between;
+}
+
+.actionsRow {
+    display: flex;
+    justify-content: space-around;
+    gap: 0.5rem;
+}

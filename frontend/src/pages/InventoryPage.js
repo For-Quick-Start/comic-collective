@@ -68,7 +68,7 @@ function InventoryPage() {
                 <div className={bookCardsStyles.tagsDisplay}>
                   {book.tags && book.tags.length > 0 ? book.tags.map(tag => (<span key={tag} className={bookCardsStyles.tag}>{tag}</span>)) : <p>No tags</p>}
                 </div>
-                <Link to={`/editbook/${book._id}`} className={buttonsStyles.cancelButton}>Edit</Link>
+                <Link to={`/editbook/${book._id}`} className={buttonsStyles.editButton}>Edit</Link>
               </div>
             </div>
           </div>
