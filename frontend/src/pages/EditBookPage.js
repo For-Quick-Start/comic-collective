@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import EmployeeLayout from '../components/EmployeeLayout';
 import globalStyles from '../styles/global.module.css';
 import buttonsStyles from '../styles/buttons.module.css';
@@ -38,7 +38,7 @@ function EditBookPage() {
             Authorization: `Bearer ${userInfo.token}`,
           },
         };
-        const { data } = await axios.get(`/api/books/${id}`, config);
+        const { data } = await api.get(`/api/books/${id}`, config);
         setFormData({
           seriesTitle: data.seriesTitle,
           seriesStartDate: formatDateForInput(data.seriesStartDate),
@@ -92,7 +92,7 @@ function EditBookPage() {
 
 
 
-      await axios.put(`/api/books/${id}`, bookData, config);
+      await api.put(`/api/books/${id}`, bookData, config);
       setMessage('Book updated successfully!');
 
       } catch (err) {
@@ -109,7 +109,7 @@ function EditBookPage() {
             Authorization: `Bearer ${userInfo.token}`,
           },
         };
-        await axios.delete(`/api/books/${id}`, config);
+        await api.delete(`/api/books/${id}`, config);
         navigate('/inventory');
       } catch (err) {
         setError(err.response?.data?.message || 'Could not delete book.');

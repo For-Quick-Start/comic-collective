@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import EmployeeLayout from '../components/EmployeeLayout';
 import globalStyles from '../styles/global.module.css';
 import buttonsStyles from '../styles/buttons.module.css';
@@ -32,7 +32,7 @@ function RegisterEmployeePage() {
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
-      await axios.post('/api/users/register-employee', { name, email, password }, config);
+      await api.post('/api/users/register-employee', { name, email, password }, config);
       setMessage('Employee registered successfully!');
       setName('');
       setEmail('');

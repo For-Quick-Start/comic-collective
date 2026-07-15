@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import globalStyles from '../styles/global.module.css';
 import buttonsStyles from '../styles/buttons.module.css';
 import layout1Styles from '../styles/layout1.module.css';
@@ -22,7 +22,7 @@ function RegisterPage() {
     }
 
     try {
-      const { data } = await axios.post('/api/users/register', { name, email, password });
+      const { data } = await api.post('/api/users/register', { name, email, password });
       localStorage.setItem('userInfo', JSON.stringify(data));
       window.location.href = '/dashcust';
     } catch (err) {

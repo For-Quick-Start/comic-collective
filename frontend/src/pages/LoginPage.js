@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import buttonsStyles from '../styles/buttons.module.css';
 import layout1Styles from '../styles/layout1.module.css';
 
@@ -12,7 +12,7 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('/api/users/login', { email, password });
+      const { data } = await api.post('/api/users/login', { email, password });
       localStorage.setItem('userInfo', JSON.stringify(data));
       if (data.role === 'employee') {
         window.location.href = '/dashempl';

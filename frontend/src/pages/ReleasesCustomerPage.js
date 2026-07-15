@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 import CustomerLayout from '../components/CustomerLayout';
 
 function ReleasesCustomerPage() {
@@ -19,11 +19,11 @@ function ReleasesCustomerPage() {
         };
 
         // Fetch all books
-        const booksRes = await axios.get('/api/books', config);
+        const booksRes = await api.get('/api/books', config);
         setBooks(booksRes.data);
 
         // Fetch user's current pull list
-        const userRes = await axios.get('/api/users/me', config);
+        const userRes = await api.get('/api/users/me', config);
         setPullList(userRes.data.pullList.map(item => item.bookId));
       } catch (err) {
         setError(err.response?.data?.message || 'Could not fetch data');
@@ -43,7 +43,7 @@ function ReleasesCustomerPage() {
         },
       };
 
-      await axios.post('/api/users/me/pull-list', { bookId }, config);
+      await api.post('/api/users/me/pull-list', { bookId }, config);
       
       // Add book to local pull list state to update UI instantly
       setPullList([...pullList, bookId]);

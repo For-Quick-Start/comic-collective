@@ -25,6 +25,11 @@ app.use('/api', testRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/books', bookRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Backend server is running on http://localhost:${PORT}`);
-});
+// Only start the server if this file is run directly (for local development)
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Backend server is running on http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;

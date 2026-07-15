@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import EmployeeLayout from '../components/EmployeeLayout';
 import globalStyles from '../styles/global.module.css';
 import buttonsStyles from '../styles/buttons.module.css';
@@ -20,7 +20,7 @@ function InventoryPage() {
             Authorization: `Bearer ${userInfo.token}`,
           },
         };
-        const { data } = await axios.get('/api/books', config);
+        const { data } = await api.get('/api/books', config);
         setBooks(data);
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to fetch books');

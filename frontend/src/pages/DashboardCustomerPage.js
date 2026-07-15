@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import CustomerLayout from '../components/CustomerLayout';
 import globalStyles from '../styles/global.module.css';
 // import layout2Styles from '../styles/layout2.module.css';
@@ -34,8 +34,8 @@ function DashboardPage() {
 
         // Fetch books and user's pull list in parallel
         const [booksRes, pullListRes] = await Promise.all([
-          axios.get('/api/books', config),
-          axios.get('/api/users/pull-list', config),
+          api.get('/api/books', config),
+          api.get('/api/users/pull-list', config),
         ]);
 
         const books = booksRes.data;

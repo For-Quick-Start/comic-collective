@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import EmployeeLayout from '../components/EmployeeLayout';
 import globalStyles from '../styles/global.module.css';
 import buttonsStyles from '../styles/buttons.module.css';
@@ -25,7 +25,7 @@ function AdminResetPasswordPage() {
             Authorization: `Bearer ${userInfo.token}`,
           },
         };
-        const { data } = await axios.get(`/api/users/${id}`, config);
+        const { data } = await api.get(`/api/users/${id}`, config);
         setTargetUser(data);
       } catch (err) {
         setError(err.response?.data?.message || 'Could not fetch user data');
@@ -52,7 +52,7 @@ function AdminResetPasswordPage() {
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
-      await axios.put(`/api/users/${id}/reset-password`, { password }, config);
+      await api.put(`/api/users/${id}/reset-password`, { password }, config);
       setMessage('Password reset successfully!');
       setTimeout(() => navigate(-1), 2000); // Go back to previous page after 2 seconds
     } catch (err) {

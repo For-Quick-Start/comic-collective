@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 import CustomerLayout from '../components/CustomerLayout';
 
 const PullsCustomerPage = () => {
@@ -17,7 +17,7 @@ const PullsCustomerPage = () => {
           },
         };
 
-        const { data } = await axios.get('/api/users/pull-list', config);
+        const { data } = await api.get('/api/users/pull-list', config);
         setPullList(data);
         setLoading(false);
       } catch (err) {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import EmployeeLayout from '../components/EmployeeLayout';
 import globalStyles from '../styles/global.module.css';
 import bookCardsStyles from '../styles/bookCards.module.css';
@@ -60,7 +60,7 @@ function InsertBookPage() {
         delete bookData.seriesEndDate; // Don't send empty string for optional date
       }
 
-      await axios.post('/api/books', bookData, config);
+      await api.post('/api/books', bookData, config);
       setMessage('Book added successfully!');
       setTimeout(() => navigate('/dashempl'), 2000);
     } catch (err) {

@@ -97,7 +97,7 @@
 }
 
 .deleteButton {
-  background-color: #d9534f;
+  background-color: #c8110b;
   color: white;
   padding: 0.75rem 1.5rem;
   border: none;
@@ -110,7 +110,7 @@
 }
 
 .deleteButton:hover {
-  background-color: #c9302c;
+  background-color: #840b07;
 }
 
 .logoutButton {

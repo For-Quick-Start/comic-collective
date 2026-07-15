@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import CustomerLayout from '../components/CustomerLayout';
 import EmployeeLayout from '../components/EmployeeLayout';
 import globalStyles from '../styles/global.module.css';
@@ -32,7 +32,7 @@ function ResetPasswordPage() {
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
-      await axios.put('/api/users/me/reset-password', { password }, config);
+      await api.put('/api/users/me/reset-password', { password }, config);
       setMessage('Password reset successfully! Redirecting...');
       setTimeout(() => navigate(-1), 2000); // Go back to previous page
     } catch (err) {

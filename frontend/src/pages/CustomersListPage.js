@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import EmployeeLayout from '../components/EmployeeLayout';
 import globalStyles from '../styles/global.module.css';
 import buttonsStyles from '../styles/buttons.module.css';
@@ -20,7 +20,7 @@ function CustomersListPage() {
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
-      const { data } = await axios.get('/api/users', config);
+      const { data } = await api.get('/api/users', config);
       setUsers(data.filter((user) => user.role === 'customer'));
     } catch (err) {
       setError(err.response?.data?.message || 'Could not fetch users');
@@ -39,7 +39,7 @@ function CustomersListPage() {
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
-      await axios.put(`/api/users/${id}`, { status: newStatus }, config);
+      await api.put(`/api/users/${id}`, { status: newStatus }, config);
       fetchUsers(); // Refresh the list
     } catch (err) {
       alert('Failed to update user status');
@@ -55,7 +55,7 @@ function CustomersListPage() {
             Authorization: `Bearer ${userInfo.token}`,
           },
         };
-        await axios.delete(`/api/users/${id}`, config);
+        await api.delete(`/api/users/${id}`, config);
         fetchUsers(); // Refresh the list
       } catch (err) {
         alert('Failed to delete user');
