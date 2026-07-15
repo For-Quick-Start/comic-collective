@@ -9,11 +9,8 @@ const testRoutes = require('./routes/testRoutes');
 const userRoutes = require('./routes/userRoutes');
 const bookRoutes = require('./routes/bookRoutes');
 
-// Connect to the database
-connectDB();
-
 const app = express();
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5001; // This is still useful for local dev
 
 // --- Middleware ---
 app.use(cors());
@@ -25,11 +22,24 @@ app.use('/api', testRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/books', bookRoutes);
 
-// Only start the server if this file is run directly (for local development)
-if (require.main === module) {
-  app.listen(PORT, () => {
-    console.log(`Backend server is running on http://localhost:${PORT}`);
-  });
-}
+// This async function will be our new handler
+const handler = async (req, res) => {
+  // Ensure database connection
+  await connectDB();
+  // Delegate to the express app
+  return app(req, res);
+};
 
-module.exports = app;
+// For local development, we still want to start a standalone server
+const startLocalServer = async () => {
+  await connectDB();
+  app.listen(PORT, () => console.log(`Backend server is running on http://localhost:${PORT}`));
+};
+
+// Vercel will use the default export.
+// For local dev, we check if the module is the main one being run.
+if (process.env.VERCEL) {
+  module.exports = handler;
+} else {
+  startLocalServer();
+}
