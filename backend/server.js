@@ -24,9 +24,9 @@ app.use('/api', async (req, res, next) => {
 });
 
 // --- Routes ---
-app.use('/api', testRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/books', bookRoutes);
+app.use('/api', testRoutes); // Move the more generic route to the end
 
 // For local development, start the server
 if (require.main === module) {
