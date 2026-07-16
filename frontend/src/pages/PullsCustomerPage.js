@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from '../api';
 import CustomerLayout from '../components/CustomerLayout';
 import globalStyles from '../styles/global.module.css';
-import buttonsStyles from '../styles/buttons.module.css';
+// import buttonsStyles from '../styles/buttons.module.css';
 import bookCardsStyles from '../styles/bookCards.module.css';
 
 const PullsCustomerPage = () => {
