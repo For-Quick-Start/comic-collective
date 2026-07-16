@@ -37,6 +37,7 @@ function RegisterCustomerPage() {
       setName('');
       setEmail('');
       setPassword('');
+      setConfirmPassword('');
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred');
     }
