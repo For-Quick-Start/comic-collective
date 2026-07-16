@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api';
 import CustomerLayout from '../components/CustomerLayout';
+import globalStyles from '../styles/global.module.css';
+import buttonsStyles from '../styles/buttons.module.css';
+import bookCardsStyles from '../styles/bookCards.module.css';
 
 function ReleasesCustomerPage() {
   const [books, setBooks] = useState([]);
@@ -33,6 +36,11 @@ function ReleasesCustomerPage() {
     fetchData();
   }, []);
 
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleDateString();
+  };
+
   const handlePull = async (bookId) => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -58,37 +66,38 @@ function ReleasesCustomerPage() {
 
   return (
     <CustomerLayout title="Releases">
-      <div>
-        {message && <p style={{ color: 'green' }}>{message}</p>}
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr>
-              <th>Series Title</th>
-              <th>Issue #</th>
-              <th>Publisher</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {books.map((book) => (
-              <tr key={book._id}>
-                <td>{book.seriesTitle}</td>
-                <td>{book.issueNumber}</td>
-                <td>{book.publisher}</td>
-                <td>
-                  <button 
+      <div className={bookCardsStyles.cardContainer}>
+        {message && <p className={globalStyles.success}>{message}</p>}
+        {error && <p className={globalStyles.error}>{error}</p>}
+        {books.map((book) => (
+          <div key={book._id} className={bookCardsStyles.bookCard}>
+            <div className={bookCardsStyles.bookCardTitle}>
+              <h2>{book.seriesTitle} #{book.issueNumber}</h2>
+            </div>
+            <div className={bookCardsStyles.bookCardContent}>
+              <div className={bookCardsStyles.coverArtSection}>
+                <img src={book.coverArt || '/images/cover-placeholder.png'} alt={`${book.seriesTitle} #${book.issueNumber}`} className={bookCardsStyles.coverArt} />
+              </div>
+              <div className={bookCardsStyles.detailsSection}>
+                <p><strong>Publisher:</strong> {book.publisher || 'N/A'}</p>
+                <p><strong>Release Date:</strong> {formatDate(book.releaseDate)}</p>
+                <p><strong>Series Start Date:</strong> {formatDate(book.seriesStartDate)}</p>
+                <p><strong>Series End Date:</strong> {formatDate(book.seriesEndDate)}</p>
+                <div className={bookCardsStyles.tagsDisplay}>
+                  {book.tags && book.tags.length > 0 ? book.tags.map(tag => (<span key={tag} className={bookCardsStyles.tag}>{tag}</span>)) : <p>No tags</p>}
+                </div>
+                <div>
+                  <button className={buttonsStyles.editButton}
                     onClick={() => handlePull(book._id)}
                     disabled={pullList.includes(book._id)}
                   >
                     {pullList.includes(book._id) ? 'Pulled' : 'Pull'}
                   </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <style>{` th, td { border: 1px solid #ddd; padding: 8px; text-align: left; } `}</style>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </CustomerLayout>
   );

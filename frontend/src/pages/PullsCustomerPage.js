@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api';
 import CustomerLayout from '../components/CustomerLayout';
+import globalStyles from '../styles/global.module.css';
+import buttonsStyles from '../styles/buttons.module.css';
+import bookCardsStyles from '../styles/bookCards.module.css';
 
 const PullsCustomerPage = () => {
   const [pullList, setPullList] = useState([]);
@@ -34,8 +37,13 @@ const PullsCustomerPage = () => {
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div><p className={globalStyles.error}>Error: {error}</p></div>;
   }
+
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleDateString();
+  };
 
   return (
     <CustomerLayout title="Pull List">
@@ -43,14 +51,25 @@ const PullsCustomerPage = () => {
         {pullList.length === 0 ? (
           <p>Your pull list is empty.</p>
         ) : (
-          <ul>
+          <div className={bookCardsStyles.cardContainer}>
             {pullList.map((item) => (
-              <li key={item._id}>
-                <strong>{item.bookId.seriesTitle} #{item.bookId.issueNumber}</strong>
-                <p>Purchased: {item.purchased ? 'Yes' : 'No'}</p>
-              </li>
+              <div key={item._id}  className={bookCardsStyles.bookCard}>
+                <div className={bookCardsStyles.bookCardTitle}>
+                  <h2>{item.bookId.seriesTitle} #{item.bookId.issueNumber}</h2>
+                </div>
+                <div className={bookCardsStyles.bookCardContent}>
+                  <div className={bookCardsStyles.coverArtSection}>
+                    <img src={item.bookId.coverArt || '/images/cover-placeholder.png'} alt={`${item.bookId.seriesTitle} #${item.bookId.issueNumber}`} className={bookCardsStyles.coverArt} />
+                  </div>
+                  <div className={bookCardsStyles.detailsSection}>
+                    <p><strong>Publisher:</strong> {item.bookId.publisher || 'N/A'}</p>
+                    <p><strong>Release Date:</strong> {formatDate(item.bookId.releaseDate)}</p>
+                  </div>
+                </div>
+                {item.purchased ? <p className={globalStyles.success}>Already picked up!</p> : <p className={globalStyles.error}>Pulled and waiting for pick up!</p>}
+              </div>
             ))}
-          </ul>
+          </div>
         )}
       </div>
     </CustomerLayout>
