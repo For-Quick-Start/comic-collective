@@ -67,15 +67,29 @@
 }
 
 .coverArt {
-  width: 100%;
-  height: auto;
-  border-radius: 0px;
+    width: 100%;
+    height: auto;
+    border-radius: 0px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+.coverArt:hover {
+    transform: scale(1.08);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
 }
 
 .detailsSection {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+}
+
+.detailsSection p {
+    margin: 0 0 0.5rem 0;
 }
 
 .tagsDisplay {
@@ -107,47 +121,6 @@
   flex-grow: 1;
 }
 
-.formContent {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.formGrid {
-  display: grid;
-  grid-template-columns: 2 1fr;
-  gap: 1rem 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.formGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.formGroup label {
-  font-weight: bold;
-  font-size: 0.9rem;
-  color: #333;
-}
-
-.formGroup input {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-.formActions {
-  margin-top: auto;
-  padding-top: 1.5rem;
-  display: flex;
-  gap: 1rem;
-  justify-content: flex-end;
-  border-top: 1px solid #eee;
-}
-
 .inventorySection {
     border-top: 1px solid #eee;
     margin-top: auto;
@@ -167,6 +140,29 @@
     margin-bottom: 1rem;
 }
 
+/* Form Styles from Edit/Insert Page */
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+}
+
+.formGroup label {
+    margin-bottom: 0.25rem;
+    font-weight: bold;
+}
+
+.formGroup input {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
 .staticField {
     padding: 0.5rem;
     background-color: #f0f0f0;
@@ -174,4 +170,60 @@
     border-radius: 4px;
     min-width: 50px;
     text-align: center;
+}
+
+.bookContainer {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.overlayClose {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: #fff;
+    font-size: 28px;
+    line-height: 1;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+    z-index: 1001;
+}
+
+.overlayClose:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.overlayImg {
+    height: 75vh;
+    width: auto;
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    display: block;
 }
