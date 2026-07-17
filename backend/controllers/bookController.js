@@ -1,10 +1,20 @@
+const asyncHandler = require('express-async-handler');
 const Book = require('../models/bookModel');
+const User = require('../models/userModel');
+const mongoose = require('mongoose');
 
-// @desc    Create a new book
+// @desc    Create a book
 // @route   POST /api/books
 // @access  Private/Employee
-const createBook = async (req, res) => {
-  const {
+const createBook = asyncHandler(async (req, res) => {
+  const { seriesTitle, seriesStartDate, seriesEndDate, publisher, issueNumber, releaseDate, coverArt, cost, tags, inventory } = req.body;
+
+  if (!seriesTitle || !seriesStartDate || !publisher || !issueNumber || !releaseDate) {
+    res.status(400);
+    throw new Error('Please add all required fields');
+  }
+
+  const book = await Book.create({
     seriesTitle,
     seriesStartDate,
     seriesEndDate,
@@ -12,95 +22,93 @@ const createBook = async (req, res) => {
     issueNumber,
     releaseDate,
     coverArt,
+    cost,
     tags,
-  } = req.body;
-
-  if (!seriesTitle || !seriesStartDate || !publisher || !issueNumber || !releaseDate) {
-    return res.status(400).json({ message: 'Please fill out all required fields' });
-  }
-
-  const book = await Book.create({
-    seriesTitle, seriesStartDate, seriesEndDate, publisher, issueNumber, releaseDate, coverArt, tags
+    inventory,
   });
 
   res.status(201).json(book);
-};
+});
 
-// @desc    Get all books
+// @desc    Get all books with pull counts
 // @route   GET /api/books
-// @access  Private/Employee
-const getBooks = async (req, res) => {
-  const booksWithPullCount = await Book.aggregate([
-    {
-      $lookup: {
-        from: 'users', // The collection to join with
-        localField: '_id', // Field from the input documents (Book)
-        foreignField: 'pullList.bookId', // Field from the documents of the "from" collection (User)
-        as: 'pulledByUsers', // Output array field name
-      },
-    },
-    {
-      $addFields: {
-        pullCount: { $size: '$pulledByUsers' }, // Add a field with the size of the pulledByUsers array
-      },
-    },
-    {
-      $project: { pulledByUsers: 0 }, // Optionally remove the temporary array
-    },
-  ]);
-  res.json(booksWithPullCount);
-};
+// @access  Private
+const getBooks = asyncHandler(async (req, res) => {
+  const books = await Book.find({}).lean();
 
-// @desc    Get book by ID
+  const pullCounts = await User.aggregate([
+    { $unwind: '$pullList' },
+    { $group: { _id: '$pullList.bookId', totalPulls: { $sum: 1 } } },
+  ]);
+
+  const pullMap = pullCounts.reduce((acc, pull) => {
+    acc[pull._id] = pull.totalPulls;
+    return acc;
+  }, {});
+
+  const booksWithPulls = books.map(book => ({
+    ...book,
+    totalPulls: pullMap[book._id.toString()] || 0,
+  }));
+
+  res.json(booksWithPulls);
+});
+
+// @desc    Get book by ID with pull count
 // @route   GET /api/books/:id
 // @access  Private/Employee
-const getBookById = async (req, res) => {
-  const book = await Book.findById(req.params.id);
+const getBookById = asyncHandler(async (req, res) => {
+  const book = await Book.findById(req.params.id).lean();
 
   if (book) {
+    const pullCountResult = await User.aggregate([
+        { $unwind: '$pullList' },
+        { $match: { 'pullList.bookId': new mongoose.Types.ObjectId(req.params.id) } },
+        { $group: { _id: '$pullList.bookId', totalPulls: { $sum: 1 } } }
+    ]);
+    const totalPulls = pullCountResult.length > 0 ? pullCountResult[0].totalPulls : 0;
+    book.totalPulls = totalPulls;
     res.json(book);
   } else {
-    res.status(404).json({ message: 'Book not found' });
+    res.status(404);
+    throw new Error('Book not found');
   }
-};
+});
 
 // @desc    Update a book
 // @route   PUT /api/books/:id
 // @access  Private/Employee
-const updateBook = async (req, res) => {
+const updateBook = asyncHandler(async (req, res) => {
   const book = await Book.findById(req.params.id);
 
   if (book) {
-    const { seriesTitle, seriesStartDate, seriesEndDate, publisher, issueNumber, releaseDate, coverArt, tags } = req.body;
-
-    book.seriesTitle = seriesTitle ?? book.seriesTitle;
-    book.seriesStartDate = seriesStartDate ?? book.seriesStartDate;
-    book.seriesEndDate = seriesEndDate; // Allow setting to null
-    book.publisher = publisher ?? book.publisher;
-    book.issueNumber = issueNumber ?? book.issueNumber;
-    book.releaseDate = releaseDate ?? book.releaseDate;
-    book.coverArt = coverArt ?? book.coverArt;
-    book.tags = tags ?? book.tags;
-
-    const updatedBook = await book.save();
+    const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json(updatedBook);
   } else {
-    res.status(404).json({ message: 'Book not found' });
+    res.status(404);
+    throw new Error('Book not found');
   }
-};
+});
 
 // @desc    Delete a book
 // @route   DELETE /api/books/:id
 // @access  Private/Employee
-const deleteBook = async (req, res) => {
+const deleteBook = asyncHandler(async (req, res) => {
   const book = await Book.findById(req.params.id);
 
   if (book) {
-    await Book.findByIdAndDelete(req.params.id); // Use findByIdAndDelete on the model
+    await book.deleteOne();
     res.json({ message: 'Book removed' });
   } else {
-    res.status(404).json({ message: 'Book not found' });
+    res.status(404);
+    throw new Error('Book not found');
   }
-};
+});
 
-module.exports = { createBook, getBooks, getBookById, updateBook, deleteBook };
+module.exports = {
+  createBook,
+  getBooks,
+  getBookById,
+  updateBook,
+  deleteBook,
+};

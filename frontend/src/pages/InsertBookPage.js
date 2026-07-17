@@ -18,6 +18,7 @@ function InsertBookPage() {
     issueNumber: '',
     releaseDate: '',
     coverArt: '',
+    inventory: 0,
   });
   const [tags, setTags] = useState([]);
   const [currentTag, setCurrentTag] = useState('');
@@ -103,6 +104,13 @@ function InsertBookPage() {
                 <label>Series End Date:</label>
                 <input type="date" name="seriesEndDate" value={seriesEndDate} onChange={onChange} />
               </div>
+            </div>
+
+            <div className={bookCardsStyles.inventoryRow}>
+                <div className={bookCardsStyles.formGroup}>
+                    <label htmlFor="inventory">On Hand:</label>
+                    <input id="inventory" type="number" name="inventory" value={formData.inventory} onChange={onChange} min="0" />
+                </div>
             </div>
 
             <div className={bookCardsStyles.tagsSection}>

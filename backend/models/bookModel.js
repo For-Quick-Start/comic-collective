@@ -34,6 +34,11 @@ const bookSchema = mongoose.Schema(
     tags: {
       type: [String],
     },
+    inventory: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
   },
   {
     timestamps: true, // Adds createdAt and updatedAt timestamps

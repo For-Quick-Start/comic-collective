@@ -51,28 +51,40 @@ function InventoryPage() {
         <button className={buttonsStyles.submitButton}>Add a New Book</button>
       </a>
       <div className={bookCardsStyles.cardContainer}>
-        {books.map((book) => (
-          <div key={book._id} className={bookCardsStyles.bookCard}>
-            <div className={bookCardsStyles.bookCardTitle}>
-              <h2>{book.seriesTitle} #{book.issueNumber}</h2>
-            </div>
-            <div className={bookCardsStyles.bookCardContent}>
-              <div className={bookCardsStyles.coverArtSection}>
-                <img src={book.coverArt || '/images/cover-placeholder.png'} alt={`${book.seriesTitle} #${book.issueNumber}`} className={bookCardsStyles.coverArt} />
+        {books.map((book) => {
+          const onHand = book.inventory || 0;
+          const pulls = book.totalPulls || 0;
+          const netInventory = onHand - pulls;
+          const isLowInventory = netInventory < 5;
+
+          return (
+            <div key={book._id} className={bookCardsStyles.bookCard}>
+              <div className={bookCardsStyles.bookCardTitle}>
+                <h2>{book.seriesTitle} #{book.issueNumber}</h2>
               </div>
-              <div className={bookCardsStyles.detailsSection}>
-                <p><strong>Publisher:</strong> {book.publisher || 'N/A'}</p>
-                <p><strong>Release Date:</strong> {formatDate(book.releaseDate)}</p>
-                <p><strong>Series Start Date:</strong> {formatDate(book.seriesStartDate)}</p>
-                <p><strong>Series End Date:</strong> {formatDate(book.seriesEndDate)}</p>
-                <div className={bookCardsStyles.tagsDisplay}>
-                  {book.tags && book.tags.length > 0 ? book.tags.map(tag => (<span key={tag} className={bookCardsStyles.tag}>{tag}</span>)) : <p>No tags</p>}
+              <div className={bookCardsStyles.bookCardContent}>
+                <div className={bookCardsStyles.coverArtSection}>
+                  <img src={book.coverArt || '/images/cover-placeholder.png'} alt={`${book.seriesTitle} #${book.issueNumber}`} className={bookCardsStyles.coverArt} />
                 </div>
-                <Link to={`/editbook/${book._id}`} className={buttonsStyles.editButton}>Edit</Link>
+                <div className={bookCardsStyles.detailsSection}>
+                  <p><strong>Publisher:</strong> {book.publisher || 'N/A'}</p>
+                  <p><strong>Release Date:</strong> {formatDate(book.releaseDate)}</p>
+                  <p><strong>Series Start Date:</strong> {formatDate(book.seriesStartDate)}</p>
+                  <p><strong>Series End Date:</strong> {formatDate(book.seriesEndDate)}</p>
+                  <div className={bookCardsStyles.inventorySection}>
+                    <p><strong>On Hand:</strong> {onHand}</p>
+                    <p><strong>Total Pulls:</strong> {pulls}</p>
+                    {isLowInventory && <p className={bookCardsStyles.lowInventoryWarning}>Low Inventory!</p>}
+                  </div>
+                  <div className={bookCardsStyles.tagsDisplay}>
+                    {book.tags && book.tags.length > 0 ? book.tags.map(tag => (<span key={tag} className={bookCardsStyles.tag}>{tag}</span>)) : <p>No tags</p>}
+                  </div>
+                  <Link to={`/editbook/${book._id}`} className={buttonsStyles.editButton} style={{marginTop: 'auto'}}>Edit</Link>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </EmployeeLayout>
   );

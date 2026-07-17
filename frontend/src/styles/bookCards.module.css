@@ -115,7 +115,7 @@
 
 .formGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2 1fr;
   gap: 1rem 1rem;
   margin-bottom: 1.5rem;
 }
@@ -146,4 +146,32 @@
   gap: 1rem;
   justify-content: flex-end;
   border-top: 1px solid #eee;
+}
+
+.inventorySection {
+    border-top: 1px solid #eee;
+    margin-top: auto;
+    padding-top: 0.5rem;
+}
+
+.lowInventoryWarning {
+    color: red;
+    font-weight: bold;
+}
+
+.inventoryRow {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.staticField {
+    padding: 0.5rem;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-width: 50px;
+    text-align: center;
 }

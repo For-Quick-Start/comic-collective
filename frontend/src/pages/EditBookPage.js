@@ -18,6 +18,8 @@ function EditBookPage() {
     issueNumber: '',
     releaseDate: '',
     coverArt: '',
+    inventory: 0,
+    totalPulls: 0,
   });
   const [tags, setTags] = useState([]);
   const [currentTag, setCurrentTag] = useState('');
@@ -47,6 +49,8 @@ function EditBookPage() {
           issueNumber: data.issueNumber,
           releaseDate: formatDateForInput(data.releaseDate),
           coverArt: data.coverArt || '',
+          inventory: data.inventory || 0,
+          totalPulls: data.totalPulls || 0,
         });
         setTags(data.tags || []);
       } catch (err) {
@@ -153,6 +157,18 @@ function EditBookPage() {
                 <div className={bookCardsStyles.formGroup}>
                 <label htmlFor="seriesEndDate">Series End Date:</label>
                 <input id="seriesEndDate" type="date" name="seriesEndDate" value={formData.seriesEndDate} onChange={onChange} />
+                </div>
+              </div>
+              <div className={bookCardsStyles.inventoryRow}>
+                <div className={bookCardsStyles.formGroup}>
+                  <label htmlFor="inventory">On Hand:</label>
+                  <input id="inventory" type="number" name="inventory" value={formData.inventory} onChange={onChange} min="0" />
+                </div>
+                <div className={bookCardsStyles.formGroup}>
+                  <label>Total Pulls:</label>
+                  <div className={bookCardsStyles.staticField}>
+                    {formData.totalPulls}
+                  </div>
                 </div>
               </div>
               {/* TAGS Section */}
