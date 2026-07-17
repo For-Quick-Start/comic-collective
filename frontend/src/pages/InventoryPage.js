@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import api from '../api';
 import EmployeeLayout from '../components/EmployeeLayout';
 import globalStyles from '../styles/global.module.css';
@@ -41,7 +41,7 @@ function InventoryPage() {
     if (!thumb || !overlayRef.current || !overlayImgRef.current) return;
 
     activeThumbRef.current = thumb;
-    const overlay = overlayRef.current;
+    // const overlay = overlayRef.current;
     const overlayImg = overlayImgRef.current;
 
     const rect = thumb.getBoundingClientRect();
