@@ -35,6 +35,10 @@
   background-color: #6d11a7;
 }
 
+.editButton:disabled {
+  background-color: #571183;
+}
+
 .cancelButton {
   background-color: #6c757d;
   color: white;

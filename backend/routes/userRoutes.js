@@ -12,6 +12,7 @@ const {
   resetMyPassword,
   getMe,
   addPullRequest,
+  dropPullRequest,
   getUserPullList,
   getAllUsersPullList
 } = require('../controllers/userController');
@@ -36,5 +37,6 @@ router.put('/:id/reset-password', protect, employee, resetPassword);
 
 // Customer only routes
 router.post('/me/pull-list', protect, customer, addPullRequest);
+router.post('/me/pull-drop', protect, customer, dropPullRequest);
 
 module.exports = router;

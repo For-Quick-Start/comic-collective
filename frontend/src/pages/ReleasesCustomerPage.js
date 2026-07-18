@@ -40,6 +40,12 @@ function ReleasesCustomerPage() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e) => e.key === 'Escape' && closeOverlay();
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const openOverlay = (e) => {
     const thumb = e.target;
     if (!thumb || !overlayRef.current || !overlayImgRef.current) return;
@@ -132,12 +138,6 @@ function ReleasesCustomerPage() {
 
     overlayImg.addEventListener('transitionend', onTransitionEnd, { once: true });
   };
-
-  useEffect(() => {
-    const handleKeyDown = (e) => e.key === 'Escape' && closeOverlay();
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, []);
 
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';

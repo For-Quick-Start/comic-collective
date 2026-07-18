@@ -247,6 +247,31 @@ const addPullRequest = asyncHandler(async (req, res) => {
 });
 
 
+// @desc    Remove a book from user's pull list
+// @route   POST /api/users/me/pull-drop
+// @access  Private/Customer
+const dropPullRequest = asyncHandler(async (req, res) => {
+  const { bookId } = req.body;
+  const user = await User.findById(req.user.id);
+
+  if (user) {
+    // Check if book is in the pull list
+    const alreadyPulled = user.pullList.some(item => item.bookId.toString() === bookId);
+
+    if (!alreadyPulled) {
+      return res.status(400).json({ message: 'Book not in pull list' });
+    }
+
+    user.pullList = user.pullList.filter(item => item.bookId.toString() !== bookId);
+    await user.save();
+
+    res.status(200).json(user.pullList);
+  } else {
+    res.status(404).json({ message: 'User not found' });
+  }
+});
+
+
 // @desc    Get user pull list
 // @route   GET /api/users/pull-list
 // @access  Private
@@ -285,4 +310,4 @@ const getAllUsersPullList = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { registerUser, loginUser, registerEmployee, getUsers, getUserById, updateUser, deleteUser, resetPassword, resetMyPassword, getMe, addPullRequest, getUserPullList, getAllUsersPullList };
+module.exports = { registerUser, loginUser, registerEmployee, getUsers, getUserById, updateUser, deleteUser, resetPassword, resetMyPassword, getMe, addPullRequest, dropPullRequest, getUserPullList, getAllUsersPullList };

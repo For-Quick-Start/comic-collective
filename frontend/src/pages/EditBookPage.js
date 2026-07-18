@@ -60,8 +60,6 @@ function EditBookPage() {
     fetchBook();
   }, [id]);
 
-
-
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -125,7 +123,7 @@ function EditBookPage() {
     <EmployeeLayout title={`Edit: ${formData.seriesTitle || 'Book'}`}>
       {message && <p className={globalStyles.success}>{message}</p>}
       {error && <p className={globalStyles.error}>{error}</p>}
-      <div className={bookCardsStyles.bookContainer}>
+      <div className={bookCardsStyles.cardContainer}>
         <div className={bookCardsStyles.bookCard}>
           <div className={bookCardsStyles.coverArtSection}>
             <img src={formData.coverArt || '/covers/cover-placeholder.png'} alt="Cover Art" />
