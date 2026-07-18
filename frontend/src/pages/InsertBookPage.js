@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import EmployeeLayout from '../components/EmployeeLayout';
@@ -24,6 +24,8 @@ function InsertBookPage() {
   const [currentTag, setCurrentTag] = useState('');
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const [coverArtFile, setCoverArtFile] = useState(null);
+  const fileInputRef = useRef(null);
 
   const { seriesTitle, seriesStartDate, seriesEndDate, publisher, issueNumber, releaseDate, coverArt } = formData;
 
@@ -48,18 +50,29 @@ function InsertBookPage() {
     setMessage('');
 
     try {
+      const bookData = new FormData();
+      Object.keys(formData).forEach(key => {
+        if (key === 'seriesEndDate' && !formData[key]) {
+          // Don't append empty optional date
+        } else if (key === 'coverArt') {
+          // Do not append the coverArt field, as it's a base64 preview for the frontend only.
+          // The actual file is in coverArtFile.
+        } else {
+          bookData.append(key, formData[key]);
+        }
+      });
+      tags.forEach(tag => bookData.append('tags', tag));
+      if (coverArtFile) {
+        bookData.append('coverArtFile', coverArtFile);
+      }
+
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
-
-      const bookData = { ...formData, tags };
-      if (!bookData.seriesEndDate) {
-        delete bookData.seriesEndDate; // Don't send empty string for optional date
-      }
 
       await api.post('/api/books', bookData, config);
       setMessage('Book added successfully!');
@@ -69,14 +82,42 @@ function InsertBookPage() {
     }
   };
 
+  const handleImageClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.avif'];
+    const fileExtension = file.name.slice(file.name.lastIndexOf('.')).toLowerCase();
+
+    if (!allowedExtensions.includes(fileExtension)) {
+      setError('Invalid file type. Please select an image.');
+      setTimeout(() => setError(''), 3000);
+      return;
+    }
+
+    setCoverArtFile(file);
+    // Show a preview of the selected image
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setFormData({ ...formData, coverArt: reader.result });
+    };
+    reader.readAsDataURL(file);
+  };
+
   return (
     <EmployeeLayout title="Add a Book">
       {message && <p className={globalStyles.success}>{message}</p>}
       {error && <p className={globalStyles.error}>{error}</p>}
       <div className={bookCardsStyles.cardContainer}>
         <div className={bookCardsStyles.bookCard}>
-          <div className={bookCardsStyles.coverArtSection}>
-            <img src={coverArt || '/covers/cover-placeholder.png'} alt="Cover Art" />
+          <div className={bookCardsStyles.coverArtSection} onClick={handleImageClick} style={{ cursor: 'pointer' }}>
+            <img src={coverArt || '/covers/cover-placeholder.png'} alt="Cover Art" className={bookCardsStyles.coverArt} />
+            <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} accept=".jpg,.jpeg,.png,.gif,.webp,.svg,.avif" />
+            <small style={{ textAlign: 'center', display: 'block', marginTop: '5px' }}>Click image to upload new image</small>
           </div>
           <div className={bookCardsStyles.formContent}>
             <form onSubmit={handleSubmit}>

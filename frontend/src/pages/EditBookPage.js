@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api';
 import EmployeeLayout from '../components/EmployeeLayout';
 import globalStyles from '../styles/global.module.css';
 import buttonsStyles from '../styles/buttons.module.css';
 import bookCardsStyles from '../styles/bookCards.module.css';
+
 
 function EditBookPage() {
   const { id } = useParams();
@@ -25,6 +26,7 @@ function EditBookPage() {
   const [currentTag, setCurrentTag] = useState('');
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const fileInputRef = useRef(null);
 
   const formatDateForInput = (dateString) => {
     if (!dateString) return '';
@@ -119,14 +121,62 @@ function EditBookPage() {
     }
   };
 
+  const handleImageClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.avif'];
+    const fileExtension = file.name.slice(file.name.lastIndexOf('.')).toLowerCase();
+
+    if (!allowedExtensions.includes(fileExtension)) {
+      setError('Invalid file type. Please select an image.');
+      setTimeout(() => setError(''), 3000);
+      return;
+    }
+
+    const uploadFormData = new FormData();
+    uploadFormData.append('coverArtFile', file);
+
+    try {
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await api.post(`/api/books/${id}/upload-cover`, uploadFormData, config);
+
+      setFormData({ ...formData, coverArt: data.coverArt });
+      setMessage('Cover image updated successfully!');
+      setTimeout(() => setMessage(''), 3000);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to upload image.');
+      setTimeout(() => setError(''), 3000);
+    }
+  };
+
   return (
     <EmployeeLayout title={`Edit: ${formData.seriesTitle || 'Book'}`}>
       {message && <p className={globalStyles.success}>{message}</p>}
       {error && <p className={globalStyles.error}>{error}</p>}
       <div className={bookCardsStyles.cardContainer}>
         <div className={bookCardsStyles.bookCard}>
-          <div className={bookCardsStyles.coverArtSection}>
-            <img src={formData.coverArt || '/covers/cover-placeholder.png'} alt="Cover Art" />
+          <div className={bookCardsStyles.coverArtSection} onClick={handleImageClick} style={{ cursor: 'pointer' }}>
+            <img src={formData.coverArt || '/covers/cover-placeholder.png'} alt="Cover Art" className={bookCardsStyles.coverArt} />
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
+              accept=".jpg,.jpeg,.png,.gif,.webp,.svg,.avif"
+            />
+            <small style={{ textAlign: 'center', display: 'block', marginTop: '5px' }}>Click image to upload new image</small>
           </div>
         <div className={bookCardsStyles.bookDetails}>
           <div className={bookCardsStyles.formContent}>

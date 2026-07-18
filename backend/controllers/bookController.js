@@ -2,32 +2,48 @@ const asyncHandler = require('express-async-handler');
 const Book = require('../models/bookModel');
 const User = require('../models/userModel');
 const mongoose = require('mongoose');
+const path = require('path');
+const fs = require('fs');
 
 // @desc    Create a book
 // @route   POST /api/books
 // @access  Private/Employee
 const createBook = asyncHandler(async (req, res) => {
   const { seriesTitle, seriesStartDate, seriesEndDate, publisher, issueNumber, releaseDate, coverArt, cost, tags, inventory } = req.body;
-
-  if (!seriesTitle || !seriesStartDate || !publisher || !issueNumber || !releaseDate) {
+  
+  if (!seriesTitle || !seriesStartDate || !publisher || !issueNumber || !releaseDate) { 
     res.status(400);
     throw new Error('Please add all required fields');
   }
 
-  const book = await Book.create({
-    seriesTitle,
-    seriesStartDate,
-    seriesEndDate,
-    publisher,
-    issueNumber,
-    releaseDate,
-    coverArt,
-    cost,
-    tags,
-    inventory,
-  });
+  const book = await Book.create(req.body);
 
-  res.status(201).json(book);
+  if (req.file) {
+    const fileExtension = path.extname(req.file.originalname).toLowerCase();
+    const newFilename = `${book._id}${fileExtension}`;
+    const newPath = path.join(__dirname, '../../frontend/public/covers', newFilename);
+
+    // Ensure the covers directory exists
+    const coversDir = path.dirname(newPath);
+    if (!fs.existsSync(coversDir)) {
+      fs.mkdirSync(coversDir, { recursive: true });
+    }
+
+    fs.renameSync(req.file.path, newPath);
+
+    const newCoverArtUrl = `/covers/${newFilename}`;
+    book.coverArt = newCoverArtUrl;
+    await book.save();
+  }
+
+  const createdBook = await Book.findById(book._id);
+
+  if (createdBook) {
+    res.status(201).json(createdBook);
+  } else {
+    res.status(400);
+    throw new Error('Invalid book data');
+  }
 });
 
 // @desc    Get all books with pull counts
