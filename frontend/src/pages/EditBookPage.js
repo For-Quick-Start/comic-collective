@@ -128,7 +128,7 @@ function EditBookPage() {
       <div className={bookCardsStyles.bookContainer}>
         <div className={bookCardsStyles.bookCard}>
           <div className={bookCardsStyles.coverArtSection}>
-            <img src={formData.coverArt || '/images/cover-placeholder.png'} alt="Cover Art" />
+            <img src={formData.coverArt || '/covers/cover-placeholder.png'} alt="Cover Art" />
           </div>
         <div className={bookCardsStyles.bookDetails}>
           <div className={bookCardsStyles.formContent}>

@@ -75,7 +75,7 @@ function InsertBookPage() {
       {error && <p className={globalStyles.error}>{error}</p>}
       <div className={bookCardsStyles.cardContainer}>
         <div className={bookCardsStyles.coverArtSection}>
-          <img src={coverArt || '/images/cover-placeholder.png'} alt="Cover Art" />
+          <img src={coverArt || '/covers/cover-placeholder.png'} alt="Cover Art" />
         </div>
         <div className={bookCardsStyles.formContent}>
           <form onSubmit={handleSubmit}>

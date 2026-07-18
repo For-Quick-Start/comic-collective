@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import api from '../api';
 import CustomerLayout from '../components/CustomerLayout';
 import globalStyles from '../styles/global.module.css';
@@ -10,6 +10,10 @@ function ReleasesCustomerPage() {
   const [pullList, setPullList] = useState([]);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const [isOverlayActive, setIsOverlayActive] = useState(false);
+  const overlayRef = useRef(null);
+  const overlayImgRef = useRef(null);
+  const activeThumbRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,6 +38,105 @@ function ReleasesCustomerPage() {
     };
 
     fetchData();
+  }, []);
+
+  const openOverlay = (e) => {
+    const thumb = e.target;
+    if (!thumb || !overlayRef.current || !overlayImgRef.current) return;
+
+    activeThumbRef.current = thumb;
+    // const overlay = overlayRef.current;
+    const overlayImg = overlayImgRef.current;
+
+    const rect = thumb.getBoundingClientRect();
+
+    overlayImg.style.transition = 'none';
+    overlayImg.style.position = 'fixed';
+    overlayImg.style.height = rect.height + 'px';
+    overlayImg.style.width = rect.width + 'px';
+    overlayImg.style.top = rect.top + 'px';
+    overlayImg.style.left = rect.left + 'px';
+    overlayImg.style.margin = '0';
+    overlayImg.style.borderRadius = '6px';
+
+    setIsOverlayActive(true);
+
+    const expandImage = () => {
+      requestAnimationFrame(() => {
+        overlayImg.style.transition = [
+          'top 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+          'left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+          'width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+          'height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+          'border-radius 0.4s ease'
+        ].join(', ');
+
+        const finalH = window.innerHeight * 0.75;
+        const ratio = overlayImg.naturalWidth / overlayImg.naturalHeight;
+        const finalW = finalH * ratio;
+
+        overlayImg.style.height = finalH + 'px';
+        overlayImg.style.width = finalW + 'px';
+        overlayImg.style.top = ((window.innerHeight - finalH) / 2) + 'px';
+        overlayImg.style.left = ((window.innerWidth - finalW) / 2) + 'px';
+        overlayImg.style.borderRadius = '8px';
+      });
+    };
+
+    overlayImg.onload = null;
+    if (thumb.naturalWidth > 0) {
+      overlayImg.src = thumb.src;
+      expandImage();
+    } else {
+      overlayImg.onload = expandImage;
+      overlayImg.src = thumb.src;
+    }
+    overlayImg.alt = thumb.alt;
+  };
+
+  const closeOverlay = () => {
+    const activeThumb = activeThumbRef.current;
+    if (!activeThumb || !overlayRef.current || !overlayImgRef.current) return;
+
+    const overlayImg = overlayImgRef.current;
+    const rect = activeThumb.getBoundingClientRect();
+
+    overlayImg.style.transition = [
+      'top 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+      'left 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+      'width 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+      'height 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+      'border-radius 0.35s ease'
+    ].join(', ');
+
+    overlayImg.style.height = rect.height + 'px';
+    overlayImg.style.width = rect.width + 'px';
+    overlayImg.style.top = rect.top + 'px';
+    overlayImg.style.left = rect.left + 'px';
+    overlayImg.style.borderRadius = '6px';
+
+    setIsOverlayActive(false);
+
+    const onTransitionEnd = () => {
+      overlayImg.style.transition = 'none';
+      overlayImg.style.position = '';
+      overlayImg.style.height = '';
+      overlayImg.style.width = '';
+      overlayImg.style.top = '';
+      overlayImg.style.left = '';
+      overlayImg.style.margin = '';
+      overlayImg.style.borderRadius = '';
+      overlayImg.src = '';
+      activeThumbRef.current = null;
+    };
+
+    overlayImg.addEventListener('transitionend', onTransitionEnd, { once: true });
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => e.key === 'Escape' && closeOverlay();
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   const formatDate = (dateString) => {
@@ -75,9 +178,12 @@ function ReleasesCustomerPage() {
               <h2>{book.seriesTitle} #{book.issueNumber}</h2>
             </div>
             <div className={bookCardsStyles.bookCardContent}>
-              <div className={bookCardsStyles.coverArtSection}>
-                <img src={book.coverArt || '/images/cover-placeholder.png'} alt={`${book.seriesTitle} #${book.issueNumber}`} className={bookCardsStyles.coverArt} />
-              </div>
+                <div className={bookCardsStyles.coverArtSection}>
+                  <img src={book.coverArt || '/covers/cover-placeholder.png'} 
+                    alt={`${book.seriesTitle} #${book.issueNumber}`} 
+                    className={bookCardsStyles.coverArt}
+                    onClick={openOverlay} />
+                </div>
               <div className={bookCardsStyles.detailsSection}>
                 <p><strong>Publisher:</strong> {book.publisher || 'N/A'}</p>
                 <p><strong>Release Date:</strong> {formatDate(book.releaseDate)}</p>
@@ -98,6 +204,10 @@ function ReleasesCustomerPage() {
             </div>
           </div>
         ))}
+      </div>
+      <div ref={overlayRef} className={`${bookCardsStyles.overlay} ${isOverlayActive ? bookCardsStyles.active : ''}`} onClick={(e) => e.target === overlayRef.current && closeOverlay()}>
+        <button className={bookCardsStyles.overlayClose} onClick={closeOverlay} aria-label="Close">&times;</button>
+        <img ref={overlayImgRef} className={bookCardsStyles.overlayImg} src="" alt="" />
       </div>
     </CustomerLayout>
   );

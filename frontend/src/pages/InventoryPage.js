@@ -167,7 +167,7 @@ function InventoryPage() {
               </div>
               <div className={bookCardsStyles.bookCardContent}>
                 <div className={bookCardsStyles.coverArtSection}>
-                  <img src={book.coverArt || '/images/cover-placeholder.png'} 
+                  <img src={book.coverArt || '/covers/cover-placeholder.png'} 
                     alt={`${book.seriesTitle} #${book.issueNumber}`} 
                     className={bookCardsStyles.coverArt}
                     onClick={openOverlay} />
