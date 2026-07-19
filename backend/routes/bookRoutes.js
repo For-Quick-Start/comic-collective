@@ -7,7 +7,12 @@ const { uploadCover } = require('../controllers/uploadController');
 const { protect, employee } = require('../middleware/authMiddleware');
 
 // Setup multer for file uploads
-const upload = multer({ dest: path.join(__dirname, '../temp/uploads') });
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, '/tmp'); // Use the /tmp directory on Vercel
+    }
+});
+const upload = multer({ storage: storage });
 
 router.route('/')
     .post(protect, employee, upload.single('coverArtFile'), createBook)
