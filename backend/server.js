@@ -5,9 +5,9 @@ const cors = require('cors');
 const path = require('path');
 const connectDB = require('./config/db');
 
-const testRoutes = require('./routes/testRoutes');
-const userRoutes = require('./routes/userRoutes');
-const bookRoutes = require('./routes/bookRoutes');
+const testRoutes = require(path.join(__dirname, 'routes/testRoutes'));
+const userRoutes = require(path.join(__dirname, 'routes/userRoutes'));
+const bookRoutes = require(path.join(__dirname, 'routes/bookRoutes'));
 
 const app = express();
 const PORT = process.env.PORT || 5001; // This is still useful for local dev
