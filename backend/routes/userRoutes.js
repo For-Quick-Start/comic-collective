@@ -19,7 +19,7 @@ const {
 const { protect, employee, customer } = require('../middleware/authMiddleware');
 
 router.post('/register', registerUser);
-router.post('/login', loginUser);
+router.post('/auth/login', loginUser);
 router.get('/me', protect, getMe);
 router.put('/me/reset-password', protect, resetMyPassword);
 router.get('/pull-list', protect, getUserPullList);

@@ -12,7 +12,7 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await api.post('/api/users/login', { email, password });
+      const { data } = await api.post('/api/users/auth/login', { email, password });
       localStorage.setItem('userInfo', JSON.stringify(data));
       if (data.role === 'employee') {
         window.location.href = '/dashempl';
