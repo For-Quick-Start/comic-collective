@@ -14,7 +14,8 @@ const {
   addPullRequest,
   dropPullRequest,
   getUserPullList,
-  getAllUsersPullList
+  getAllUsersPullList,
+  getRecommendationTags
 } = require('../controllers/userController');
 const { protect, employee, customer } = require('../middleware/authMiddleware');
 
@@ -22,6 +23,7 @@ router.post('/register', registerUser);
 router.post('/auth/login', loginUser);
 router.get('/me', protect, getMe);
 router.put('/me/reset-password', protect, resetMyPassword);
+router.get('/me/recommendation-tags', protect, customer, getRecommendationTags);
 router.get('/pull-list', protect, getUserPullList);
 
 // Employee only routes

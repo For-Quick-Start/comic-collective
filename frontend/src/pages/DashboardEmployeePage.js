@@ -63,12 +63,12 @@ function DashboardPage() {
         }).length;
 
         const outstandingPulls = pullList.filter(item => {
-          const releaseDate = new Date(item.bookId.releaseDate);
+          const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
           return releaseDate < today && !item.purchased;
         }).length;
 
         const upcomingPulls = pullList.filter(item => {
-          const releaseDate = new Date(item.bookId.releaseDate);
+          const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
           return releaseDate >= today;
         }).length;
 
@@ -96,10 +96,10 @@ function DashboardPage() {
     <EmployeeLayout title="Dashboard">
       {error && <p className={globalStyles.error}>{error}</p>}
       <div className={statCardsStyles.statsGrid}>
-        <Link to="/inventory" className={statCardsStyles.statCard}><h2>{stats.releasesThisWeek}</h2><p>Releases This Week</p></Link>
-        <Link to="/inventory" className={statCardsStyles.statCard}><h2>{stats.releasesNextWeek}</h2><p>Releases Next Week</p></Link> 
-        <Link to="/inventory" className={statCardsStyles.statCard}><h2>{stats.outstandingPulls}</h2><p>All Outstanding Pulls</p></Link> 
-        <Link to="/inventory" className={statCardsStyles.statCard}><h2>{stats.upcomingPulls}</h2><p>All Upcoming Pulls</p></Link>
+        <Link to="/inventory" className={statCardsStyles.statCard}><h2>{stats.releasesThisWeek}</h2><p>Releases This Week</p></Link> 
+        <Link to="/inventory" className={statCardsStyles.statCard}><h2>{stats.releasesNextWeek}</h2><p>Releases Next Week</p></Link>
+        <Link to="/pullsempl" className={statCardsStyles.statCard}><h2>{stats.outstandingPulls}</h2><p>All Outstanding Pulls</p></Link>
+        <Link to="/pullsempl" className={statCardsStyles.statCard}><h2>{stats.upcomingPulls}</h2><p>All Upcoming Pulls</p></Link>
       </div>
     </EmployeeLayout>
   );

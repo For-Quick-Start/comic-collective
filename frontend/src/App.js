@@ -17,7 +17,7 @@ import EditBookPage from './pages/EditBookPage';
 import DashboardCustomerPage from './pages/DashboardCustomerPage';
 import PullsCustomerPage from './pages/PullsCustomerPage';
 import ReleasesCustomerPage from './pages/ReleasesCustomerPage';
-import RecommendationPage from './pages/Recommendation.js';
+import RecommendationPage from './pages/RecommendationPage.js';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminResetPasswordPage from './pages/AdminResetPasswordPage';
 import RedirectIfLoggedIn from './components/RedirectIfLoggedIn';

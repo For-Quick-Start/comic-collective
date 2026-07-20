@@ -310,4 +310,23 @@ const getAllUsersPullList = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { registerUser, loginUser, registerEmployee, getUsers, getUserById, updateUser, deleteUser, resetPassword, resetMyPassword, getMe, addPullRequest, dropPullRequest, getUserPullList, getAllUsersPullList };
+// @desc    Get recommendation tags based on user's pull list
+// @route   GET /api/users/me/recommendation-tags
+// @access  Private/Customer
+const getRecommendationTags = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user.id).populate({
+    path: 'pullList.bookId',
+    select: 'tags', // Only select the 'tags' field for efficiency
+    model: 'Book',
+  });
+
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  const allTags = user.pullList.flatMap(item => item.bookId ? item.bookId.tags : []);
+  const uniqueTags = [...new Set(allTags)];
+  res.json(uniqueTags);
+});
+
+module.exports = { registerUser, loginUser, registerEmployee, getUsers, getUserById, updateUser, deleteUser, resetPassword, resetMyPassword, getMe, addPullRequest, dropPullRequest, getUserPullList, getAllUsersPullList, getRecommendationTags };
