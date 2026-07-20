@@ -1,0 +1,51 @@
+.conciergeGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.conciergeCard {
+  background-color: #c0c0c0;
+  border-radius: 28px;
+  border-color: #004085;
+  border-style: solid;
+  border-width: 4px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.conciergeCard h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+.infoContainer {
+  display: flex;
+  flex-direction: row; 
+  justify-content: space-between; 
+  gap: 2rem; 
+}
+
+.hoursList, .addressSection {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+}
+
+.hoursList li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0;
+}
+
+.addressSection p {
+    margin: 0.25rem 0;
+}
