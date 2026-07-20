@@ -17,6 +17,7 @@ import EditBookPage from './pages/EditBookPage';
 import DashboardCustomerPage from './pages/DashboardCustomerPage';
 import PullsCustomerPage from './pages/PullsCustomerPage';
 import ReleasesCustomerPage from './pages/ReleasesCustomerPage';
+import RecommendationPage from './pages/Recommendation.js';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminResetPasswordPage from './pages/AdminResetPasswordPage';
 import RedirectIfLoggedIn from './components/RedirectIfLoggedIn';
@@ -49,6 +50,7 @@ function App() {
           <Route path="/dashcust" element={<DashboardCustomerPage />} />
           <Route path="/pullscust" element={<PullsCustomerPage />} />
           <Route path="/releasescust" element={<ReleasesCustomerPage />} /> 
+          <Route path="/recommendation" element={<RecommendationPage />} />
         </Route>
         {/* Routes for any logged-in user */}
         <Route element={<ProtectedRoute allowedRoles={['employee', 'customer']} />}>

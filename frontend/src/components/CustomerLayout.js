@@ -17,7 +17,7 @@ function CustomerLayout({ children, title }) {
           <Link to="/dashcust" className={layout2.menuItem}>Dashboard</Link>
           <Link to="/releasescust" className={layout2.menuItem}>Releases</Link>
           <Link to="/pullscust" className={layout2.menuItem}>Pull List</Link>
-          <a href="#!" className={layout2.menuItem}>Recommendations</a>
+          <Link to="/recommendation" className={layout2.menuItem}>Recommendations</Link>
         </nav>
         <div className={layout2.bottomNav}>
           <Link to="/settings" className={layout2.menuItem}>Settings</Link>
