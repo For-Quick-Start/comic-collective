@@ -29,7 +29,14 @@ const createBook = asyncHandler(async (req, res) => {
       fs.mkdirSync(coversDir, { recursive: true });
     }
 
-    fs.renameSync(req.file.path, newPath);
+    // Use copy and unlink to avoid cross-device link errors
+    try {
+      fs.copyFileSync(req.file.path, newPath);
+      fs.unlinkSync(req.file.path); // remove temp file
+    } catch (err) {
+      console.error('Error moving file:', err);
+      // Decide if you want to throw an error or handle it gracefully
+    }
 
     const newCoverArtUrl = `/covers/${newFilename}`;
     book.coverArt = newCoverArtUrl;
