@@ -47,11 +47,11 @@ function ResetPasswordPage() {
       <form onSubmit={handleSubmit}>
         <div className={layout1Styles.formGroup}>
           <label htmlFor="password">New Password</label>
-          <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete="new-password" />
         </div>
         <div className={layout1Styles.formGroup}>
           <label htmlFor="confirmPassword">New Password (again, to confirm)</label>
-          <input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+          <input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required autoComplete="new-password" />
         </div>
         <p className={globalStyles.passwordReqs}>
           {`Minimum password length is 8 characters and must contain at least one of:

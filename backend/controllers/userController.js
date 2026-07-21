@@ -131,13 +131,15 @@ const getUserById = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Update user status
+// @desc    Update user
 // @route   PUT /api/users/:id
 // @access  Private/Employee
 const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
 
   if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
     user.status = req.body.status || user.status;
     const updatedUser = await user.save();
     res.json({

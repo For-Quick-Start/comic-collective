@@ -83,7 +83,7 @@ function EmployeesListPage() {
                 </div>
               </div>
               <div className={userCardsStyles.actionsRow}>
-                <button onClick={() => navigate(`/custedit/${user._id}`)} className={buttonsStyles.editButton}>Edit</button>
+                <button onClick={() => navigate(`/empledit/${user._id}`)} className={buttonsStyles.editButton}>Edit</button>
                 <button onClick={() => navigate(`/admin-reset-password/${user._id}`)} className={buttonsStyles.resetButton}>Reset Password</button>
                 <button onClick={() => handleStatusChange(user._id, user.status === 'active' ? 'disabled' : 'active')} className={buttonsStyles.disableButton}>
                   {user.status === 'active' ? 'Disable' : 'Enable'}
