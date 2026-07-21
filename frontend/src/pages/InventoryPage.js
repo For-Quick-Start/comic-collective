@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api';
 import EmployeeLayout from '../components/EmployeeLayout';
-import globalStyles from '../styles/global.module.css';
-import buttonsStyles from '../styles/buttons.module.css';
-import bookCardsStyles from '../styles/bookCards.module.css';
+import global from '../styles/global.module.css';
+import buttons from '../styles/buttons.module.css';
+import bookCards from '../styles/bookCards.module.css';
 
 function InventoryPage() {
   const [books, setBooks] = useState([]);
@@ -145,15 +145,15 @@ function InventoryPage() {
   }
 
   if (error) {
-    return <EmployeeLayout title="Inventory"><p className={globalStyles.error}>{error}</p></EmployeeLayout>;
+    return <EmployeeLayout title="Inventory"><p className={global.error}>{error}</p></EmployeeLayout>;
   }
 
   return (
     <EmployeeLayout title="Book Inventory">
       <a href="/insertbook">
-        <button className={buttonsStyles.submitButton}>Add a New Book</button>
+        <button className={buttons.submitButton}>Add a New Book</button>
       </a>
-      <div className={bookCardsStyles.cardContainer}>
+      <div className={bookCards.cardContainer}>
         {books.map((book) => {
           const onHand = book.inventory || 0;
           const pulls = book.totalPulls || 0;
@@ -161,40 +161,40 @@ function InventoryPage() {
           const isLowInventory = netInventory < 5;
 
           return (
-            <div key={book._id} className={bookCardsStyles.bookCard}>
-              <div className={bookCardsStyles.bookCardTitle}>
+            <div key={book._id} className={bookCards.bookCard}>
+              <div className={bookCards.bookCardTitle}>
                 <h2>{book.seriesTitle} #{book.issueNumber}</h2>
               </div>
-              <div className={bookCardsStyles.bookCardContent}>
-                <div className={bookCardsStyles.coverArtSection}>
+              <div className={bookCards.bookCardContent}>
+                <div className={bookCards.coverArtSection}>
                   <img src={book.coverArt || '/covers/cover-placeholder.png'} 
                     alt={`${book.seriesTitle} #${book.issueNumber}`} 
-                    className={bookCardsStyles.coverArt}
+                    className={bookCards.coverArt}
                     onClick={openOverlay} />
                 </div>
-                <div className={bookCardsStyles.detailsSection}>
+                <div className={bookCards.detailsSection}>
                   <p><strong>Publisher:</strong> {book.publisher || 'N/A'}</p>
                   <p><strong>Release Date:</strong> {formatDate(book.releaseDate)}</p>
                   <p><strong>Series Start Date:</strong> {formatDate(book.seriesStartDate)}</p>
                   <p><strong>Series End Date:</strong> {formatDate(book.seriesEndDate)}</p>
-                  <div className={bookCardsStyles.inventorySection}>
+                  <div className={bookCards.inventorySection}>
                     <p><strong>On Hand:</strong> {onHand}</p>
                     <p><strong>Total Pulls:</strong> {pulls}</p>
-                    {isLowInventory && <p className={bookCardsStyles.lowInventoryWarning}>Low Inventory!</p>}
+                    {isLowInventory && <p className={bookCards.lowInventoryWarning}>Low Inventory!</p>}
                   </div>
-                  <div className={bookCardsStyles.tagsDisplay}>
-                    {book.tags && book.tags.length > 0 ? book.tags.map(tag => (<span key={tag} className={bookCardsStyles.tag}>{tag}</span>)) : <p>No tags</p>}
+                  <div className={bookCards.tagsDisplay}>
+                    {book.tags && book.tags.length > 0 ? book.tags.map(tag => (<span key={tag} className={bookCards.tag}>{tag}</span>)) : <p>No tags</p>}
                   </div>
-                  <Link to={`/editbook/${book._id}`} className={buttonsStyles.editButton} style={{marginTop: 'auto'}}>Edit</Link>
+                  <Link to={`/editbook/${book._id}`} className={buttons.editButton} style={{marginTop: 'auto'}}>Edit</Link>
                 </div>
               </div>
             </div>
           );
         })}
       </div>
-      <div ref={overlayRef} className={`${bookCardsStyles.overlay} ${isOverlayActive ? bookCardsStyles.active : ''}`} onClick={(e) => e.target === overlayRef.current && closeOverlay()}>
-        <button className={bookCardsStyles.overlayClose} onClick={closeOverlay} aria-label="Close">&times;</button>
-        <img ref={overlayImgRef} className={bookCardsStyles.overlayImg} src="" alt="" />
+      <div ref={overlayRef} className={`${bookCards.overlay} ${isOverlayActive ? bookCards.active : ''}`} onClick={(e) => e.target === overlayRef.current && closeOverlay()}>
+        <button className={bookCards.overlayClose} onClick={closeOverlay} aria-label="Close">&times;</button>
+        <img ref={overlayImgRef} className={bookCards.overlayImg} src="" alt="" />
       </div>
     </EmployeeLayout>
   );

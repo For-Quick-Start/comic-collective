@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import EmployeeLayout from '../components/EmployeeLayout';
-import globalStyles from '../styles/global.module.css';
-import buttonsStyles from '../styles/buttons.module.css';
+import global from '../styles/global.module.css';
+import buttons from '../styles/buttons.module.css';
 import form from '../styles/forms.module.css';
 
 function RegisterEmployeePage() {
@@ -66,7 +66,7 @@ function RegisterEmployeePage() {
             <input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
           </div>
 
-          <p className={globalStyles.passwordReqs}>
+          <p className={global.passwordReqs}>
               {`Minimum password length is 8 characters and must contain at least one of:
   - Uppercase letter
   - Lowercase letter
@@ -74,8 +74,8 @@ function RegisterEmployeePage() {
   - Symbol`}
           </p>
           <div className={form.formActions} style={{ justifyContent: 'center', gap: '1rem' }}>
-            <button type="submit" className={buttonsStyles.submitButton}>Register Employee</button>
-            <button type="button" className={buttonsStyles.cancelButton} onClick={() => navigate(-1)}>Cancel</button>
+            <button type="submit" className={buttons.submitButton}>Register Employee</button>
+            <button type="button" className={buttons.cancelButton} onClick={() => navigate(-1)}>Cancel</button>
           </div>
         </form>
       </div>

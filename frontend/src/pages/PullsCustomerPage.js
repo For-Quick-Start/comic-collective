@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import api from '../api';
 import CustomerLayout from '../components/CustomerLayout';
-import globalStyles from '../styles/global.module.css';
-import buttonsStyles from '../styles/buttons.module.css';
-import bookCardsStyles from '../styles/bookCards.module.css';
+import global from '../styles/global.module.css';
+import buttons from '../styles/buttons.module.css';
+import bookCards from '../styles/bookCards.module.css';
 
 const PullsCustomerPage = () => {
   const [pullList, setPullList] = useState([]);
@@ -48,7 +48,7 @@ const PullsCustomerPage = () => {
   }
 
   if (error) {
-    return <div><p className={globalStyles.error}>Error: {error}</p></div>;
+    return <div><p className={global.error}>Error: {error}</p></div>;
   }
 
   const openOverlay = (e) => {
@@ -175,32 +175,32 @@ const PullsCustomerPage = () => {
   return (
     <CustomerLayout title="Pull List">
       <div>
-        {message && <p className={globalStyles.success}>{message}</p>}
-        {error && <p className={globalStyles.error}>{error}</p>}
+        {message && <p className={global.success}>{message}</p>}
+        {error && <p className={global.error}>{error}</p>}
         {pullList.length === 0 ? (
           <p>Your pull list is empty.</p>
         ) : (
-          <div className={bookCardsStyles.cardContainer}>
+          <div className={bookCards.cardContainer}>
             {pullList.map((item) => (
-              <div key={item._id}  className={bookCardsStyles.bookCard}>
-                <div className={bookCardsStyles.bookCardTitle}>
+              <div key={item._id}  className={bookCards.bookCard}>
+                <div className={bookCards.bookCardTitle}>
                   <h2>{item.bookId.seriesTitle} #{item.bookId.issueNumber}</h2>
                 </div>
-                <div className={bookCardsStyles.bookCardContent}>
-                  <div className={bookCardsStyles.coverArtSection}>
+                <div className={bookCards.bookCardContent}>
+                  <div className={bookCards.coverArtSection}>
                     <img src={item.bookId.coverArt || '/covers/cover-placeholder.png'} 
                       alt={`${item.bookId.seriesTitle} #${item.bookId.issueNumber}`} 
-                      className={bookCardsStyles.coverArt}
+                      className={bookCards.coverArt}
                       onClick={openOverlay} />
                   </div>
-                  <div className={bookCardsStyles.detailsSection}>
+                  <div className={bookCards.detailsSection}>
                     <p><strong>Publisher:</strong> {item.bookId.publisher || 'N/A'}</p>
                     <p><strong>Release Date:</strong> {formatDate(item.bookId.releaseDate)}</p>
                   </div>
                 </div>
-                {item.purchased ? <p className={globalStyles.success}>Already picked up!</p> : <p className={globalStyles.error}>Pulled and waiting for pick up!</p>}
+                {item.purchased ? <p className={global.success}>Already picked up!</p> : <p className={global.error}>Pulled and waiting for pick up!</p>}
                 <div>
-                  <button className={buttonsStyles.deleteButton}
+                  <button className={buttons.deleteButton}
                     onClick={() => handleDrop(item.bookId._id)}>Drop</button>
                 </div>
               </div>
@@ -208,9 +208,9 @@ const PullsCustomerPage = () => {
           </div>
         )}
       </div>
-      <div ref={overlayRef} className={`${bookCardsStyles.overlay} ${isOverlayActive ? bookCardsStyles.active : ''}`} onClick={(e) => e.target === overlayRef.current && closeOverlay()}>
-        <button className={bookCardsStyles.overlayClose} onClick={closeOverlay} aria-label="Close">&times;</button>
-        <img ref={overlayImgRef} className={bookCardsStyles.overlayImg} src="" alt="" />
+      <div ref={overlayRef} className={`${bookCards.overlay} ${isOverlayActive ? bookCards.active : ''}`} onClick={(e) => e.target === overlayRef.current && closeOverlay()}>
+        <button className={bookCards.overlayClose} onClick={closeOverlay} aria-label="Close">&times;</button>
+        <img ref={overlayImgRef} className={bookCards.overlayImg} src="" alt="" />
       </div>
     </CustomerLayout>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import layout2 from '../styles/layout2.module.css';
-import buttonsStyles from '../styles/buttons.module.css';
+import buttons from '../styles/buttons.module.css';
 
 function CustomerLayout({ children, title }) {
   const handleLogout = () => {
@@ -21,7 +21,7 @@ function CustomerLayout({ children, title }) {
         </nav>
         <div className={layout2.bottomNav}>
           <Link to="/settings" className={layout2.menuItem}>Settings</Link>
-          <button onClick={handleLogout} className={buttonsStyles.logoutButton}>Log out</button>
+          <button onClick={handleLogout} className={buttons.logoutButton}>Log out</button>
         </div>
       </div>
       <div className={layout2.rightPanel}>

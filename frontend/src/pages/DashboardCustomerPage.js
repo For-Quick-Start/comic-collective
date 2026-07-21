@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api';
 import CustomerLayout from '../components/CustomerLayout';
-import globalStyles from '../styles/global.module.css';
-import statCardsStyles from '../styles/statCards.module.css';
-import conciergeCardsStyles from '../styles/concierge.module.css';
+import global from '../styles/global.module.css';
+import statCards from '../styles/statCards.module.css';
+import conciergeCards from '../styles/concierge.module.css';
 
 function DashboardPage() {
   const [stats, setStats] = useState({
@@ -93,25 +93,25 @@ function DashboardPage() {
 
   return (
     <CustomerLayout title="Dashboard">
-      {error && <p className={globalStyles.error}>{error}</p>}
-      <div className={statCardsStyles.statsGrid}>
-        <Link to="/releasescust" className={statCardsStyles.statCard}><h2>{stats.releasesThisWeek}</h2><p>Releases This Week</p></Link>
-        <Link to="/releasescust" className={statCardsStyles.statCard}><h2>{stats.releasesNextWeek}</h2><p>Releases Next Week</p></Link>
-        <Link to="/pullscust" className={statCardsStyles.statCard}><h2>{stats.outstandingPulls}</h2><p>Your Outstanding Pulls</p></Link>
-        <Link to="/pullscust" className={statCardsStyles.statCard}><h2>{stats.upcomingPulls}</h2><p>Your Upcoming Pulls</p></Link>
+      {error && <p className={global.error}>{error}</p>}
+      <div className={statCards.statsGrid}>
+        <Link to="/releasescust" className={statCards.statCard}><h2>{stats.releasesThisWeek}</h2><p>Releases This Week</p></Link>
+        <Link to="/releasescust" className={statCards.statCard}><h2>{stats.releasesNextWeek}</h2><p>Releases Next Week</p></Link>
+        <Link to="/pullscust" className={statCards.statCard}><h2>{stats.outstandingPulls}</h2><p>Your Outstanding Pulls</p></Link>
+        <Link to="/pullscust" className={statCards.statCard}><h2>{stats.upcomingPulls}</h2><p>Your Upcoming Pulls</p></Link>
       </div>
-      <div className={conciergeCardsStyles.conciergeGrid}>
-        <div className={conciergeCardsStyles.conciergeCard}>
+      <div className={conciergeCards.conciergeGrid}>
+        <div className={conciergeCards.conciergeCard}>
           <h3>Store Information</h3>
-          <div className={conciergeCardsStyles.infoContainer}>
-            <div className={conciergeCardsStyles.addressSection}>
+          <div className={conciergeCards.infoContainer}>
+            <div className={conciergeCards.addressSection}>
               <p><strong>Comic Collective</strong></p>
               <p>123 Comic Book Lane</p>
               <p>Metropolis, USA 12345</p>
-              <a href="https://www.openstreetmap.org/search?query=123%20Comic%20Book%20Lane%2C%20Metropolis" target="_blank" rel="noopener noreferrer" className={conciergeCardsStyles.addressLink}>View on Map</a>
+              <a href="https://www.openstreetmap.org/search?query=123%20Comic%20Book%20Lane%2C%20Metropolis" target="_blank" rel="noopener noreferrer" className={conciergeCards.addressLink}>View on Map</a>
               <p>Phone: (800) 555-1212</p>
             </div>
-            <ul className={conciergeCardsStyles.hoursList}>
+            <ul className={conciergeCards.hoursList}>
               <li><span>Monday</span> <span>10:00 AM - 7:00 PM</span></li>
               <li><span>Tuesday</span> <span>10:00 AM - 7:00 PM</span></li>
               <li><span>Wednesday</span> <span>10:00 AM - 8:00 PM</span></li>

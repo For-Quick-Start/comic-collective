@@ -4,7 +4,7 @@ import api from '../api';
 import global from '../styles/global.module.css';
 import button from '../styles/buttons.module.css';
 import form from '../styles/forms.module.css';
-import layout1Styles from '../styles/layout1.module.css';
+import layout1 from '../styles/layout1.module.css';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -29,11 +29,11 @@ function LoginPage() {
   };
 
   return (
-    <div className={layout1Styles.pageContainer}>
-      <div className={layout1Styles.leftHalf}>
-        <img src="/logo.png" alt="Comic Collective Logo" className={layout1Styles.logo} />
+    <div className={layout1.pageContainer}>
+      <div className={layout1.leftHalf}>
+        <img src="/logo.png" alt="Comic Collective Logo" className={layout1.logo} />
       </div>
-      <div className={layout1Styles.rightHalf}>
+      <div className={layout1.rightHalf}>
         <div className={form.formContainer}>
           <h1>Sign in</h1>
           {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}

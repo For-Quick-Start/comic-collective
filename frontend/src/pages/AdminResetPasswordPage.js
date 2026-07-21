@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api';
 import EmployeeLayout from '../components/EmployeeLayout';
-import globalStyles from '../styles/global.module.css';
-import buttonsStyles from '../styles/buttons.module.css';
+import global from '../styles/global.module.css';
+import buttons from '../styles/buttons.module.css';
 import form from '../styles/forms.module.css';
 
 
@@ -67,8 +67,8 @@ function AdminResetPasswordPage() {
   return (
     <EmployeeLayout title={`Reset ${targetUser ? targetUser.name : 'User'}'s Password`}>
       <div className={form.formContainer} style={{ width: '50%', margin: 'auto' }}>
-        {message && <p className={globalStyles.success}>{message}</p>}
-        {error && <p className={globalStyles.error}>{error}</p>}
+        {message && <p className={global.success}>{message}</p>}
+        {error && <p className={global.error}>{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className={form.formGroup}>
             <label htmlFor="password">New Password</label>
@@ -78,7 +78,7 @@ function AdminResetPasswordPage() {
             <label htmlFor="confirmPassword">Confirm New Password</label>
             <input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required autoComplete="new-password" />
           </div>
-          <p className={globalStyles.passwordReqs}>
+          <p className={global.passwordReqs}>
             {`Minimum password length is 8 characters and must contain at least one of:
   - Uppercase letter
   - Lowercase letter
@@ -86,8 +86,8 @@ function AdminResetPasswordPage() {
   - Symbol`}
           </p>
           <div className={form.formActions} style={{ justifyContent: 'center', gap: '1rem' }}>
-            <button type="submit" className={buttonsStyles.submitButton}>Save Password</button>
-            <button type="button" className={buttonsStyles.cancelButton} onClick={() => navigate(-1)}>Cancel</button>
+            <button type="submit" className={buttons.submitButton}>Save Password</button>
+            <button type="button" className={buttons.cancelButton} onClick={() => navigate(-1)}>Cancel</button>
           </div>
         </form>
       </div>

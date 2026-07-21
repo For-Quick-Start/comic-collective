@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api';
 import EmployeeLayout from '../components/EmployeeLayout';
-import globalStyles from '../styles/global.module.css';
-import statCardsStyles from '../styles/statCards.module.css';
+import global from '../styles/global.module.css';
+import statCards from '../styles/statCards.module.css';
 
 function DashboardPage() {
 
@@ -93,12 +93,12 @@ function DashboardPage() {
 
   return (
     <EmployeeLayout title="Dashboard">
-      {error && <p className={globalStyles.error}>{error}</p>}
-      <div className={statCardsStyles.statsGrid}>
-        <Link to="/inventory" className={statCardsStyles.statCard}><h2>{stats.releasesThisWeek}</h2><p>Releases This Week</p></Link> 
-        <Link to="/inventory" className={statCardsStyles.statCard}><h2>{stats.releasesNextWeek}</h2><p>Releases Next Week</p></Link>
-        <Link to="/pullsempl" className={statCardsStyles.statCard}><h2>{stats.outstandingPulls}</h2><p>All Outstanding Pulls</p></Link>
-        <Link to="/pullsempl" className={statCardsStyles.statCard}><h2>{stats.upcomingPulls}</h2><p>All Upcoming Pulls</p></Link>
+      {error && <p className={global.error}>{error}</p>}
+      <div className={statCards.statsGrid}>
+        <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesThisWeek}</h2><p>Releases This Week</p></Link> 
+        <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesNextWeek}</h2><p>Releases Next Week</p></Link>
+        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.outstandingPulls}</h2><p>All Outstanding Pulls</p></Link>
+        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.upcomingPulls}</h2><p>All Upcoming Pulls</p></Link>
       </div>
     </EmployeeLayout>
   );
