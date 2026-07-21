@@ -3,9 +3,8 @@ import { Link } from 'react-router-dom';
 import api from '../api';
 import CustomerLayout from '../components/CustomerLayout';
 import globalStyles from '../styles/global.module.css';
-// import layout2Styles from '../styles/layout2.module.css';
 import statCardsStyles from '../styles/statCards.module.css';
-import conciergeCardsStyles from '../styles/conciergeCards.module.css';
+import conciergeCardsStyles from '../styles/concierge.module.css';
 
 function DashboardPage() {
   const [stats, setStats] = useState({
