@@ -4,7 +4,6 @@ import api from '../api';
 import EmployeeLayout from '../components/EmployeeLayout';
 import globalStyles from '../styles/global.module.css';
 import buttonsStyles from '../styles/buttons.module.css';
-// import layout2Styles from '../styles/layout2.module.css';
 import userCardsStyles from '../styles/userCards.module.css';
 
 function CustomersListPage() {

@@ -23,3 +23,12 @@
   line-height: 1.4;
   margin-top: 0rem;
 }
+
+.link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}

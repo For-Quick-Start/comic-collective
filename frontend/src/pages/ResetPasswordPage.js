@@ -5,7 +5,7 @@ import CustomerLayout from '../components/CustomerLayout';
 import EmployeeLayout from '../components/EmployeeLayout';
 import globalStyles from '../styles/global.module.css';
 import buttonsStyles from '../styles/buttons.module.css';
-import layout1Styles from '../styles/layout1.module.css';
+import form from '../styles/forms.module.css';
 
 function ResetPasswordPage() {
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -41,15 +41,15 @@ function ResetPasswordPage() {
   };
 
   const pageContent = (
-    <div className={layout1Styles.formContainer} style={{ width: '50%', margin: 'auto' }}>
+    <div className={form.formContainer} style={{ width: '50%', margin: 'auto' }}>
       {message && <p style={{ color: 'green', textAlign: 'center' }}>{message}</p>}
       {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
       <form onSubmit={handleSubmit}>
-        <div className={layout1Styles.formGroup}>
+        <div className={form.formGroup}>
           <label htmlFor="password">New Password</label>
           <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete="new-password" />
         </div>
-        <div className={layout1Styles.formGroup}>
+        <div className={form.formGroup}>
           <label htmlFor="confirmPassword">New Password (again, to confirm)</label>
           <input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required autoComplete="new-password" />
         </div>
@@ -60,7 +60,7 @@ function ResetPasswordPage() {
   - Number
   - Symbol`}
         </p>
-        <div className={layout1Styles.formActions} style={{ justifyContent: 'center', gap: '1rem' }}>
+        <div className={form.formActions} style={{ justifyContent: 'center', gap: '1rem' }}>
           <button type="submit" className={buttonsStyles.submitButton}>Save New Password</button>
           <button type="button" className={buttonsStyles.cancelButton} onClick={() => navigate(-1)}>Cancel</button>
         </div>

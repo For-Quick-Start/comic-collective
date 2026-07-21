@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api';
-import globalStyles from '../styles/global.module.css';
+import global from '../styles/global.module.css';
 import buttonsStyles from '../styles/buttons.module.css';
+import form from '../styles/forms.module.css';
 import layout1Styles from '../styles/layout1.module.css';
 
 function RegisterPage() {
@@ -36,28 +37,28 @@ function RegisterPage() {
         <img src="/logo.png" alt="Comic Collective Logo" className={layout1Styles.logo} />
       </div>
       <div className={layout1Styles.rightHalf}>
-        <div className={layout1Styles.formContainer}>
+        <div className={form.formContainer}>
           <h1>Register</h1>
-          {error && <p className={globalStyles.error}>{error}</p>}
+          {error && <p className={global.error}>{error}</p>}
           <form onSubmit={handleSubmit}>
-            <div className={layout1Styles.formGroup}>
+            <div className={form.formGroup}>
               <label htmlFor="name">Name</label>
-              <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+              <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} required autoComplete="new-password" />
             </div>
-            <div className={layout1Styles.formGroup}>
+            <div className={form.formGroup}>
               <label htmlFor="email">Email</label>
-              <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+              <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="new-password" />
             </div>
-            <div className={layout1Styles.formGroup}>
+            <div className={form.formGroup}>
               <label htmlFor="password">Password</label>
-              <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+              <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete="new-password" />
             </div>
-            <div className={layout1Styles.formGroup}>
+            <div className={form.formGroup}>
               <label htmlFor="confirmPassword">Password (again, to confirm)</label>
-              <input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+              <input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required autoComplete="new-password" />
             </div>
 
-            <p className={globalStyles.passwordReqs}>
+            <p className={global.passwordReqs}>
               {`Minimum password length is 8 characters and must contain at least one of:
   - Uppercase letter
   - Lowercase letter
@@ -65,9 +66,9 @@ function RegisterPage() {
   - Symbol`}
             </p>
 
-            <div className={layout1Styles.formActions}>
+            <div className={form.formActions}>
               <button type="submit" className={buttonsStyles.submitButton}>Register</button>
-              <Link to="/login" className={layout1Styles.link}>Already have an account? Sign in</Link>
+              <Link to="/login" className={global.link}>Already have an account? Sign in</Link>
             </div>
           </form>
         </div>

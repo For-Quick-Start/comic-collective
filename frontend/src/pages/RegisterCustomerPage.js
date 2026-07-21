@@ -4,7 +4,7 @@ import api from '../api';
 import EmployeeLayout from '../components/EmployeeLayout';
 import globalStyles from '../styles/global.module.css';
 import buttonsStyles from '../styles/buttons.module.css';
-import layout1Styles from '../styles/layout1.module.css';
+import form from '../styles/forms.module.css';
 
 function RegisterCustomerPage() {
   const [name, setName] = useState('');
@@ -45,25 +45,25 @@ function RegisterCustomerPage() {
 
   return (
     <EmployeeLayout title="Register a New Customer">
-      <div className={layout1Styles.formContainer} style={{ width: '50%', margin: 'auto' }}>
+      <div className={form.formContainer} style={{ width: '50%', margin: 'auto' }}>
         {message && <p style={{ color: 'green' }}>{message}</p>}
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <form onSubmit={handleSubmit}>
-          <div className={layout1Styles.formGroup}>
+          <div className={form.formGroup}>
             <label htmlFor="name">Name:</label>
-            <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+            <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} required autoComplete="new-password" />
           </div>
-          <div className={layout1Styles.formGroup}>
+          <div className={form.formGroup}>
             <label htmlFor="email">Email:</label>
-            <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="new-password" />
           </div>
-          <div className={layout1Styles.formGroup}>
+          <div className={form.formGroup}>
             <label htmlFor="password">Password</label>
-            <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete="new-password" />
           </div>
-          <div className={layout1Styles.formGroup}>
+          <div className={form.formGroup}>
             <label htmlFor="confirmPassword">Password (again, to confirm)</label>
-            <input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+            <input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required autoComplete="new-password" />
           </div>
 
           <p className={globalStyles.passwordReqs}>
@@ -73,7 +73,7 @@ function RegisterCustomerPage() {
   - Number
   - Symbol`}
           </p>
-          <div className={layout1Styles.formActions} style={{ justifyContent: 'center', gap: '1rem' }}>
+          <div className={form.formActions} style={{ justifyContent: 'center', gap: '1rem' }}>
             <button type="submit" className={buttonsStyles.submitButton}>Register Customer</button>
             <button type="button" className={buttonsStyles.cancelButton} onClick={() => navigate(-1)}>Cancel</button>
           </div>

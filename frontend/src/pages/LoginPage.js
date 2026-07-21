@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api';
-import buttonsStyles from '../styles/buttons.module.css';
+import global from '../styles/global.module.css';
+import button from '../styles/buttons.module.css';
+import form from '../styles/forms.module.css';
 import layout1Styles from '../styles/layout1.module.css';
 
 function LoginPage() {
@@ -32,11 +34,11 @@ function LoginPage() {
         <img src="/logo.png" alt="Comic Collective Logo" className={layout1Styles.logo} />
       </div>
       <div className={layout1Styles.rightHalf}>
-        <div className={layout1Styles.formContainer}>
+        <div className={form.formContainer}>
           <h1>Sign in</h1>
           {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
           <form onSubmit={handleSubmit}>
-            <div className={layout1Styles.formGroup}>
+            <div className={form.formGroup}>
               <label htmlFor="email">Email</label>
               <input
                 id="email"
@@ -46,7 +48,7 @@ function LoginPage() {
                 required
               />
             </div>
-            <div className={layout1Styles.formGroup}>
+            <div className={form.formGroup}>
               <label htmlFor="password">Password</label>
               <input
                 id="password"
@@ -56,10 +58,10 @@ function LoginPage() {
                 required
               />
             </div>
-            <div className={layout1Styles.formActions}>
-              <button type="submit" className={buttonsStyles.submitButton}>Log in</button>
-              <Link to="/resetpass" className={layout1Styles.link}>Forgot password?</Link>
-              <Link to="/register" className={layout1Styles.link}>Sign up here</Link>
+            <div className={form.formActions}>
+              <button type="submit" className={button.submitButton}>Log in</button>
+              <Link to="/resetpass" className={global.link}>Forgot password?</Link>
+              <Link to="/register" className={global.link}>Sign up here</Link>
             </div>
           </form>
         </div>

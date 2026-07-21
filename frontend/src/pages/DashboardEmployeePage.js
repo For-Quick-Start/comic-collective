@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import api from '../api';
 import EmployeeLayout from '../components/EmployeeLayout';
 import globalStyles from '../styles/global.module.css';
-// import layout2Styles from '../styles/layout2.module.css';
 import statCardsStyles from '../styles/statCards.module.css';
 
 function DashboardPage() {

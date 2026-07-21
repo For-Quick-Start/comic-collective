@@ -4,7 +4,7 @@ import api from '../api';
 import EmployeeLayout from '../components/EmployeeLayout';
 import globalStyles from '../styles/global.module.css';
 import buttonsStyles from '../styles/buttons.module.css';
-import layout1Styles from '../styles/layout1.module.css';
+import form from '../styles/forms.module.css';
 
 
 function AdminResetPasswordPage() {
@@ -66,17 +66,17 @@ function AdminResetPasswordPage() {
 
   return (
     <EmployeeLayout title={`Reset ${targetUser ? targetUser.name : 'User'}'s Password`}>
-      <div className={layout1Styles.formContainer} style={{ width: '50%', margin: 'auto' }}>
+      <div className={form.formContainer} style={{ width: '50%', margin: 'auto' }}>
         {message && <p className={globalStyles.success}>{message}</p>}
         {error && <p className={globalStyles.error}>{error}</p>}
         <form onSubmit={handleSubmit}>
-          <div className={layout1Styles.formGroup}>
+          <div className={form.formGroup}>
             <label htmlFor="password">New Password</label>
-            <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete="new-password" />
           </div>
-          <div className={layout1Styles.formGroup}>
+          <div className={form.formGroup}>
             <label htmlFor="confirmPassword">Confirm New Password</label>
-            <input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+            <input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required autoComplete="new-password" />
           </div>
           <p className={globalStyles.passwordReqs}>
             {`Minimum password length is 8 characters and must contain at least one of:
@@ -85,7 +85,7 @@ function AdminResetPasswordPage() {
   - Number
   - Symbol`}
           </p>
-          <div className={layout1Styles.formActions} style={{ justifyContent: 'center', gap: '1rem' }}>
+          <div className={form.formActions} style={{ justifyContent: 'center', gap: '1rem' }}>
             <button type="submit" className={buttonsStyles.submitButton}>Save Password</button>
             <button type="button" className={buttonsStyles.cancelButton} onClick={() => navigate(-1)}>Cancel</button>
           </div>
