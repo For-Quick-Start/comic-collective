@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CustomerLayout from '../components/CustomerLayout';
-import styles from '../styles/recommendation.module.css';
+import global from '../styles/global.module.css';
+// import buttons from '../styles/buttons.module.css';
+import bookCards from '../styles/bookCards.module.css';
 
 function RecommendationPage() {
   const [tags, setTags] = useState([]);
@@ -48,17 +50,19 @@ function RecommendationPage() {
 
   return (
     <CustomerLayout title="Recommendations">
-      <div className={styles.container}>
+      <div className={bookCards.tagsSection}>
         <h2>Tags from Your Pull List</h2>
         {loading && <p>Loading tags...</p>}
-        {error && <p className={styles.error}>Error: {error}</p>}
+        {error && <p className={global.error}>Error: {error}</p>}
         {!loading && !error && (
           tags.length > 0 ? (
-            <ul className={styles.tagList}>
-              {tags.map((tag, index) => (
-                <li key={index} className={styles.tagItem}>{tag}</li>
-              ))}
-            </ul>
+            <div className={bookCards.tagsDisplay}>
+              <ul>
+                {tags.map((tag, index) => (
+                  <li key={index} className={bookCards.tag}>{tag}</li>
+                ))}
+              </ul>
+            </div>
           ) : (
             <p>No tags found. Add some books to your pull list to get recommendations!</p>
           )
