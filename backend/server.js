@@ -8,6 +8,7 @@ const connectDB = require('./config/db');
 const testRoutes = require(path.join(__dirname, 'routes/testRoutes'));
 const userRoutes = require(path.join(__dirname, 'routes/userRoutes'));
 const bookRoutes = require(path.join(__dirname, 'routes/bookRoutes'));
+const recommendationRoutes = require(path.join(__dirname, 'routes/recommendationRoutes'));
 
 const app = express();
 const PORT = process.env.PORT || 5001; // This is still useful for local dev
@@ -26,6 +27,7 @@ app.use('/api', async (req, res, next) => {
 // --- Routes ---
 app.use('/api/users', userRoutes);
 app.use('/api/books', bookRoutes);
+app.use('/api/recommendations', recommendationRoutes);
 app.use('/api', testRoutes); // Move the more generic route to the end
 
 // For local development, start the server

@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../api';
 import CustomerLayout from '../components/CustomerLayout';
 import global from '../styles/global.module.css';
-// import buttons from '../styles/buttons.module.css';
+import buttons from '../styles/buttons.module.css';
 import bookCards from '../styles/bookCards.module.css';
 
 function RecommendationPage() {
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingRecommendations, setLoadingRecommendations] = useState(false);
   const [error, setError] = useState(null);
+  const [recommendations, setRecommendations] = useState([]);
+  const [recommendationError, setRecommendationError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,25 +25,19 @@ function RecommendationPage() {
           return;
         }
 
-        const response = await fetch('/api/users/me/recommendation-tags', {
+        const config = {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
-        });
+        };
 
-        if (!response.ok) {
-          if (response.status === 401) {
-            navigate('/login');
-            return;
-          } else {
-            throw new Error('Failed to fetch recommendation tags');
-          }
-        }
-
-        const data = await response.json();
-        setTags(data);
+        const { data: responseData } = await api.get('/api/users/me/recommendation-tags', config);
+        setTags(responseData);
       } catch (err) {
-        setError(err.message);
+        if (err.response && err.response.status === 401) {
+          navigate('/login');
+        }
+        setError(err.response?.data?.message || err.message || 'Failed to fetch recommendation tags');
       } finally {
         setLoading(false);
       }
@@ -47,6 +45,27 @@ function RecommendationPage() {
 
     fetchRecommendationTags();
   }, [navigate]);
+
+  const handleGetRecommendations = async () => {
+    setLoadingRecommendations(true);
+    setRecommendationError(null);
+    setRecommendations([]);
+    try {
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      const { data } = await api.post('/api/recommendations', { tags }, config);
+      setRecommendations(data);
+    } catch (err) {
+      setRecommendationError(err.response?.data?.message || 'Failed to get recommendations.');
+    } finally {
+      setLoadingRecommendations(false);
+    }
+  };
 
   return (
     <CustomerLayout title="Recommendations">
@@ -56,18 +75,37 @@ function RecommendationPage() {
         {error && <p className={global.error}>Error: {error}</p>}
         {!loading && !error && (
           tags.length > 0 ? (
-            <div className={bookCards.tagsDisplay}>
-              <ul>
+            <>
+              <div className={bookCards.tagsDisplay}>
                 {tags.map((tag, index) => (
-                  <li key={index} className={bookCards.tag}>{tag}</li>
+                  <span key={index} className={bookCards.tag}>{tag}</span>
                 ))}
-              </ul>
-            </div>
+              </div>
+              <button onClick={handleGetRecommendations} className={buttons.recommendationButton} disabled={loadingRecommendations}>
+                {loadingRecommendations ? 'Getting Suggestions...' : 'Get AI Recommendations'}
+              </button>
+            </>
           ) : (
             <p>No tags found. Add some books to your pull list to get recommendations!</p>
           )
         )}
       </div>
+
+      {loadingRecommendations && <div className={bookCards.loadingSpinner}></div>}
+      {recommendationError && <p className={global.error}>{recommendationError}</p>}
+
+      {recommendations.length > 0 && (
+        <div style={{ marginTop: '2rem' }}>
+          <h2>AI Recommendations</h2>
+          {recommendations.map((rec, index) => (
+            <div key={index} className={bookCards.recommendationCard}>
+              <h3>{rec.seriesTitle}</h3>
+              <p><strong>Publisher:</strong> {rec.publisher}</p>
+              <p><strong>Reason:</strong> {rec.reason}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </CustomerLayout>
   );
 }
