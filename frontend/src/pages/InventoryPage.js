@@ -141,11 +141,11 @@ function InventoryPage() {
   };
 
   if (loading) {
-    return <EmployeeLayout title="Inventory"><div>Loading...</div></EmployeeLayout>;
+    return <EmployeeLayout title="Book Inventory"><div className={bookCards.loadingSpinner}></div></EmployeeLayout>;
   }
 
   if (error) {
-    return <EmployeeLayout title="Inventory"><p className={global.error}>{error}</p></EmployeeLayout>;
+    return <EmployeeLayout title="Book Inventory"><p className={global.error}>{error}</p></EmployeeLayout>;
   }
 
   return (
