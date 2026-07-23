@@ -115,75 +115,77 @@ function InsertBookPage() {
       {error && <p className={global.error}>{error}</p>}
       <div className={bookCards.cardContainer}>
         <div className={bookCards.bookCard}>
-          <div className={bookCards.coverArtSection} onClick={handleImageClick} style={{ cursor: 'pointer' }}>
-            <img src={coverArt || '/covers/cover-placeholder.png'} alt="Cover Art" className={bookCards.coverArt} />
-            <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} accept=".jpg,.jpeg,.png,.gif,.webp,.svg,.avif" />
-            <small style={{ textAlign: 'center', display: 'block', marginTop: '5px' }}>Click image to upload new image</small>
-          </div>
-          <div className={form.formContainer}>
-            <form onSubmit={handleSubmit}>
-              <div className={form.formGrid}>
-                <div className={form.formGroup}>
-                  <label>Series Title*:</label>
-                  <input type="text" name="seriesTitle" value={seriesTitle} onChange={onChange} required />
-                </div>
-                <div className={form.formGroup}>
-                  <label>Issue Number*:</label>
-                  <input type="number" name="issueNumber" value={issueNumber} onChange={onChange} required />
-                </div>
-                <div className={form.formGroup}>
-                  <label>Publisher*:</label>
-                  <input type="text" name="publisher" value={publisher} onChange={onChange} required />
-                </div>
-                <div className={form.formGroup}>
-                  <label>Release Date*:</label>
-                  <input type="date" name="releaseDate" value={releaseDate} onChange={onChange} required />
-                </div>
-                <div className={form.formGroup}>
-                  <label>Series Start Date*:</label>
-                  <input type="date" name="seriesStartDate" value={seriesStartDate} onChange={onChange} required />
-                </div>
-                <div className={form.formGroup}>
-                  <label>Series End Date:</label>
-                  <input type="date" name="seriesEndDate" value={seriesEndDate} onChange={onChange} />
-                </div>
-              </div>
-
-              <div className={bookCards.inventoryRow}>
+          <div className={bookCards.bookCardContent}>
+            <div className={bookCards.coverArtSection} onClick={handleImageClick} style={{ cursor: 'pointer' }}>
+              <img src={coverArt || '/covers/cover-placeholder.png'} alt="Cover Art" className={bookCards.coverArt} />
+              <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} accept=".jpg,.jpeg,.png,.gif,.webp,.svg,.avif" />
+              <small style={{ textAlign: 'center', display: 'block', marginTop: '5px' }}>Click image to upload new image</small>
+            </div>
+            <div className={form.formContainer}>
+              <form onSubmit={handleSubmit}>
+                <div className={form.formGrid}>
                   <div className={form.formGroup}>
-                      <label htmlFor="inventory">On Hand:</label>
-                      <input id="inventory" type="number" name="inventory" value={formData.inventory} onChange={onChange} min="0" />
+                    <label>Series Title*:</label>
+                    <input type="text" name="seriesTitle" value={seriesTitle} onChange={onChange} required />
                   </div>
-              </div>
-
-              <div className={bookCards.tagsSection}>
-                <div className={form.formGroup}>
-                  <label htmlFor="tag-input">Tags:</label>
-                  <div className={bookCards.tagInputContainer}>
-                    <input
-                    id="tag-input"
-                    type="text"
-                    value={currentTag}
-                    onChange={(e) => setCurrentTag(e.target.value)}
-                    onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddTag(); } }}
-                    />
-                    <button type="button" onClick={handleAddTag} className={buttons.submitButton}>Add Tag</button>
+                  <div className={form.formGroup}>
+                    <label>Issue Number*:</label>
+                    <input type="number" name="issueNumber" value={issueNumber} onChange={onChange} required />
                   </div>
-                  <div className={bookCards.tagsDisplay}>
-                    {tags.map(tag => (
-                    <span key={tag} className={bookCards.tag}>
-                      {tag}
-                      <button type="button" onClick={() => handleRemoveTag(tag)} className={buttons.removeTagBtn}>x</button>
-                    </span>
-                    ))}
+                  <div className={form.formGroup}>
+                    <label>Publisher*:</label>
+                    <input type="text" name="publisher" value={publisher} onChange={onChange} required />
+                  </div>
+                  <div className={form.formGroup}>
+                    <label>Release Date*:</label>
+                    <input type="date" name="releaseDate" value={releaseDate} onChange={onChange} required />
+                  </div>
+                  <div className={form.formGroup}>
+                    <label>Series Start Date*:</label>
+                    <input type="date" name="seriesStartDate" value={seriesStartDate} onChange={onChange} required />
+                  </div>
+                  <div className={form.formGroup}>
+                    <label>Series End Date:</label>
+                    <input type="date" name="seriesEndDate" value={seriesEndDate} onChange={onChange} />
                   </div>
                 </div>
-              </div>
-              <div className={form.formActions}>
-                <button type="button" className={buttons.cancelButton} onClick={() => navigate('/inventory')}>Cancel</button>
-                <button type="submit" className={buttons.submitButton} >Add new Book</button>
-              </div>
-            </form>
+
+                <div className={bookCards.inventoryRow}>
+                    <div className={form.formGroup}>
+                        <label htmlFor="inventory">On Hand:</label>
+                        <input id="inventory" type="number" name="inventory" value={formData.inventory} onChange={onChange} min="0" />
+                    </div>
+                </div>
+
+                <div className={bookCards.tagsSection}>
+                  <div className={form.formGroup}>
+                    <label htmlFor="tag-input">Tags:</label>
+                    <div className={bookCards.tagInputContainer}>
+                      <input
+                      id="tag-input"
+                      type="text"
+                      value={currentTag}
+                      onChange={(e) => setCurrentTag(e.target.value)}
+                      onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddTag(); } }}
+                      />
+                      <button type="button" onClick={handleAddTag} className={buttons.submitButton}>Add Tag</button>
+                    </div>
+                    <div className={bookCards.tagsDisplay}>
+                      {tags.map(tag => (
+                      <span key={tag} className={bookCards.tag}>
+                        {tag}
+                        <button type="button" onClick={() => handleRemoveTag(tag)} className={buttons.removeTagBtn}>x</button>
+                      </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div className={form.formActions}>
+                  <button type="button" className={buttons.cancelButton} onClick={() => navigate('/inventory')}>Cancel</button>
+                  <button type="submit" className={buttons.submitButton} >Add new Book</button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
