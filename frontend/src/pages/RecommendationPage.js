@@ -81,7 +81,7 @@ function RecommendationPage() {
                   <span key={index} className={bookCards.tag}>{tag}</span>
                 ))}
               </div>
-              <button onClick={handleGetRecommendations} className={buttons.recommendationButton} disabled={loadingRecommendations}>
+              <button onClick={handleGetRecommendations} className={buttons.submitButton} disabled={loadingRecommendations}>
                 {loadingRecommendations ? 'Getting Suggestions...' : 'Get AI Recommendations'}
               </button>
             </>

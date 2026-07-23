@@ -140,29 +140,6 @@
     margin-bottom: 1rem;
 }
 
-/* Form Styles from Edit/Insert Page */
-.formGrid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-}
-
-.formGroup {
-    display: flex;
-    flex-direction: column;
-}
-
-.formGroup label {
-    margin-bottom: 0.25rem;
-    font-weight: bold;
-}
-
-.formGroup input {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
 .staticField {
     padding: 0.5rem;
     background-color: #f0f0f0;
@@ -227,18 +204,3 @@
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
     display: block;
 }
-
-/* .loadingSpinner {
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #3498db;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-  margin: 2rem auto;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-} */
