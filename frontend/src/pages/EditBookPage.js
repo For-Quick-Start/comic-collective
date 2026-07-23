@@ -99,7 +99,7 @@ function EditBookPage() {
 
       await api.put(`/api/books/${id}`, bookData, config);
       setMessage('Book updated successfully!');
-
+      setTimeout(() => navigate('/inventory'), 2000);
       } catch (err) {
       setError(err.response?.data?.message || 'An error occurred during update.');
     }
