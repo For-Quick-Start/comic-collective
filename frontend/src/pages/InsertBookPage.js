@@ -77,7 +77,7 @@ function InsertBookPage() {
 
       await api.post('/api/books', bookData, config);
       setMessage('Book added successfully!');
-      setTimeout(() => navigate('/dashempl'), 2000);
+      setTimeout(() => navigate('/inventory'), 2000);
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred adding the book.');
     }

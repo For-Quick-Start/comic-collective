@@ -15,6 +15,7 @@ function DashboardPage() {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [userName, setUserName] = useState('');
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -25,6 +26,7 @@ function DashboardPage() {
           setLoading(false);
           return;
         }
+        setUserName(userInfo.name);
 
         const config = {
           headers: {
@@ -91,8 +93,10 @@ function DashboardPage() {
     return <CustomerLayout title="Dashboard"><div className={global.loadingSpinner}></div></CustomerLayout>;
   }
 
+  const dashboardTitle = userName ? `${userName.split(' ')[0]}'s Dashboard` : 'Dashboard';
+
   return (
-    <CustomerLayout title="Dashboard">
+    <CustomerLayout title={dashboardTitle}>
       {error && <p className={global.error}>{error}</p>}
       <div className={statCards.statsGrid}>
         <Link to="/releasescust" className={statCards.statCard}><h2>{stats.releasesThisWeek}</h2><p>Releases This Week</p></Link>

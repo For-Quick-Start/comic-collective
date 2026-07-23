@@ -15,6 +15,7 @@ function DashboardPage() {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [userName, setUserName] = useState('');
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -25,6 +26,7 @@ function DashboardPage() {
           setLoading(false);
           return;
         }
+        setUserName(userInfo.name);
 
         const config = {
           headers: {
@@ -91,11 +93,13 @@ function DashboardPage() {
     return <EmployeeLayout title="Dashboard"><div className={global.loadingSpinner}></div></EmployeeLayout>;
   }
 
+  const dashboardTitle = userName ? `${userName.split(' ')[0]}'s Dashboard` : 'Dashboard';
+
   return (
-    <EmployeeLayout title="Dashboard">
+    <EmployeeLayout title={dashboardTitle}>
       {error && <p className={global.error}>{error}</p>}
       <div className={statCards.statsGrid}>
-        <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesThisWeek}</h2><p>Releases This Week</p></Link> 
+        <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesThisWeek}</h2><p>Releases This Week</p></Link>
         <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesNextWeek}</h2><p>Releases Next Week</p></Link>
         <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.outstandingPulls}</h2><p>All Outstanding Pulls</p></Link>
         <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.upcomingPulls}</h2><p>All Upcoming Pulls</p></Link>
