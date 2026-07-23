@@ -95,13 +95,17 @@ function RecommendationPage() {
       {recommendationError && <p className={global.error}>{recommendationError}</p>}
 
       {recommendations.length > 0 && (
-        <div style={{ marginTop: '2rem' }}>
-          <h2>AI Recommendations</h2>
+        <div className={bookCards.cardContainer} style={{ marginTop: '2rem' }}>
+          <h2 style={{ width: '80%', maxWidth: '600px', textAlign: 'center' }}>AI Recommendations</h2>
           {recommendations.map((rec, index) => (
-            <div key={index} className={bookCards.recommendationCard}>
-              <h3>{rec.seriesTitle}</h3>
-              <p><strong>Publisher:</strong> {rec.publisher}</p>
-              <p><strong>Reason:</strong> {rec.reason}</p>
+            <div key={index} className={bookCards.bookCard}>
+              <div className={bookCards.bookCardTitle}>
+                <h2>{rec.seriesTitle}</h2>
+              </div>
+              <div className={bookCards.detailsSection}>
+                <p><strong>Publisher:</strong> {rec.publisher}</p>
+                <p><strong>Reason:</strong> {rec.reason}</p>
+              </div>
             </div>
           ))}
         </div>

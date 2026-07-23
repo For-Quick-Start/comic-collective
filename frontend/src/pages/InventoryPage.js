@@ -53,7 +53,7 @@ function InventoryPage() {
     overlayImg.style.top = rect.top + 'px';
     overlayImg.style.left = rect.left + 'px';
     overlayImg.style.margin = '0';
-    overlayImg.style.borderRadius = '6px';
+    overlayImg.style.borderRadius = '0px';
 
     setIsOverlayActive(true);
 
@@ -75,7 +75,7 @@ function InventoryPage() {
         overlayImg.style.width = finalW + 'px';
         overlayImg.style.top = ((window.innerHeight - finalH) / 2) + 'px';
         overlayImg.style.left = ((window.innerWidth - finalW) / 2) + 'px';
-        overlayImg.style.borderRadius = '8px';
+        overlayImg.style.borderRadius = '0px';
       });
     };
 
@@ -109,7 +109,7 @@ function InventoryPage() {
     overlayImg.style.width = rect.width + 'px';
     overlayImg.style.top = rect.top + 'px';
     overlayImg.style.left = rect.left + 'px';
-    overlayImg.style.borderRadius = '6px';
+    overlayImg.style.borderRadius = '0px';
 
     setIsOverlayActive(false);
 
