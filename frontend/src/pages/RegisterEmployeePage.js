@@ -51,19 +51,19 @@ function RegisterEmployeePage() {
         <form onSubmit={handleSubmit}>
           <div className={form.formGroup}>
             <label htmlFor="name">Name:</label>
-            <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+            <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} required autoComplete="new-password" />
           </div>
           <div className={form.formGroup}>
             <label htmlFor="email">Email:</label>
-            <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="new-password" />
           </div>
           <div className={form.formGroup}>
             <label htmlFor="password">Password</label>
-            <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete="new-password" />
           </div>
           <div className={form.formGroup}>
             <label htmlFor="confirmPassword">Password (again, to confirm)</label>
-            <input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+            <input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required autoComplete="new-password" />
           </div>
 
           <p className={global.passwordReqs}>
