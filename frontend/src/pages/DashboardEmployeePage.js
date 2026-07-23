@@ -88,7 +88,7 @@ function DashboardPage() {
   }, []);
 
   if (loading) {
-    return <EmployeeLayout title="Dashboard"><div>Loading...</div></EmployeeLayout>;
+    return <EmployeeLayout title="Dashboard"><div className={global.loadingSpinner}></div></EmployeeLayout>;
   }
 
   return (

@@ -61,7 +61,7 @@ function AdminResetPasswordPage() {
   };
 
   if (!targetUser && !error) {
-    return <EmployeeLayout title="Reset Password"><div>Loading...</div></EmployeeLayout>;
+    return <EmployeeLayout title="Reset Password"><div className={global.loadingSpinner}></div></EmployeeLayout>;
   }
 
   return (

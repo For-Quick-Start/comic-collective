@@ -88,7 +88,7 @@ function DashboardPage() {
   }, []);
 
   if (loading) {
-    return <CustomerLayout title="Dashboard"><div>Loading...</div></CustomerLayout>;
+    return <CustomerLayout title="Dashboard"><div className={global.loadingSpinner}></div></CustomerLayout>;
   }
 
   return (

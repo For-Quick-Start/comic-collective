@@ -141,7 +141,7 @@ function InventoryPage() {
   };
 
   if (loading) {
-    return <EmployeeLayout title="Book Inventory"><div className={bookCards.loadingSpinner}></div></EmployeeLayout>;
+    return <EmployeeLayout title="Book Inventory"><div className={global.loadingSpinner}></div></EmployeeLayout>;
   }
 
   if (error) {

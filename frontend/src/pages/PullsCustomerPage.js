@@ -44,7 +44,7 @@ const PullsCustomerPage = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading your pull list...</div>;
+    return <div className={global.loadingSpinner}></div>;
   }
 
   if (error) {

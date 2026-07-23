@@ -91,7 +91,7 @@ function RecommendationPage() {
         )}
       </div>
 
-      {loadingRecommendations && <div className={bookCards.loadingSpinner}></div>}
+      {loadingRecommendations && <div className={global.loadingSpinner}></div>}
       {recommendationError && <p className={global.error}>{recommendationError}</p>}
 
       {recommendations.length > 0 && (
