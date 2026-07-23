@@ -7,6 +7,7 @@
 
 .conciergeCard {
   background-color: #c0c0c0;
+  color: #004085;
   border-radius: 28px;
   border-color: #004085;
   border-style: solid;
@@ -21,7 +22,7 @@
 .conciergeCard h3 {
     margin-top: 0;
     margin-bottom: 0.5rem;
-    color: #333;
+    color: #004085;
     border-bottom: 1px solid #eee;
     padding-bottom: 0.5rem;
 }

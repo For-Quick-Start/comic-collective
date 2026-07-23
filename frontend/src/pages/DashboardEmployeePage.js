@@ -101,8 +101,8 @@ function DashboardPage() {
       <div className={statCards.statsGrid}>
         <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesThisWeek}</h2><p>Releases This Week</p></Link>
         <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesNextWeek}</h2><p>Releases Next Week</p></Link>
-        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.outstandingPulls}</h2><p>All Outstanding Pulls</p></Link>
-        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.upcomingPulls}</h2><p>All Upcoming Pulls</p></Link>
+        <Link to="/inventory" className={statCards.statCard}><h2>{stats.outstandingPulls}</h2><p>All Outstanding Pulls</p></Link>
+        <Link to="/inventory" className={statCards.statCard}><h2>{stats.upcomingPulls}</h2><p>All Upcoming Pulls</p></Link>
       </div>
     </EmployeeLayout>
   );
