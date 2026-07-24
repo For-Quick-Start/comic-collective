@@ -10,6 +10,14 @@ const pullItemSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  pulled: {
+    type: Boolean,
+    default: false,
+  },
+  requested: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = pullItemSchema;

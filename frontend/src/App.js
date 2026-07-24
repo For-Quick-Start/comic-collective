@@ -16,6 +16,7 @@ import InventoryPage from './pages/InventoryPage';
 import EditBookPage from './pages/EditBookPage';
 import DashboardCustomerPage from './pages/DashboardCustomerPage';
 import PullsCustomerPage from './pages/PullsCustomerPage';
+import PullsEmployeePage from './pages/PullsEmployeePage';
 import ReleasesCustomerPage from './pages/ReleasesCustomerPage';
 import RecommendationPage from './pages/RecommendationPage.js';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -44,6 +45,7 @@ function App() {
           <Route path="/insertbook" element={<InsertBookPage />} />
           <Route path="/inventory" element={<InventoryPage />} />
           <Route path="/editbook/:id" element={<EditBookPage />} />
+          <Route path="/pullsempl" element={<PullsEmployeePage />} />
         </Route>
         {/* Customer-only routes */}
         <Route element={<ProtectedRoute allowedRoles={['customer']} />}>

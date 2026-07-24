@@ -105,7 +105,7 @@ const updateBook = asyncHandler(async (req, res) => {
   const book = await Book.findById(req.params.id);
 
   if (book) {
-    const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
     res.json(updatedBook);
   } else {
     res.status(404);

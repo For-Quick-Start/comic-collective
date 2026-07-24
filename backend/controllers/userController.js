@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const asyncHandler = require('express-async-handler');
 const User = require('../models/userModel');
+const Book = require('../models/bookModel');
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -239,7 +240,7 @@ const addPullRequest = asyncHandler(async (req, res) => {
       return res.status(400).json({ message: 'Book already in pull list' });
     }
 
-    user.pullList.push({ bookId, purchased: false });
+    user.pullList.push({ bookId, requested: true, pulled: false, purchased: false });
     await user.save();
 
     res.status(201).json(user.pullList);
@@ -298,18 +299,89 @@ const getAllUsersPullList = asyncHandler(async (req, res) => {
   const users = await User.find({ 'pullList.0': { $exists: true } }) // Optimization: only get users with non-empty pull lists
     .populate({
       path: 'pullList.bookId',
-      model: 'Book',
+      model: 'Book'
     })
-    .select('pullList'); // Only select the pullList field
+    .select('name pullList'); // Select name and pullList
 
   if (users) {
     // Flatten the array of pull lists into a single array of pull items
-    const allPulls = users.flatMap(user => user.pullList);
+    // and add user info to each item.
+    const allPulls = users.flatMap(user =>
+      user.pullList.map(pull => ({
+        ...pull.toObject(), // Convert Mongoose sub-document to plain object
+        userId: user._id,
+        userName: user.name,
+      }))
+    );
     res.json(allPulls);
   } else {
     // This case is unlikely as find() returns an empty array if no documents are found
     res.json([]);
   }
+});
+
+// @desc    Mark a pull request as purchased
+// @route   PUT /api/users/pull-list/:pullId/purchase
+// @access  Private/Employee
+const purchasePullRequest = asyncHandler(async (req, res) => {
+  const { pullId } = req.params;
+
+  // Find the user who has this pull item
+  const user = await User.findOne({ 'pullList._id': pullId });
+
+  if (!user) {
+    res.status(404);
+    throw new Error('Pull item not found');
+  }
+
+  const pullItem = user.pullList.id(pullId);
+
+  if (pullItem.purchased) {
+    res.status(400);
+    throw new Error('Item already purchased');
+  }
+
+  // Find the book and check inventory BEFORE marking as purchased
+  const book = await Book.findById(pullItem.bookId);
+  if (!book) {
+    res.status(404);
+    throw new Error('Associated book not found for this pull item.');
+  }
+
+  if (book.inventory < 1) {
+    res.status(400);
+    throw new Error(`Cannot purchase "${book.seriesTitle}": Not enough inventory.`);
+  }
+
+  // Now, proceed with updates
+  book.inventory -= 1;
+  await book.save();
+
+  pullItem.purchased = true;
+  await user.save();
+
+  res.status(200).json({ message: 'Pull item marked as purchased' });
+});
+
+// @desc    Mark a pull request as pulled
+// @route   PUT /api/users/pull-list/:pullId/pull
+// @access  Private/Employee
+const markPullAsPulled = asyncHandler(async (req, res) => {
+  const { pullId } = req.params;
+
+  // Find the user who has this pull item
+  const user = await User.findOne({ 'pullList._id': pullId });
+
+  if (!user) {
+    res.status(404);
+    throw new Error('Pull item not found');
+  }
+
+  const pullItem = user.pullList.id(pullId);
+  pullItem.pulled = true;
+  await user.save();
+
+  res.status(200).json({ message: 'Pull item marked as pulled' });
 });
 
 // @desc    Get recommendation tags based on user's pull list
@@ -331,4 +403,4 @@ const getRecommendationTags = asyncHandler(async (req, res) => {
   res.json(uniqueTags);
 });
 
-module.exports = { registerUser, loginUser, registerEmployee, getUsers, getUserById, updateUser, deleteUser, resetPassword, resetMyPassword, getMe, addPullRequest, dropPullRequest, getUserPullList, getAllUsersPullList, getRecommendationTags };
+module.exports = { registerUser, loginUser, registerEmployee, getUsers, getUserById, updateUser, deleteUser, resetPassword, resetMyPassword, getMe, addPullRequest, dropPullRequest, getUserPullList, getAllUsersPullList, purchasePullRequest, markPullAsPulled, getRecommendationTags };

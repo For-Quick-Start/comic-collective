@@ -179,7 +179,8 @@ function InventoryPage() {
                   <p><strong>Series End Date:</strong> {formatDate(book.seriesEndDate)}</p>
                   <div className={bookCards.inventorySection}>
                     <p><strong>On Hand:</strong> {onHand}</p>
-                    <p><strong>Total Pulls:</strong> {pulls}</p>
+                    <p><strong>Total Pending Pulls:</strong> {pulls}</p>
+                    <p><strong>Total Purchased Pulls:</strong> {pulls}</p>
                     {isLowInventory && <p className={bookCards.lowInventoryWarning}>Low Inventory!</p>}
                   </div>
                   <div className={bookCards.tagsDisplay}>

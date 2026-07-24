@@ -30,8 +30,8 @@ function ReleasesCustomerPage() {
         setBooks(booksRes.data);
 
         // Fetch user's current pull list
-        const userRes = await api.get('/api/users/me', config);
-        setPullList(userRes.data.pullList.map(item => item.bookId));
+        const pullListRes = await api.get('/api/users/pull-list', config);
+        setPullList(pullListRes.data);
       } catch (err) {
         setError(err.response?.data?.message || 'Could not fetch data');
       }
@@ -172,38 +172,51 @@ function ReleasesCustomerPage() {
       <div className={bookCards.cardContainer}>
         {message && <p className={global.success}>{message}</p>}
         {error && <p className={global.error}>{error}</p>}
-        {books.map((book) => (
-          <div key={book._id} className={bookCards.bookCard}>
-            <div className={bookCards.bookCardTitle}>
-              <h2>{book.seriesTitle} #{book.issueNumber}</h2>
-            </div>
-            <div className={bookCards.bookCardContent}>
+        {books.map((book) => {
+          const pullItem = pullList.find(item => item.bookId && item.bookId._id === book._id);
+          const isPulled = !!pullItem;
+          const isPhysicallyPulled = pullItem?.pulled;
+
+          let buttonText = 'Pull';
+          if (isPhysicallyPulled) {
+            buttonText = 'Pulled';
+          } else if (isPulled) {
+            buttonText = 'Pull Requested';
+          }
+
+          return (
+            <div key={book._id} className={bookCards.bookCard}>
+              <div className={bookCards.bookCardTitle}>
+                <h2>{book.seriesTitle} #{book.issueNumber}</h2>
+              </div>
+              <div className={bookCards.bookCardContent}>
                 <div className={bookCards.coverArtSection}>
                   <img src={book.coverArt || '/covers/cover-placeholder.png'} 
                     alt={`${book.seriesTitle} #${book.issueNumber}`} 
                     className={bookCards.coverArt}
                     onClick={openOverlay} />
                 </div>
-              <div className={bookCards.detailsSection}>
-                <p><strong>Publisher:</strong> {book.publisher || 'N/A'}</p>
-                <p><strong>Release Date:</strong> {formatDate(book.releaseDate)}</p>
-                <p><strong>Series Start Date:</strong> {formatDate(book.seriesStartDate)}</p>
-                <p><strong>Series End Date:</strong> {formatDate(book.seriesEndDate)}</p>
-                <div className={bookCards.tagsDisplay}>
-                  {book.tags && book.tags.length > 0 ? book.tags.map(tag => (<span key={tag} className={bookCards.tag}>{tag}</span>)) : <p>No tags</p>}
-                </div>
-                <div>
-                  <button className={buttons.editButton}
-                    onClick={() => handlePull(book._id)}
-                    disabled={pullList.includes(book._id)}
-                  >
-                    {pullList.includes(book._id) ? 'Pulled' : 'Pull'}
-                  </button>
+                <div className={bookCards.detailsSection}>
+                  <p><strong>Publisher:</strong> {book.publisher || 'N/A'}</p>
+                  <p><strong>Release Date:</strong> {formatDate(book.releaseDate)}</p>
+                  <p><strong>Series Start Date:</strong> {formatDate(book.seriesStartDate)}</p>
+                  <p><strong>Series End Date:</strong> {formatDate(book.seriesEndDate)}</p>
+                  <div className={bookCards.tagsDisplay}>
+                    {book.tags && book.tags.length > 0 ? book.tags.map(tag => (<span key={tag} className={bookCards.tag}>{tag}</span>)) : <p>No tags</p>}
+                  </div>
+                  <div style={{ marginTop: 'auto' }}>
+                    <button className={buttons.editButton}
+                      onClick={() => handlePull(book._id)}
+                      disabled={isPulled}
+                    >
+                      {buttonText}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       <div ref={overlayRef} className={`${bookCards.overlay} ${isOverlayActive ? bookCards.active : ''}`} onClick={(e) => e.target === overlayRef.current && closeOverlay()}>
         <button className={bookCards.overlayClose} onClick={closeOverlay} aria-label="Close">&times;</button>

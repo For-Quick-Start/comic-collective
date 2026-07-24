@@ -15,6 +15,8 @@ const {
   dropPullRequest,
   getUserPullList,
   getAllUsersPullList,
+  purchasePullRequest,
+  markPullAsPulled,
   getRecommendationTags
 } = require('../controllers/userController');
 const { protect, employee, customer } = require('../middleware/authMiddleware');
@@ -36,6 +38,8 @@ router.route('/:id')
     .put(protect, employee, updateUser)
     .delete(protect, employee, deleteUser);
 router.put('/:id/reset-password', protect, employee, resetPassword);
+router.put('/pull-list/:pullId/pull', protect, employee, markPullAsPulled);
+router.put('/pull-list/:pullId/purchase', protect, employee, purchasePullRequest);
 
 // Customer only routes
 router.post('/me/pull-list', protect, customer, addPullRequest);
