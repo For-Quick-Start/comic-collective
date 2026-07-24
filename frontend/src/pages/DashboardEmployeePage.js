@@ -120,6 +120,63 @@ function DashboardPage() {
           return releaseDate >= mondayTwoWeeksBack && releaseDate <= sundayTwoWeeksBack && !item.purchased;
         }).length;
 
+        // GET COUNT OF BOOKS RELEASED LAST WEEK
+        const releasesOfLastWeek = books.filter(book => {
+          const releaseDate = new Date(book.releaseDate);
+          return releaseDate >= mondayOfLastWeek && releaseDate <= sundayOfLastWeek;
+        }).length;
+        const pullsOfLastWeekTotal = pullList.filter(item => {
+          const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
+          return releaseDate >= mondayOfLastWeek && releaseDate <= sundayOfLastWeek;
+        }).length;
+        const pullsOfLastWeekPurchased = pullList.filter(item => {
+          const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
+          return releaseDate >= mondayOfLastWeek && releaseDate <= sundayOfLastWeek && !item.purchased;
+        }).length;
+
+        // GET COUNT OF BOOKS RELEASED CURRENT WEEK
+        const releasesOfCurrentWeek = books.filter(book => {
+          const releaseDate = new Date(book.releaseDate);
+          return releaseDate >= mondayOfCurrentWeek && releaseDate <= sundayOfCurrentWeek;
+        }).length;
+        const pullsOfCurrentWeekTotal = pullList.filter(item => {
+          const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
+          return releaseDate >= mondayOfCurrentWeek && releaseDate <= sundayOfCurrentWeek;
+        }).length;
+        const pullsOfCurrentWeekPurchased = pullList.filter(item => {
+          const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
+          return releaseDate >= mondayOfCurrentWeek && releaseDate <= sundayOfCurrentWeek && !item.purchased;
+        }).length;
+
+        // GET COUNT OF BOOKS SCHEDULED FOR RELEASE NEXT WEEK
+        const releasesOfNextWeek = books.filter(book => {
+          const releaseDate = new Date(book.releaseDate);
+          return releaseDate >= mondayOfNextWeek && releaseDate <= sundayOfNextWeek;
+        }).length;
+        const pullsOfNextWeekTotal = pullList.filter(item => {
+          const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
+          return releaseDate >= mondayOfNextWeek && releaseDate <= sundayOfNextWeek;
+        }).length;
+        const pullsOfNextWeekPurchased = pullList.filter(item => {
+          const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
+          return releaseDate >= mondayOfNextWeek && releaseDate <= sundayOfNextWeek && !item.purchased;
+        }).length;
+
+        // GET COUNT OF BOOKS SCHEDULED FOR RELEASE IN TWO WEEKS
+        const releasesTwoWeeksOut = books.filter(book => {
+          const releaseDate = new Date(book.releaseDate);
+          return releaseDate >= mondayTwoWeeksOut && releaseDate <= sundayTwoWeeksOut;
+        }).length;
+        const pullsTwoWeeksOutTotal = pullList.filter(item => {
+          const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
+          return releaseDate >= mondayTwoWeeksOut && releaseDate <= sundayTwoWeeksOut;
+        }).length;
+        const pullsTwoWeeksOutPurchased = pullList.filter(item => {
+          const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
+          return releaseDate >= mondayTwoWeeksOut && releaseDate <= sundayTwoWeeksOut && !item.purchased;
+        }).length;
+
+
 
 
 
@@ -161,6 +218,18 @@ function DashboardPage() {
           releasesTwoWeeksBack,
           pullsTwoWeeksBackTotal,
           pullsTwoWeeksBackPurchased,
+          releasesOfLastWeek,
+          pullsOfLastWeekTotal,
+          pullsOfLastWeekPurchased,
+          releasesOfCurrentWeek,
+          pullsOfCurrentWeekTotal,
+          pullsOfCurrentWeekPurchased,
+          releasesOfNextWeek,
+          pullsOfNextWeekTotal,
+          pullsOfNextWeekPurchased,
+          releasesTwoWeeksOut,
+          pullsTwoWeeksOutTotal,
+          pullsTwoWeeksOutPurchased,
         });
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to fetch dashboard data.');
@@ -184,6 +253,14 @@ function DashboardPage() {
       <div className={statCards.statsGrid}>
         <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesTwoWeeksBack}</h2><p>Releases Two Weeks Ago</p></Link>
         <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.pullsTwoWeeksBackPurchased}/{stats.pullsTwoWeeksBackTotal}</h2><p>Pulls Two Weeks Ago</p></Link>
+        <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesOfLastWeek}</h2><p>Releases Last Week</p></Link>
+        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.pullsOfLastWeekPurchased}/{stats.pullsOfLastWeekTotal}</h2><p>Pulls Last Week</p></Link>
+        <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesOfCurrentWeek}</h2><p>Releases Current Week</p></Link>
+        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.pullsOfCurrentWeekPurchased}/{stats.pullsOfCurrentWeekTotal}</h2><p>Pulls Current Week</p></Link>
+        <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesOfNextWeek}</h2><p>Releases Next Week</p></Link>
+        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.pullsOfNextWeekPurchased}/{stats.pullsOfNextWeekTotal}</h2><p>Pulls Next Week</p></Link>
+        <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesTwoWeeksOut}</h2><p>Releases in Two Weeks</p></Link>
+        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.pullsTwoWeeksOutPurchased}/{stats.pullsTwoWeeksOutTotal}</h2><p>Pulls in Two Weeks</p></Link>
         <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesThisWeek}</h2><p>Releases This Week</p></Link>
         <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesNextWeek}</h2><p>Releases Next Week</p></Link>
         <Link to="/inventory" className={statCards.statCard}><h2>{stats.outstandingPulls}</h2><p>All Outstanding Pulls</p></Link>
