@@ -146,7 +146,8 @@ const PullsCustomerPage = () => {
 
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleDateString();
+    const date = new Date(dateString);
+    return `${date.getUTCMonth() + 1}/${date.getUTCDate()}/${date.getUTCFullYear()}`;
   };
 
   const handleDrop = async (bookId) => {

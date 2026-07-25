@@ -7,6 +7,7 @@ import bookCards from '../styles/bookCards.module.css';
 
 function ReleasesCustomerPage() {
   const [books, setBooks] = useState([]);
+  const [filteredBooks, setFilteredBooks] = useState([]);
   const [pullList, setPullList] = useState([]);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
@@ -14,6 +15,9 @@ function ReleasesCustomerPage() {
   const overlayRef = useRef(null);
   const overlayImgRef = useRef(null);
   const activeThumbRef = useRef(null);
+  const [weekOptions, setWeekOptions] = useState([]);
+  const [selectedWeek, setSelectedWeek] = useState('');
+  const [showAll, setShowAll] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,6 +32,7 @@ function ReleasesCustomerPage() {
         // Fetch all books
         const booksRes = await api.get('/api/books', config);
         setBooks(booksRes.data);
+        setFilteredBooks(booksRes.data);
 
         // Fetch user's current pull list
         const pullListRes = await api.get('/api/users/pull-list', config);
@@ -38,6 +43,36 @@ function ReleasesCustomerPage() {
     };
 
     fetchData();
+
+    const generateWeekOptions = () => {
+      const options = [];
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const dayOfWeek = today.getDay(); // Sunday - 0, Monday - 1, etc.
+      const mondayOfCurrentWeek = new Date(today);
+      mondayOfCurrentWeek.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+
+      for (let i = -6; i <= 6; i++) {
+        const startOfWeek = new Date(mondayOfCurrentWeek);
+        startOfWeek.setDate(mondayOfCurrentWeek.getDate() + (i * 7));
+        
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+        const label = i === 0 ? 'Current Week' : i < 0 ? `${-i} week${-i > 1 ? 's' : ''} ago` : `${i} week${i > 1 ? 's' : ''} from now`;
+        const dateRange = `${startOfWeek.toLocaleDateString()} - ${endOfWeek.toLocaleDateString()}`;
+        
+        options.push({
+          value: `${startOfWeek.toISOString()}_${endOfWeek.toISOString()}`,
+          label: `${label} (${dateRange})`
+        });
+      }
+      setWeekOptions(options);
+    };
+
+    generateWeekOptions();
+
   }, []);
 
   useEffect(() => {
@@ -45,6 +80,22 @@ function ReleasesCustomerPage() {
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  useEffect(() => {
+    if (showAll) {
+      setFilteredBooks(books);
+    } else if (selectedWeek) {
+      const [start, end] = selectedWeek.split('_').map(d => new Date(d));
+      end.setHours(23, 59, 59, 999); // Ensure the end date includes the whole day
+      const filtered = books.filter(book => {
+        const releaseDate = new Date(book.releaseDate);
+        return releaseDate >= start && releaseDate <= end;
+      });
+      setFilteredBooks(filtered);
+    } else {
+      setFilteredBooks([]); // If not showing all and no week is selected, show nothing
+    }
+  }, [selectedWeek, showAll, books]);
 
   const openOverlay = (e) => {
     const thumb = e.target;
@@ -141,7 +192,8 @@ function ReleasesCustomerPage() {
 
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleDateString();
+    const date = new Date(dateString);
+    return `${date.getUTCMonth() + 1}/${date.getUTCDate()}/${date.getUTCFullYear()}`;
   };
 
   const handlePull = async (bookId) => {
@@ -169,10 +221,29 @@ function ReleasesCustomerPage() {
 
   return (
     <CustomerLayout title="Releases">
+      <div className={bookCards.controlsContainer} style={{ justifyContent: 'flex-end' }}>
+        <div className={bookCards.filterControls}>
+          <select 
+            value={selectedWeek} 
+            onChange={(e) => {
+              setSelectedWeek(e.target.value);
+              if (e.target.value) setShowAll(false);
+            }}
+            disabled={showAll}
+          >
+            <option value="">Choose a week</option>
+            {weekOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+          </select>
+          <label>
+            <input type="checkbox" checked={showAll} onChange={(e) => setShowAll(e.target.checked)} />
+            Show All Releases
+          </label>
+        </div>
+      </div>
       <div className={bookCards.cardContainer}>
         {message && <p className={global.success}>{message}</p>}
         {error && <p className={global.error}>{error}</p>}
-        {books.map((book) => {
+        {filteredBooks.map((book) => {
           const pullItem = pullList.find(item => item.bookId && item.bookId._id === book._id);
           const isPulled = !!pullItem;
           const isPhysicallyPulled = pullItem?.pulled;
