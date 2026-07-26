@@ -165,7 +165,7 @@ const PullsCustomerPage = () => {
       // Remove book from local pull list state to update UI instantly
       setPullList(pullList.filter(item => item.bookId._id !== bookId));
       setMessage('Book dropped from your pull list!');
-      setTimeout(() => setMessage(''), 3000); // Clear message after 3 seconds
+      setTimeout(() => setMessage(''), 3000);
 
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to drop from pull list');
@@ -198,11 +198,11 @@ const PullsCustomerPage = () => {
                     <p><strong>Publisher:</strong> {item.bookId.publisher || 'N/A'}</p>
                     <p><strong>Release Date:</strong> {formatDate(item.bookId.releaseDate)}</p>
                   </div>
-                </div>
-                {item.purchased ? <p className={global.success}>Already picked up!</p> : <p className={global.error}>Pulled and waiting for pick up!</p>}
-                <div>
-                  <button className={buttons.deleteButton}
-                    onClick={() => handleDrop(item.bookId._id)}>Drop</button>
+                  {item.purchased ? <p className={global.success}>Already picked up!</p> : <p className={global.error}>Pulled and waiting for pick up!</p>}
+                  <div>
+                    <button className={buttons.deleteButton}
+                      onClick={() => handleDrop(item.bookId._id)}>Drop</button>
+                  </div>
                 </div>
               </div>
             ))}

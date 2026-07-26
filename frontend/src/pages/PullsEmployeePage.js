@@ -178,9 +178,11 @@ const PullsEmployeePage = () => {
       };
 
       await api.put(`/api/users/pull-list/${pullId}/purchase`, {}, config);
+      
       setMessage('Item marked as purchased!');
       setTimeout(() => setMessage(''), 3000); // Clear message after 3 seconds
       fetchPullList(); // Re-fetch to update the list
+
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to mark as purchased');
       setTimeout(() => setError(''), 3000);
@@ -195,15 +197,19 @@ const PullsEmployeePage = () => {
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
+
       await api.put(`/api/users/pull-list/${pullId}/pull`, {}, config);
+
       setMessage('Item marked as pulled!');
       setTimeout(() => setMessage(''), 3000);
       fetchPullList(); // Re-fetch to update the list
+
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to mark as pulled');
       setTimeout(() => setError(''), 3000);
     }
   };
+
   return (
     <EmployeeLayout title="All Customer Pulls">
       <div>
@@ -237,26 +243,26 @@ const PullsEmployeePage = () => {
                       {item.pulled && !item.purchased && <span style={{ color: 'green', marginLeft: '1rem' }}>Pulled</span>}
                     </p>
                   </div>
-                </div>
-                {item.purchased ? <p className={global.success}>Already picked up!</p> : <p className={global.error}>Pulled and waiting for pick up!</p>}
-                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-                  {!item.purchased && (
-                    <>
-                      {!item.pulled && (
-                        <button className={buttons.editButton} onClick={() => handleMarkAsPulled(item._id)}>
-                          Mark as Pulled
-                        </button>
-                      )}
-                      {item.pulled && (
-                        <button className={buttons.editButton} disabled>Pulled</button>
-                      )}
-                    </>
-                  )}
-                  {!item.purchased && (
-                    <button className={buttons.submitButton} onClick={() => handlePurchase(item._id)}>
-                      Mark as Purchased
-                    </button>
-                  )}
+                  {item.purchased ? <p className={global.success}>Already picked up!</p> : <p className={global.error}>Pulled and waiting for pick up!</p>}
+                  <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+                    {!item.purchased && (
+                      <>
+                        {!item.pulled && (
+                          <button className={buttons.editButton} onClick={() => handleMarkAsPulled(item._id)}>
+                            Mark as Pulled
+                          </button>
+                        )}
+                        {item.pulled && (
+                          <button className={buttons.editButton} disabled>Pulled</button>
+                        )}
+                      </>
+                    )}
+                    {!item.purchased && (
+                      <button className={buttons.submitButton} onClick={() => handlePurchase(item._id)}>
+                        Mark as Purchased
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
