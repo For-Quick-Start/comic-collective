@@ -231,18 +231,18 @@ function DashboardPage() {
         </div>
       </div>
       <div className={statCards.statsGrid}>
-        <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesAll}</h2><p><strong>All Releases</strong><br />&nbsp;<br /><strong>Total Count of Releases</strong></p></Link>
-        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.pullsAllNotPurchased}/{stats.pullsAllTotal}</h2><p><strong>All Pulls Pending Purchase</strong><br />/<br /><strong>All Pulls</strong></p></Link>
-        <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesTwoWeeksBack}</h2><p>Releases Two Weeks Ago</p></Link>
-        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.pullsTwoWeeksBackNotPurchased}/{stats.pullsTwoWeeksBackTotal}</h2><p>Pulls Two Weeks Ago</p></Link>
-        <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesOfLastWeek}</h2><p>Releases Last Week</p></Link>
-        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.pullsOfLastWeekNotPurchased}/{stats.pullsOfLastWeekTotal}</h2><p>Pulls Last Week</p></Link>
-        <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesOfCurrentWeek}</h2><p>Releases Current Week</p></Link>
-        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.pullsOfCurrentWeekNotPurchased}/{stats.pullsOfCurrentWeekTotal}</h2><p>Pulls Current Week</p></Link>
-        <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesOfNextWeek}</h2><p>Releases Next Week</p></Link>
-        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.pullsOfNextWeekNotPurchased}/{stats.pullsOfNextWeekTotal}</h2><p>Pulls Next Week</p></Link>
-        <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesTwoWeeksOut}</h2><p>Releases in Two Weeks</p></Link>
-        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.pullsTwoWeeksOutNotPurchased}/{stats.pullsTwoWeeksOutTotal}</h2><p>Pulls in Two Weeks</p></Link>
+        <Link to="/releasescust" className={statCards.statCard}><h2>{stats.releasesAll}</h2><p><strong>All Releases</strong><br />&nbsp;<br /><strong>Total Count of Releases</strong></p></Link>
+        <Link to="/pullscust" className={statCards.statCard}><h2>{stats.pullsAllNotPurchased}/{stats.pullsAllTotal}</h2><p><strong>All Pulls Pending Purchase</strong><br />/<br /><strong>All Pulls</strong></p></Link>
+        <Link to="/releasescust" className={statCards.statCard}><h2>{stats.releasesTwoWeeksBack}</h2><p>Releases Two Weeks Ago</p></Link>
+        <Link to="/pullscust" className={statCards.statCard}><h2>{stats.pullsTwoWeeksBackNotPurchased}/{stats.pullsTwoWeeksBackTotal}</h2><p>Pulls Two Weeks Ago</p></Link>
+        <Link to="/releasescust" className={statCards.statCard}><h2>{stats.releasesOfLastWeek}</h2><p>Releases Last Week</p></Link>
+        <Link to="/pullscust" className={statCards.statCard}><h2>{stats.pullsOfLastWeekNotPurchased}/{stats.pullsOfLastWeekTotal}</h2><p>Pulls Last Week</p></Link>
+        <Link to="/releasescust" className={statCards.statCard}><h2>{stats.releasesOfCurrentWeek}</h2><p>Releases Current Week</p></Link>
+        <Link to="/pullscust" className={statCards.statCard}><h2>{stats.pullsOfCurrentWeekNotPurchased}/{stats.pullsOfCurrentWeekTotal}</h2><p>Pulls Current Week</p></Link>
+        <Link to="/releasescust" className={statCards.statCard}><h2>{stats.releasesOfNextWeek}</h2><p>Releases Next Week</p></Link>
+        <Link to="/pullscust" className={statCards.statCard}><h2>{stats.pullsOfNextWeekNotPurchased}/{stats.pullsOfNextWeekTotal}</h2><p>Pulls Next Week</p></Link>
+        <Link to="/releasescust" className={statCards.statCard}><h2>{stats.releasesTwoWeeksOut}</h2><p>Releases in Two Weeks</p></Link>
+        <Link to="/pullscust" className={statCards.statCard}><h2>{stats.pullsTwoWeeksOutNotPurchased}/{stats.pullsTwoWeeksOutTotal}</h2><p>Pulls in Two Weeks</p></Link>
       </div>
     </CustomerLayout>
   );

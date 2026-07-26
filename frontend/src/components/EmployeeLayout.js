@@ -16,6 +16,7 @@ function EmployeeLayout({ children, title }) {
         <nav className={layout2.menuNav}>
           <Link to="/dashempl" className={layout2.menuItem}>Dashboard</Link>
           <Link to="/inventory" className={layout2.menuItem}>Inventory</Link>
+          <Link to="/pullsempl" className={layout2.menuItem}>Pull List</Link>
           <Link to="/cust" className={layout2.menuItem}>Customers</Link>
           <Link to="/empl" className={layout2.menuItem}>Employees</Link>
         </nav>
