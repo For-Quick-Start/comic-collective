@@ -45,10 +45,10 @@ function DashboardPage() {
           },
         };
 
-        // Fetch books and user's pull list in parallel
+        // Fetch books and users' pull lists in parallel
         const [booksRes, pullListRes] = await Promise.all([
           api.get('/api/books', config),
-          api.get('/api/users/pull-list/all', config), // Corrected to fetch all pulls
+          api.get('/api/users/pull-list/all', config),
         ]);
 
         const books = booksRes.data;
@@ -59,6 +59,7 @@ function DashboardPage() {
         const pullsAllNotPurchased = pullList.filter(item => !item.purchased).length;
         // CALCULATE THE WEEK-BASED BREAKDOWN OF RELEASES AND PULLS
         const today = new Date();
+        today.setHours(0, 0, 0, 0);
         // GET COUNT OF BOOKS RELEASED CURRENT WEEK
         const mondayOfCurrentWeek = new Date(today);
         mondayOfCurrentWeek.setHours(0, 0, 0, 0);
