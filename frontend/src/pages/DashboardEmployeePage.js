@@ -53,7 +53,11 @@ function DashboardPage() {
 
         const books = booksRes.data;
         const pullList = pullListRes.data;
-
+        // GET COUNTS OF ALL INVENTORY, TOTAL UNPURCHASED PULLS AND TOTAL PULLS 
+        const releasesAll = books.length;
+        const pullsAllTotal = pullList.length;
+        const pullsAllNotPurchased = pullList.filter(item => !item.purchased).length;
+        // CALCULATE THE WEEK-BASED BREAKDOWN OF RELEASES AND PULLS
         const today = new Date();
         // GET COUNT OF BOOKS RELEASED CURRENT WEEK
         const mondayOfCurrentWeek = new Date(today);
@@ -69,7 +73,7 @@ function DashboardPage() {
           const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
           return releaseDate >= mondayOfCurrentWeek && releaseDate <= sundayOfCurrentWeek;
         }).length;
-        const pullsOfCurrentWeekPurchased = pullList.filter(item => {
+        const pullsOfCurrentWeekNotPurchased = pullList.filter(item => {
           const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
           return releaseDate >= mondayOfCurrentWeek && releaseDate <= sundayOfCurrentWeek && !item.purchased;
         }).length;
@@ -87,7 +91,7 @@ function DashboardPage() {
           const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
           return releaseDate >= mondayTwoWeeksBack && releaseDate <= sundayTwoWeeksBack;
         }).length;
-        const pullsTwoWeeksBackPurchased = pullList.filter(item => {
+        const pullsTwoWeeksBackNotPurchased = pullList.filter(item => {
           const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
           return releaseDate >= mondayTwoWeeksBack && releaseDate <= sundayTwoWeeksBack && !item.purchased;
         }).length;
@@ -105,7 +109,7 @@ function DashboardPage() {
           const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
           return releaseDate >= mondayOfLastWeek && releaseDate <= sundayOfLastWeek;
         }).length;
-        const pullsOfLastWeekPurchased = pullList.filter(item => {
+        const pullsOfLastWeekNotPurchased = pullList.filter(item => {
           const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
           return releaseDate >= mondayOfLastWeek && releaseDate <= sundayOfLastWeek && !item.purchased;
         }).length;
@@ -123,7 +127,7 @@ function DashboardPage() {
           const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
           return releaseDate >= mondayOfNextWeek && releaseDate <= sundayOfNextWeek;
         }).length;
-        const pullsOfNextWeekPurchased = pullList.filter(item => {
+        const pullsOfNextWeekNotPurchased = pullList.filter(item => {
           const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
           return releaseDate >= mondayOfNextWeek && releaseDate <= sundayOfNextWeek && !item.purchased;
         }).length;
@@ -141,112 +145,11 @@ function DashboardPage() {
           const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
           return releaseDate >= mondayTwoWeeksOut && releaseDate <= sundayTwoWeeksOut;
         }).length;
-        const pullsTwoWeeksOutPurchased = pullList.filter(item => {
+        const pullsTwoWeeksOutNotPurchased = pullList.filter(item => {
           const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
           return releaseDate >= mondayTwoWeeksOut && releaseDate <= sundayTwoWeeksOut && !item.purchased;
         }).length;
 
-        
-        // const daysSinceLastMonday = (today.getDay() + 6) % 7;
-
-        // CURRENT WEEK DAYS
-        // const mondayOfCurrentWeek = new Date(today);
-        // mondayOfCurrentWeek.setDate(today.getDate() - daysSinceLastMonday);
-        // mondayOfCurrentWeek.setHours(0, 0, 0, 0);
-        // const wednesdayOfCurrentWeek = new Date(today);
-        // wednesdayOfCurrentWeek.setDate(mondayOfCurrentWeek.getDate() + 2);
-        // wednesdayOfCurrentWeek.setHours(0, 0, 0, 0);
-        // const sundayOfCurrentWeek = new Date(today);
-        // sundayOfCurrentWeek.setDate(mondayOfCurrentWeek.getDate() + 6);
-        // sundayOfCurrentWeek.setHours(0, 0, 0, 0);
-
-        // // LAST WEEK DAYS
-        // const mondayOfLastWeek = new Date(today);
-        // mondayOfLastWeek.setDate(mondayOfCurrentWeek.getDate() - 7);
-        // mondayOfLastWeek.setHours(0, 0, 0, 0);
-        // const wednesdayOfLastWeek = new Date(today);
-        // wednesdayOfLastWeek.setDate(mondayOfLastWeek.getDate() + 2);
-        // wednesdayOfLastWeek.setHours(0, 0, 0, 0);
-        // const sundayOfLastWeek = new Date(today);
-        // sundayOfLastWeek.setDate(mondayOfLastWeek.getDate() + 6);
-        // sundayOfLastWeek.setHours(0, 0, 0, 0);
-
-        // // NEXT WEEK DAYS
-        // const mondayOfNextWeek = new Date(today);
-        // mondayOfNextWeek.setDate(mondayOfCurrentWeek.getDate() + 7);
-        // mondayOfNextWeek.setHours(0, 0, 0, 0);
-        // const wednesdayOfNextWeek = new Date(today);
-        // wednesdayOfNextWeek.setDate(mondayOfNextWeek.getDate() + 2);
-        // wednesdayOfNextWeek.setHours(0, 0, 0, 0);
-        // const sundayOfNextWeek = new Date(today);
-        // sundayOfNextWeek.setDate(mondayOfNextWeek.getDate() + 6);
-        // sundayOfNextWeek.setHours(0, 0, 0, 0);
-
-        // // TWO WEEKS AGO DAYS
-        // const mondayTwoWeeksBack = new Date(today);
-        // mondayTwoWeeksBack.setDate(mondayOfCurrentWeek.getDate() - 14);
-        // mondayTwoWeeksBack.setHours(0, 0, 0, 0);
-        // const wednesdayTwoWeeksBack = new Date(today);
-        // wednesdayTwoWeeksBack.setDate(mondayTwoWeeksBack.getDate() + 2);
-        // wednesdayTwoWeeksBack.setHours(0, 0, 0, 0);
-        // const sundayTwoWeeksBack = new Date(today);
-        // sundayTwoWeeksBack.setDate(mondayTwoWeeksBack.getDate() + 6);
-        // sundayTwoWeeksBack.setHours(0, 0, 0, 0);
-
-        // // TWO WEEKS OUT DAYS
-        // const mondayTwoWeeksOut = new Date(today);
-        // mondayTwoWeeksOut.setDate(mondayOfCurrentWeek.getDate() + 14);
-        // mondayTwoWeeksOut.setHours(0, 0, 0, 0);
-        // const wednesdayTwoWeeksOut = new Date(today);
-        // wednesdayTwoWeeksOut.setDate(mondayTwoWeeksOut.getDate() + 2);
-        // wednesdayTwoWeeksOut.setHours(0, 0, 0, 0);
-        // const sundayTwoWeeksOut = new Date(today);
-        // sundayTwoWeeksOut.setDate(mondayTwoWeeksOut.getDate() + 6);
-        // sundayTwoWeeksOut.setHours(0, 0, 0, 0);
-
-
-        // // GET COUNT OF BOOKS RELEASED LAST WEEK
-        // const releasesOfLastWeek = books.filter(book => {
-        //   const releaseDate = new Date(book.releaseDate);
-        //   return releaseDate >= mondayOfLastWeek && releaseDate <= sundayOfLastWeek;
-        // }).length;
-        // const pullsOfLastWeekTotal = pullList.filter(item => {
-        //   const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
-        //   return releaseDate >= mondayOfLastWeek && releaseDate <= sundayOfLastWeek;
-        // }).length;
-        // const pullsOfLastWeekPurchased = pullList.filter(item => {
-        //   const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
-        //   return releaseDate >= mondayOfLastWeek && releaseDate <= sundayOfLastWeek && !item.purchased;
-        // }).length;
-
-
-        // // GET COUNT OF BOOKS SCHEDULED FOR RELEASE NEXT WEEK
-        // const releasesOfNextWeek = books.filter(book => {
-        //   const releaseDate = new Date(book.releaseDate);
-        //   return releaseDate >= mondayOfNextWeek && releaseDate <= sundayOfNextWeek;
-        // }).length;
-        // const pullsOfNextWeekTotal = pullList.filter(item => {
-        //   const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
-        //   return releaseDate >= mondayOfNextWeek && releaseDate <= sundayOfNextWeek;
-        // }).length;
-        // const pullsOfNextWeekPurchased = pullList.filter(item => {
-        //   const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
-        //   return releaseDate >= mondayOfNextWeek && releaseDate <= sundayOfNextWeek && !item.purchased;
-        // }).length;
-
-        // // GET COUNT OF BOOKS SCHEDULED FOR RELEASE IN TWO WEEKS
-        // const releasesTwoWeeksOut = books.filter(book => {
-        //   const releaseDate = new Date(book.releaseDate);
-        //   return releaseDate >= mondayTwoWeeksOut && releaseDate <= sundayTwoWeeksOut;
-        // }).length;
-        // const pullsTwoWeeksOutTotal = pullList.filter(item => {
-        //   const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
-        //   return releaseDate >= mondayTwoWeeksOut && releaseDate <= sundayTwoWeeksOut;
-        // }).length;
-        // const pullsTwoWeeksOutPurchased = pullList.filter(item => {
-        //   const releaseDate = item.bookId ? new Date(item.bookId.releaseDate) : null;
-        //   return releaseDate >= mondayTwoWeeksOut && releaseDate <= sundayTwoWeeksOut && !item.purchased;
-        // }).length;
 
 
 
@@ -283,21 +186,24 @@ function DashboardPage() {
         // }).length;
 
         setStats({
+          releasesAll,
+          pullsAllTotal,
+          pullsAllNotPurchased,
           releasesTwoWeeksBack,
           pullsTwoWeeksBackTotal,
-          pullsTwoWeeksBackPurchased,
+          pullsTwoWeeksBackNotPurchased,
           releasesOfLastWeek,
           pullsOfLastWeekTotal,
-          pullsOfLastWeekPurchased,
+          pullsOfLastWeekNotPurchased,
           releasesOfCurrentWeek,
           pullsOfCurrentWeekTotal,
-          pullsOfCurrentWeekPurchased,
+          pullsOfCurrentWeekNotPurchased,
           releasesOfNextWeek,
           pullsOfNextWeekTotal,
-          pullsOfNextWeekPurchased,
+          pullsOfNextWeekNotPurchased,
           releasesTwoWeeksOut,
           pullsTwoWeeksOutTotal,
-          pullsTwoWeeksOutPurchased,
+          pullsTwoWeeksOutNotPurchased,
         });
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to fetch dashboard data.');
@@ -319,16 +225,18 @@ function DashboardPage() {
     <EmployeeLayout title={dashboardTitle}>
       {error && <p className={global.error}>{error}</p>}
       <div className={statCards.statsGrid}>
+        <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesAll}</h2><p><strong>All Releases</strong><br />&nbsp;<br /><strong>Total Count of Releases</strong></p></Link>
+        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.pullsAllNotPurchased}/{stats.pullsAllTotal}</h2><p><strong>All Pulls Pending Purchase</strong><br />/<br /><strong>All Pulls</strong></p></Link>
         <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesTwoWeeksBack}</h2><p>Releases Two Weeks Ago</p></Link>
-        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.pullsTwoWeeksBackPurchased}/{stats.pullsTwoWeeksBackTotal}</h2><p>Pulls Two Weeks Ago</p></Link>
+        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.pullsTwoWeeksBackNotPurchased}/{stats.pullsTwoWeeksBackTotal}</h2><p>Pulls Two Weeks Ago</p></Link>
         <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesOfLastWeek}</h2><p>Releases Last Week</p></Link>
-        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.pullsOfLastWeekPurchased}/{stats.pullsOfLastWeekTotal}</h2><p>Pulls Last Week</p></Link>
+        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.pullsOfLastWeekNotPurchased}/{stats.pullsOfLastWeekTotal}</h2><p>Pulls Last Week</p></Link>
         <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesOfCurrentWeek}</h2><p>Releases Current Week</p></Link>
-        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.pullsOfCurrentWeekPurchased}/{stats.pullsOfCurrentWeekTotal}</h2><p>Pulls Current Week</p></Link>
+        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.pullsOfCurrentWeekNotPurchased}/{stats.pullsOfCurrentWeekTotal}</h2><p>Pulls Current Week</p></Link>
         <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesOfNextWeek}</h2><p>Releases Next Week</p></Link>
-        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.pullsOfNextWeekPurchased}/{stats.pullsOfNextWeekTotal}</h2><p>Pulls Next Week</p></Link>
+        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.pullsOfNextWeekNotPurchased}/{stats.pullsOfNextWeekTotal}</h2><p>Pulls Next Week</p></Link>
         <Link to="/inventory" className={statCards.statCard}><h2>{stats.releasesTwoWeeksOut}</h2><p>Releases in Two Weeks</p></Link>
-        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.pullsTwoWeeksOutPurchased}/{stats.pullsTwoWeeksOutTotal}</h2><p>Pulls in Two Weeks</p></Link>
+        <Link to="/pullsempl" className={statCards.statCard}><h2>{stats.pullsTwoWeeksOutNotPurchased}/{stats.pullsTwoWeeksOutTotal}</h2><p>Pulls in Two Weeks</p></Link>
       </div>
     </EmployeeLayout>
   );

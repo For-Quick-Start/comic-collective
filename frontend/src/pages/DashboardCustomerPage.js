@@ -98,12 +98,6 @@ function DashboardPage() {
   return (
     <CustomerLayout title={dashboardTitle}>
       {error && <p className={global.error}>{error}</p>}
-      <div className={statCards.statsGrid}>
-        <Link to="/releasescust" className={statCards.statCard}><h2>{stats.releasesThisWeek}</h2><p>Releases This Week</p></Link>
-        <Link to="/releasescust" className={statCards.statCard}><h2>{stats.releasesNextWeek}</h2><p>Releases Next Week</p></Link>
-        <Link to="/pullscust" className={statCards.statCard}><h2>{stats.outstandingPulls}</h2><p>Your Outstanding Pulls</p></Link>
-        <Link to="/pullscust" className={statCards.statCard}><h2>{stats.upcomingPulls}</h2><p>Your Upcoming Pulls</p></Link>
-      </div>
       <div className={conciergeCards.conciergeGrid}>
         <div className={conciergeCards.conciergeCard}>
           <h3>Store Information</h3>
@@ -126,6 +120,12 @@ function DashboardPage() {
             </ul>
           </div>
         </div>
+      </div>
+      <div className={statCards.statsGrid}>
+        <Link to="/releasescust" className={statCards.statCard}><h2>{stats.releasesThisWeek}</h2><p>Releases This Week</p></Link>
+        <Link to="/releasescust" className={statCards.statCard}><h2>{stats.releasesNextWeek}</h2><p>Releases Next Week</p></Link>
+        <Link to="/pullscust" className={statCards.statCard}><h2>{stats.outstandingPulls}</h2><p>Your Outstanding Pulls</p></Link>
+        <Link to="/pullscust" className={statCards.statCard}><h2>{stats.upcomingPulls}</h2><p>Your Upcoming Pulls</p></Link>
       </div>
     </CustomerLayout>
   );
