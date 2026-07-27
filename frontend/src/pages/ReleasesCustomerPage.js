@@ -208,10 +208,13 @@ function ReleasesCustomerPage() {
 
       await api.post('/api/users/me/pull-list', { bookId }, config);
       
-      // Add book to local pull list state to update UI instantly
-      setPullList([...pullList, bookId]);
+
+      const newPullItem = {
+        bookId: { _id: bookId },
+      };
+      setPullList([...pullList, newPullItem]);
       setMessage('Book added to your pull list!');
-      setTimeout(() => setMessage(''), 3000); // Clear message after 3 seconds
+      setTimeout(() => setMessage(''), 3000);
 
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to add to pull list');
