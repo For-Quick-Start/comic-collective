@@ -1,7 +1,22 @@
 .statsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  /* Default to a single column for smaller screens */
+  grid-template-columns: 1fr;
   gap: 1.5rem;
+}
+
+/* For screens 600px and wider (tablets), switch to 2 columns */
+@media (min-width: 600px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* For screens 1200px and wider (desktops), switch to 4 columns */
+@media (min-width: 1200px) {
+  .statsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .statCard {
