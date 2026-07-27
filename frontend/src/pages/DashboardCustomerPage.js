@@ -6,7 +6,7 @@ import global from '../styles/global.module.css';
 import statCards from '../styles/statCards.module.css';
 import conciergeCards from '../styles/concierge.module.css';
 
-function DashboardPage() {
+function DashboardCustomerPage() {
   const [stats, setStats] = useState({
     releasesThisWeek: 0,
     releasesNextWeek: 0,
@@ -172,7 +172,7 @@ function DashboardPage() {
   }, []);
 
   if (loading) {
-    return <CustomerLayout title="Dashboard"><div className={global.loadingSpinner}></div></CustomerLayout>;
+    return <CustomerLayout title="Dashboard"><div className={global.loadingSpinner} data-testid="loading-spinner"></div></CustomerLayout>;
   }
 
   const dashboardTitle = userName ? `${userName.split(' ')[0]}'s Dashboard` : 'Dashboard';
@@ -221,4 +221,4 @@ function DashboardPage() {
   );
 }
 
-export default DashboardPage;
+export default DashboardCustomerPage;

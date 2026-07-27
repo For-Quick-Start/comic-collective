@@ -5,7 +5,7 @@ import EmployeeLayout from '../components/EmployeeLayout';
 import global from '../styles/global.module.css';
 import statCards from '../styles/statCards.module.css';
 
-function DashboardPage() {
+function DashboardEmployeePage() {
 
   const [stats, setStats] = useState({
     releasesTwoWeeksBack: 0,
@@ -208,4 +208,4 @@ function DashboardPage() {
   );
 }
  
-export default DashboardPage;
+export default DashboardEmployeePage;
