@@ -5,5 +5,5 @@ const { protect } = require('../middleware/authMiddleware.js');
 const router = express.Router();
 
 router.route('/').post(protect, getRecommendations);
-
+ 
 module.exports = router;

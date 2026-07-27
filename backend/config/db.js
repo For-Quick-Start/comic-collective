@@ -1,10 +1,5 @@
 const mongoose = require('mongoose');
 
-/**
- * This is a cache for the database connection.
- * In a serverless environment, the function can be "warm" and reuse this connection
- * across multiple invocations, which is much more efficient.
- */
 let cached = global.mongoose;
 
 if (!cached) {

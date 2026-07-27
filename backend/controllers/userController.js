@@ -233,7 +233,7 @@ const addPullRequest = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
 
   if (user) {
-    // Check if the book is already in the pull list
+    // ensure book is not already in pull list
     const alreadyPulled = user.pullList.some(item => item.bookId.toString() === bookId);
 
     if (alreadyPulled) {
@@ -258,7 +258,7 @@ const dropPullRequest = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
 
   if (user) {
-    // Check if book is in the pull list
+    // ensure book is in pull list
     const alreadyPulled = user.pullList.some(item => item.bookId.toString() === bookId);
 
     if (!alreadyPulled) {
@@ -295,27 +295,27 @@ const getUserPullList = asyncHandler(async (req, res) => {
 // @route   GET /api/users/pull-list/all
 // @access  Private/Employee
 const getAllUsersPullList = asyncHandler(async (req, res) => {
-  // Find all users and populate the book details in their pull lists.
-  const users = await User.find({ 'pullList.0': { $exists: true } }) // Optimization: only get users with non-empty pull lists
+  // gather details of all books for all users' pull lists
+  const users = await User.find({ 'pullList.0': { $exists: true } }) // get only non-empty pull lists
     .populate({
       path: 'pullList.bookId',
       model: 'Book'
     })
-    .select('name pullList'); // Select name and pullList
+    .select('name pullList');
 
   if (users) {
-    // Flatten the array of pull lists into a single array of pull items
-    // and add user info to each item.
+    // flatten the array of pull lists 
+    // into a single array of pull items
+    // with user info for each item
     const allPulls = users.flatMap(user =>
       user.pullList.map(pull => ({
-        ...pull.toObject(), // Convert Mongoose sub-document to plain object
+        ...pull.toObject(), // have to convert mongoose sub-document to object
         userId: user._id,
         userName: user.name,
       }))
     );
     res.json(allPulls);
   } else {
-    // This case is unlikely as find() returns an empty array if no documents are found
     res.json([]);
   }
 });
@@ -326,7 +326,7 @@ const getAllUsersPullList = asyncHandler(async (req, res) => {
 const purchasePullRequest = asyncHandler(async (req, res) => {
   const { pullId } = req.params;
 
-  // Find the user who has this pull item
+  // find pullId and store which user it belongs to
   const user = await User.findOne({ 'pullList._id': pullId });
 
   if (!user) {
@@ -341,7 +341,7 @@ const purchasePullRequest = asyncHandler(async (req, res) => {
     throw new Error('Item already purchased');
   }
 
-  // Find the book and check inventory BEFORE marking as purchased
+  // find book and check inventory BEFORE marking as purchased
   const book = await Book.findById(pullItem.bookId);
   if (!book) {
     res.status(404);
@@ -369,7 +369,7 @@ const purchasePullRequest = asyncHandler(async (req, res) => {
 const markPullAsPulled = asyncHandler(async (req, res) => {
   const { pullId } = req.params;
 
-  // Find the user who has this pull item
+  // find pullId and store which user it belongs to
   const user = await User.findOne({ 'pullList._id': pullId });
 
   if (!user) {
@@ -390,7 +390,7 @@ const markPullAsPulled = asyncHandler(async (req, res) => {
 const getRecommendationTags = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id).populate({
     path: 'pullList.bookId',
-    select: 'tags', // Only select the 'tags' field for efficiency
+    select: 'tags', // only selects 'tags' field for efficiency
     model: 'Book',
   });
 

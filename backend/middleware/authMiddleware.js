@@ -20,7 +20,7 @@ const protect = async (req, res, next) => {
     res.status(401).json({ message: 'Not authorized, no token' });
   }
 };
-
+ 
 const employee = (req, res, next) => {
   if (req.user && req.user.role === 'employee') {
     next();

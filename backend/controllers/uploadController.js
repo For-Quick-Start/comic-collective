@@ -22,7 +22,7 @@ const uploadCover = asyncHandler(async (req, res) => {
     throw new Error('Please provide an image file');
   }
 
-  // If there's an old cover, rename it for archival purposes
+  // if path to old cover was set, rename it for archiving rather than overwrite
   if (book.coverArt) {
     const oldPath = path.join(__dirname, '../../frontend/public', book.coverArt);
     if (fs.existsSync(oldPath)) {
@@ -33,7 +33,7 @@ const uploadCover = asyncHandler(async (req, res) => {
       try {
         fs.renameSync(oldPath, archivePath);
       } catch (renameErr) {
-        // Log error but don't fail the upload
+        // log error but don't fail the upload
         console.error(`Could not rename old cover art: ${renameErr.message}`);
       }
     }
@@ -43,14 +43,13 @@ const uploadCover = asyncHandler(async (req, res) => {
   const newFilename = `${bookId}${fileExtension}`;
   const newPath = path.join(COVERS_DIR, newFilename);
 
-  // Move the uploaded file from multer's temp storage to the final destination
-  // Use copy and unlink to avoid cross-device link errors
+  // move uploaded file from multer temp dir to final dir
+  // use copy and unlink to avoid cross-device link errors
   try {
     fs.copyFileSync(req.file.path, newPath);
     fs.unlinkSync(req.file.path); // remove temp file
   } catch (err) {
     console.error('Error moving file:', err);
-    // Decide if you want to throw an error or handle it gracefully
   }
 
   const newCoverArtUrl = `/covers/${newFilename}`;

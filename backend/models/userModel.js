@@ -25,7 +25,7 @@ const userSchema = mongoose.Schema(
     status: {
       type: String,
       required: true,
-      default: 'active', // 'active', 'disabled'
+      default: 'active', // 'active' or 'disabled'
     },
     pullList: {
       type: [pullItemSchema],

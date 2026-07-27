@@ -16,10 +16,10 @@ const upload = multer({ storage: storage });
 
 router.route('/')
     .post(protect, employee, upload.single('coverArtFile'), createBook)
-    .get(protect, getBooks); // getBooks is used by customers too
+    .get(protect, getBooks);
 
 router.route('/:id')
-    .get(protect, getBookById) // getBookById is used by employees and customers
+    .get(protect, getBookById)
     .put(protect, employee, updateBook)
     .delete(protect, employee, deleteBook);
 
