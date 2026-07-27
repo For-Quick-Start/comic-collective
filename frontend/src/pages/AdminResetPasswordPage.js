@@ -54,7 +54,7 @@ function AdminResetPasswordPage() {
       };
       await api.put(`/api/users/${id}/reset-password`, { password }, config);
       setMessage('Password reset successfully!');
-      setTimeout(() => navigate(-1), 2000); // Go back to previous page after 2 seconds
+      setTimeout(() => navigate(-1), 2000);
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred');
     }

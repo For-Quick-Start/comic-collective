@@ -245,7 +245,6 @@ function EditBookPage() {
                       </div>
                     </div>
                   </div>
-                  {/* BUTTONS Section */}
                   <div className={form.formActions}>
                     <button type="button" onClick={handleDelete} className={buttons.logoutButton}>Delete</button>
                     <button type="button" onClick={() => navigate('/inventory')} className={buttons.cancelButton}>Cancel</button>

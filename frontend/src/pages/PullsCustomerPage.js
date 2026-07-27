@@ -162,7 +162,7 @@ const PullsCustomerPage = () => {
 
       await api.post('/api/users/me/pull-drop', { bookId }, config);
       
-      // Remove book from local pull list state to update UI instantly
+      // remove book from local pull list state to update UI instantly
       setPullList(pullList.filter(item => item.bookId._id !== bookId));
       setMessage('Book dropped from your pull list!');
       setTimeout(() => setMessage(''), 3000);

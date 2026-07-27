@@ -177,6 +177,7 @@
     padding: 1rem;
 }
 
+/* cover art overlay */
 .overlay {
     position: fixed;
     inset: 0;

@@ -12,7 +12,7 @@ code {
     monospace;
 }
 
-/* Make app fill the full screen */
+/* Make app fill the full screen */ 
 html, body, #root {
   height: 100%;
 }

@@ -30,7 +30,7 @@ function InventoryPage() {
         };
         const { data } = await api.get('/api/books', config);
         setBooks(data);
-        setFilteredBooks(data); // Initially, show all books
+        setFilteredBooks(data); // show all books on initial page load
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to fetch books');
       } finally {
@@ -40,7 +40,7 @@ function InventoryPage() {
 
     fetchBooks();
 
-    // Generate week options for the dropdown
+    // generate week options for the dropdown
     const generateWeekOptions = () => {
       const options = [];
       const today = new Date();
@@ -76,14 +76,14 @@ function InventoryPage() {
       setFilteredBooks(books);
     } else if (selectedWeek) {
       const [start, end] = selectedWeek.split('_').map(d => new Date(d));
-      end.setHours(23, 59, 59, 999); // Ensure the end date includes the whole day
+      end.setHours(23, 59, 59, 999);
       const filtered = books.filter(book => {
         const releaseDate = new Date(book.releaseDate);
         return releaseDate >= start && releaseDate <= end;
       });
       setFilteredBooks(filtered);
     } else {
-      setFilteredBooks([]); // If not showing all and no week is selected, show nothing
+      setFilteredBooks([]); // if not showing all and no week selected, show nothing
     }
   }, [selectedWeek, showAll, books]);
 
@@ -92,7 +92,7 @@ function InventoryPage() {
     if (!thumb || !overlayRef.current || !overlayImgRef.current) return;
 
     activeThumbRef.current = thumb;
-    // const overlay = overlayRef.current;
+
     const overlayImg = overlayImgRef.current;
 
     const rect = thumb.getBoundingClientRect();

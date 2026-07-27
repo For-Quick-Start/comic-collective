@@ -299,5 +299,5 @@ function ReleasesCustomerPage() {
     </CustomerLayout>
   );
 }
-
+ 
 export default ReleasesCustomerPage;

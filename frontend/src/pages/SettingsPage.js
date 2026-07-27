@@ -18,5 +18,5 @@ function SettingsPage() {
 
   return <CustomerLayout title="Settings">{pageContent}</CustomerLayout>;
 }
-
+ 
 export default SettingsPage;

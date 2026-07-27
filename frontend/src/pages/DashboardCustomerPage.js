@@ -50,33 +50,6 @@ function DashboardPage() {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        // const sevenDaysAgo = new Date(today);
-        // sevenDaysAgo.setDate(today.getDate() - 7);
-
-        // const sevenDaysFromNow = new Date(today);
-        // sevenDaysFromNow.setDate(today.getDate() + 7);
-
-        // // Calculate stats
-        // const releasesThisWeek = books.filter(book => {
-        //   const releaseDate = new Date(book.releaseDate);
-        //   return releaseDate >= sevenDaysAgo && releaseDate <= today;
-        // }).length;
-
-        // const releasesNextWeek = books.filter(book => {
-        //   const releaseDate = new Date(book.releaseDate);
-        //   return releaseDate > today && releaseDate <= sevenDaysFromNow;
-        // }).length;
-
-        // const outstandingPulls = pullList.filter(item => {
-        //   const releaseDate = new Date(item.bookId.releaseDate);
-        //   return releaseDate < today && !item.purchased;
-        // }).length;
-
-        // const upcomingPulls = pullList.filter(item => {
-        //   const releaseDate = new Date(item.bookId.releaseDate);
-        //   return releaseDate >= today;
-        // }).length;
-
         // GET COUNT OF BOOKS RELEASED CURRENT WEEK
         const mondayOfCurrentWeek = new Date(today);
         mondayOfCurrentWeek.setHours(0, 0, 0, 0);

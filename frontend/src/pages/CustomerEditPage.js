@@ -62,11 +62,8 @@ function CustomerEditPage() {
 
       await api.put(`/api/users/${id}`, userData, config);
       setMessage('User updated successfully!');
-      setTimeout(() => {
-        navigate('/cust');
-      }, 3000);
-
-      } catch (err) {
+      setTimeout(() => navigate(-1), 2000);
+    } catch (err) {
       setError(err.response?.data?.message || 'An error occurred during update.');
     }
   };
@@ -91,7 +88,7 @@ function CustomerEditPage() {
                   </div>
                 </div>
                 <div className={form.formActions}>
-                  <button type="button" onClick={() => navigate('/cust')} className={button.cancelButton}>Cancel</button>
+                  <button type="button" onClick={() => navigate(-1)} className={button.cancelButton}>Cancel</button>
                   <button type="submit" className={button.submitButton}>Save Changes</button>
                 </div>
               </form>

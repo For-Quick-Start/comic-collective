@@ -82,5 +82,5 @@ function RegisterCustomerPage() {
     </EmployeeLayout>
   );
 }
-
+ 
 export default RegisterCustomerPage;

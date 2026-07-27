@@ -221,7 +221,7 @@ const PullsEmployeePage = () => {
         ) : (
           <div className={bookCards.cardContainer}>
             {pullList
-              .filter(item => item.bookId) // Filter out items with null bookId
+              .filter(item => item.bookId) // disregard items with null bookId
               .map((item) => (
               <div key={item._id} className={bookCards.bookCard}>
                 <div className={bookCards.bookCardTitle}>

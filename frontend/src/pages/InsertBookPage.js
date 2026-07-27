@@ -56,7 +56,8 @@ function InsertBookPage() {
         if (key === 'seriesEndDate' && !formData[key]) {
           // Don't append empty optional date
         } else if (key === 'coverArt') {
-          // Do not append the coverArt field, as it's a base64 preview for the frontend only.
+          // Do not append the coverArt field, 
+          // as it's a base64 preview for the frontend only.
           // The actual file is in coverArtFile.
         } else {
           bookData.append(key, formData[key]);

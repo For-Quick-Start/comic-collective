@@ -74,5 +74,5 @@ function ResetPasswordPage() {
 
   return <CustomerLayout title="Reset Your Password">{pageContent}</CustomerLayout>;
 }
-
+ 
 export default ResetPasswordPage;
