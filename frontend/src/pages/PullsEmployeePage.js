@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import EmployeeLayout from '../components/EmployeeLayout';
 import global from '../styles/global.module.css';
 import buttons from '../styles/buttons.module.css';
+import forms from '../styles/forms.module.css';
 import bookCards from '../styles/bookCards.module.css';
 
 const PullsEmployeePage = () => {
@@ -238,30 +239,30 @@ const PullsEmployeePage = () => {
                   <div className={bookCards.detailsSection}>
                     <p><strong>Customer:</strong> <Link to={`/custedit/${item.userId}`}>{item.userName}</Link></p>
                     <p><strong>Publisher:</strong> {item.bookId.publisher || 'N/A'}</p>
-                    <p><strong>Release Date:</strong> {formatDate(item.bookId.releaseDate)}
-                      {item.requested && !item.pulled && !item.purchased && <span style={{ color: 'orange', marginLeft: '1rem' }}>Pull requested</span>}
-                      {item.pulled && !item.purchased && <span style={{ color: 'green', marginLeft: '1rem' }}>Pulled</span>}
+                    <p><strong>Release Date:</strong> {formatDate(item.bookId.releaseDate)}</p>
+                    <p><strong>Pull Status: </strong> 
+                      {item.requested && !item.pulled && !item.purchased && <span>Pull requested</span>}
+                      {item.pulled && !item.purchased && <span>Pulled and waiting for pick up!</span>}
+                      {item.purchased && <span>Already picked up!</span>}
                     </p>
-                  </div>
-                  {item.purchased ? <p className={global.success}>Already picked up!</p> : <p className={global.error}>Pulled and waiting for pick up!</p>}
-                  <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-                    {!item.purchased && (
-                      <>
-                        {!item.pulled && (
-                          <button className={buttons.editButton} onClick={() => handleMarkAsPulled(item._id)}>
-                            Mark as Pulled
-                          </button>
-                        )}
-                        {item.pulled && (
-                          <button className={buttons.editButton} disabled>Pulled</button>
-                        )}
-                      </>
-                    )}
-                    {!item.purchased && (
-                      <button className={buttons.submitButton} onClick={() => handlePurchase(item._id)}>
-                        Mark as Purchased
-                      </button>
-                    )}
+                    <div className={forms.formActions}>
+                      {!item.pulled && (
+                        <button className={buttons.editButton} onClick={() => handleMarkAsPulled(item._id)}>
+                          Mark as Pulled
+                        </button>
+                      )}
+                      {item.pulled && (
+                        <button className={buttons.editButton} disabled>Pulled</button>
+                      )}
+                      {!item.purchased && (
+                        <button className={buttons.submitButton} onClick={() => handlePurchase(item._id)}>
+                          Mark as Purchased
+                        </button>
+                      )}
+                      {item.purchased && (
+                        <button className={buttons.submitButton} disabled>Purchased</button>
+                      )}                      
+                    </div>
                   </div>
                 </div>
               </div>

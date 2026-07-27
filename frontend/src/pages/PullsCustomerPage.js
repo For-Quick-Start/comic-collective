@@ -197,11 +197,11 @@ const PullsCustomerPage = () => {
                   <div className={bookCards.detailsSection}>
                     <p><strong>Publisher:</strong> {item.bookId.publisher || 'N/A'}</p>
                     <p><strong>Release Date:</strong> {formatDate(item.bookId.releaseDate)}</p>
-                  </div>
-                  {item.purchased ? <p className={global.success}>Already picked up!</p> : <p className={global.error}>Pulled and waiting for pick up!</p>}
-                  <div>
-                    <button className={buttons.deleteButton}
-                      onClick={() => handleDrop(item.bookId._id)}>Drop</button>
+                    {item.purchased ? <p className={global.success}>Already picked up!</p> : <p className={global.error}>Pulled and waiting for pick up!</p>}
+                    <div>
+                      <button className={buttons.deleteButton}
+                        onClick={() => handleDrop(item.bookId._id)}>Drop</button>
+                    </div>
                   </div>
                 </div>
               </div>

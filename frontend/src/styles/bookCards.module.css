@@ -63,6 +63,10 @@
 
 .bookCardContent {
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start; /* Aligns items to the top */
+  flex-wrap: nowrap; /* Prevents the details section from wrapping below the cover */
   gap: 1.5rem;
 }
 
@@ -102,6 +106,8 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  min-width: 0; /* Allows the section to shrink and prevent overflow */
+  justify-content: space-between; /* Pushes buttons to the bottom if there's space */
 }
 
 .detailsSection p {
@@ -220,7 +226,3 @@
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
     display: block;
 }
-
-
-
-
