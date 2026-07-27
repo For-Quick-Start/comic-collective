@@ -1,6 +1,59 @@
-# Getting Started with Create React App
+# Comic Collective - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Welcome to the frontend of Comic Collective, a full-stack web application designed to streamline operations for a comic book store and enhance the customer experience.
+
+## About The Project
+
+Comic Collective is a digital platform that serves both comic book store employees and their customers. It provides a robust set of tools for inventory management, customer pull list tracking, and sales processing, while also offering customers a personalized portal to explore new releases and manage their comic subscriptions.
+
+### For Customers
+
+Customers can log in to their personal dashboard to:
+*   **View a Personalized Dashboard**: Get at-a-glance statistics for new comic releases and their personal pull list for the current week, past weeks, and upcoming weeks.
+*   **Browse Releases**: Explore a comprehensive catalog of all available comic books.
+*   **Manage a Pull List**: Request new comics to be "pulled" and set aside for them at the store. They can also view the status of their pulled items (e.g., requested, pulled, purchased) and drop titles they no longer want.
+*   **Get Recommendations**: Discover new series based on their interests.
+
+### For Employees
+
+Employees have access to a powerful administrative interface that allows them to:
+*   **Access a Store Dashboard**: View store-wide statistics on inventory and customer pull lists across different timeframes.
+*   **Manage Inventory**: Add new comic books to the store's catalog, edit existing entries, and manage stock levels.
+*   **Process Pull Lists**: View and manage all customer pull requests, marking items as "pulled" from the shelves or "purchased" by the customer.
+*   **Manage Users**: View and manage both customer and employee accounts within the system.
+
+## Getting Started
+
+Follow these instructions to get the frontend development environment up and running on your local machine.
+
+### Prerequisites
+
+*   **Node.js**: Make sure you have Node.js installed. You can download it from [nodejs.org](https://nodejs.org/).
+*   **npm** or **yarn**: A package manager for Node.js. npm is included with Node.js.
+*   **Running Backend**: This frontend is designed to communicate with the Comic Collective backend API. Ensure the backend server is running locally, typically on `http://localhost:5001`.
+
+### Installation
+
+1.  **Clone the repository** (if you haven't already):
+    ```sh
+    git clone https://github.com/For-Quick-Start/comic-collective.git
+    ```
+
+2.  **Navigate to the frontend directory**:
+    ```sh
+    cd comic-collective/frontend
+    ```
+
+3.  **Install NPM packages**:
+    ```sh
+    npm install
+    ```
+
+### Configuration
+
+The project is configured to proxy API requests to `http://localhost:5001` via the `proxy` setting in the `package.json` file. If your backend is running on a different port, you will need to update this value.
+
+For other environment-specific variables, you can create a `.env` file in the `frontend` directory.
 
 ## Available Scripts
 
@@ -8,16 +61,15 @@ In the project directory, you can run:
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Runs the app in development mode.\
+Open http://localhost:3000 to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The page will reload when you make changes. You may also see any lint errors in the console.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the test runner in interactive watch mode.\
+See the section about running tests for more information.
 
 ### `npm run build`
 
@@ -27,44 +79,14 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
 ### `npm run eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
 If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc.) right into your project so you have full control over them.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project was bootstrapped with Create React App.
