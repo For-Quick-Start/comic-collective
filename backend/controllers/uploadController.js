@@ -43,7 +43,10 @@ const uploadCover = asyncHandler(async (req, res) => {
   // Upload the new file to GCS, overwriting the old one
   const newFileName = `covers/${bookId}${path.extname(req.file.originalname)}`;
   try {
-    const newCoverArtUrl = await uploadFileToGCS(req.file.buffer, req.file.mimetype, newFileName);
+    // Create a new buffer from the multer buffer to decouple it from the request stream.
+    // This prevents the "stream was destroyed" error in serverless environments.
+    const buffer = Buffer.from(req.file.buffer);
+    const newCoverArtUrl = await uploadFileToGCS(buffer, req.file.mimetype, newFileName);
     book.coverArt = newCoverArtUrl;
     await book.save();
 
