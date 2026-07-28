@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler');
 const Book = require('../models/bookModel');
 const User = require('../models/userModel');
 const mongoose = require('mongoose');
-const { uploadFileToGCS } = require('../utils/gcsUpload');
+const { uploadFileFromPathToGCS } = require('../utils/gcsUpload');
 const path = require('path'); // path is needed for extname in controllers
 
 console.log('bookController: GCS_BUCKET_NAME:', process.env.GCS_BUCKET_NAME);
@@ -24,10 +24,7 @@ const createBook = asyncHandler(async (req, res) => {
   if (req.file) {
     const fileName = `covers/${book._id}${path.extname(req.file.originalname)}`;
     try {
-      // Create a new buffer from the multer buffer to decouple it from the request stream.
-      // This prevents the "stream was destroyed" error in serverless environments.
-      const buffer = Buffer.from(req.file.buffer);
-      const newCoverArtUrl = await uploadFileToGCS(buffer, req.file.mimetype, fileName);
+      const newCoverArtUrl = await uploadFileFromPathToGCS(req.file.path, fileName);
       book.coverArt = newCoverArtUrl;
       await book.save();
     } catch (uploadError) {

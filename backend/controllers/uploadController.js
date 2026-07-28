@@ -1,7 +1,7 @@
 const path = require('path');
 const asyncHandler = require('express-async-handler');
 const Book = require('../models/bookModel');
-const { uploadFileToGCS, bucket } = require('../utils/gcsUpload'); // Import bucket for archiving
+const { uploadFileFromPathToGCS, bucket } = require('../utils/gcsUpload'); // Import bucket for archiving
 
 console.log('uploadController: GCS_BUCKET_NAME:', process.env.GCS_BUCKET_NAME);
 console.log('uploadController: GOOGLE_APPLICATION_CREDENTIALS status:', process.env.GOOGLE_APPLICATION_CREDENTIALS ? 'Loaded' : 'Not loaded');
@@ -43,10 +43,7 @@ const uploadCover = asyncHandler(async (req, res) => {
   // Upload the new file to GCS, overwriting the old one
   const newFileName = `covers/${bookId}${path.extname(req.file.originalname)}`;
   try {
-    // Create a new buffer from the multer buffer to decouple it from the request stream.
-    // This prevents the "stream was destroyed" error in serverless environments.
-    const buffer = Buffer.from(req.file.buffer);
-    const newCoverArtUrl = await uploadFileToGCS(buffer, req.file.mimetype, newFileName);
+    const newCoverArtUrl = await uploadFileFromPathToGCS(req.file.path, newFileName);
     book.coverArt = newCoverArtUrl;
     await book.save();
 
