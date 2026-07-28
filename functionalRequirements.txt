@@ -1,0 +1,29 @@
+These are the specific actions the system must perform.
+
+User Management
+The system must support two user roles: Customer and Employee.
+Users must be able to register for an account and log in.
+Authenticated users must be able to log out.
+Employees must be able to view a list of all customer and employee accounts.
+
+Inventory Management (Employee)
+Employees must be able to add new comic books to the system, including details like title, issue number, release date, publisher, and cover art.
+Employees must be able to edit and delete existing comic book entries.
+Employees must be able to manage inventory stock levels for each book.
+
+Pull List Management
+Customers must be able to view a list of all available and upcoming comic book releases.
+Customers must be able to add a book to their personal pull list.
+Customers must be able to remove a book from their pull list ("drop").
+Customers must be able to view the status of their pulled items (e.g., Requested, Pulled, Purchased).
+Employees must be able to view all pull lists from all customers.
+Employees must be able to update the status of a pull list item to "Pulled".
+Employees must be able to update the status of a pull list item to "Purchased".
+
+Dashboard & Reporting
+Customers must see a personalized dashboard with statistics about their pull list and relevant new releases.
+Employees must see a store-wide dashboard with statistics about inventory and all customer pulls.
+Dashboards must show data broken down by different timeframes (e.g., past, current, and upcoming weeks).
+
+Recommendations
+The system should provide comic book recommendations to customers based on their interests.

@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const {
   registerUser,
+  verifyEmail,
+  forgotPassword,
+  resetPasswordWithToken,
   loginUser,
   registerEmployee,
   getUsers,
@@ -22,7 +25,10 @@ const {
 const { protect, employee, customer } = require('../middleware/authMiddleware');
 
 router.post('/register', registerUser);
-router.post('/auth/login', loginUser);
+router.post('/login', loginUser);
+router.post('/verify-email', verifyEmail);
+router.post('/forgot-password', forgotPassword);
+router.put('/reset-password/:token', resetPasswordWithToken);
 router.get('/me', protect, getMe);
 router.put('/me/reset-password', protect, resetMyPassword);
 router.get('/me/recommendation-tags', protect, customer, getRecommendationTags);

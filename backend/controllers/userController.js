@@ -1,8 +1,10 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const asyncHandler = require('express-async-handler');
 const User = require('../models/userModel');
 const Book = require('../models/bookModel');
+const sendEmail = require('../utils/email');
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -39,16 +41,29 @@ const registerUser = asyncHandler(async (req, res) => {
 
   const user = await User.create({ name, email, password, role: 'customer' });
 
-  if (user) {
-    res.status(201).json({
-      _id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      token: generateToken(user._id),
-    });
-  } else {
+  if (!user) {
     res.status(400).json({ message: 'Invalid user data' });
+    return;
+  }
+
+  // Create verification token
+  const verificationToken = user.createEmailVerificationToken();
+  await user.save({ validateBeforeSave: false }); // Save with token, skipping password validation
+
+  // Send verification email
+  const verificationURL = `${process.env.FRONTEND_URL}/verify-email/${verificationToken}`;
+  const message = `Hi ${user.name},\nPlease click the link to verify your email address: ${verificationURL}\n\nIf you did not request this, please ignore this email.`;
+
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: 'Comic Collective - Verify Your Email',
+      message,
+    });
+
+    res.status(201).json({ message: 'Registration successful! Please check your email to verify your account.' });
+  } catch (err) {
+    res.status(500).json({ message: 'There was an error sending the verification email. Please try again later.' });
   }
 });
 
@@ -59,7 +74,11 @@ const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
-  if (user && user.status === 'active' && (await bcrypt.compare(password, user.password))) {
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    return res.status(401).json({ message: 'Invalid credentials' });
+  }
+
+  if (user.status === 'active' && user.isVerified) {
     res.json({
       _id: user.id,
       name: user.name,
@@ -67,10 +86,97 @@ const loginUser = asyncHandler(async (req, res) => {
       role: user.role,
       token: generateToken(user._id),
     });
+  } else if (!user.isVerified) {
+    res.status(401).json({ message: 'Please verify your email before logging in.' });
   } else if (user && user.status === 'disabled') {
     res.status(401).json({ message: 'Account is disabled' });
   } else {
     res.status(401).json({ message: 'Invalid credentials' });
+  }
+});
+
+// @desc    Verify user email
+// @route   POST /api/users/verify-email
+// @access  Public
+const verifyEmail = asyncHandler(async (req, res) => {
+  const { token } = req.body;
+  const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+  // First, try to find the user by the hashed token, regardless of expiration or verification status initially.
+  // This allows us to check if the user exists with this token, even if it's expired or they're already verified.
+  const user = await User.findOne({
+    emailVerificationToken: hashedToken,
+  });
+
+  if (!user) {
+    // If no user is found with this token at all, it's an invalid token.
+    return res.status(400).json({ message: 'Token is invalid or has been used.' });
+  }
+
+  // If a user is found with this token
+  if (user.isVerified) {
+    // If the user is already verified, inform them. This handles double-clicks or retries after successful verification.
+    return res.status(200).json({ message: 'Email is already verified!' });
+  }
+
+  if (user.emailVerificationExpires < Date.now()) {
+    // If the token is found but expired, inform them.
+    // Optionally, clear the expired token from the user document to prevent future attempts with it.
+    user.emailVerificationToken = undefined;
+    user.emailVerificationExpires = undefined;
+    await user.save({ validateBeforeSave: false }); // Save changes to clear expired token
+    return res.status(400).json({ message: 'Token has expired. Please request a new verification email.' });
+  }
+
+  user.isVerified = true;
+  user.emailVerificationToken = undefined;
+  user.emailVerificationExpires = undefined;
+  await user.save({ validateBeforeSave: false });
+
+  res.status(200).json({ message: 'Email verified successfully!' });
+});
+
+// @desc    Forgot password
+// @route   POST /api/users/forgot-password
+// @access  Public
+const forgotPassword = asyncHandler(async (req, res) => {
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) {
+    // Send a generic success response to prevent email enumeration
+    return res.status(200).json({ message: 'If a user with that email exists, a password reset link has been sent.' });
+  }
+
+  const resetToken = user.createPasswordResetToken();
+  await user.save({ validateBeforeSave: false });
+
+  const resetURL = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+  const message = `Forgot your password? Submit a PUT request with your new password to: ${resetURL}.\nIf you didn't forget your password, please ignore this email.`;
+
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: 'Your password reset token (valid for 10 min)',
+      message,
+    });
+    res.status(200).json({ message: 'If a user with that email exists, a password reset link has been sent.' });
+  } catch (err) {
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save({ validateBeforeSave: false });
+    res.status(500).json({ message: 'There was an error sending the email. Try again later!' });
+  }
+});
+
+// @desc    Reset password with token
+// @route   PUT /api/users/reset-password/:token
+// @access  Public
+const resetPasswordWithToken = asyncHandler(async (req, res) => {
+  // FIX: Use 'sha256' to match the hashing algorithm used in createPasswordResetToken
+  const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
+  const user = await User.findOne({ passwordResetToken: hashedToken, passwordResetExpires: { $gt: Date.now() } });
+
+  if (!user) {
+    return res.status(400).json({ message: 'Token is invalid or has expired' });
   }
 });
 
@@ -403,4 +509,4 @@ const getRecommendationTags = asyncHandler(async (req, res) => {
   res.json(uniqueTags);
 });
 
-module.exports = { registerUser, loginUser, registerEmployee, getUsers, getUserById, updateUser, deleteUser, resetPassword, resetMyPassword, getMe, addPullRequest, dropPullRequest, getUserPullList, getAllUsersPullList, purchasePullRequest, markPullAsPulled, getRecommendationTags };
+module.exports = { registerUser, loginUser, verifyEmail, forgotPassword, resetPasswordWithToken, registerEmployee, getUsers, getUserById, updateUser, deleteUser, resetPassword, resetMyPassword, getMe, addPullRequest, dropPullRequest, getUserPullList, getAllUsersPullList, purchasePullRequest, markPullAsPulled, getRecommendationTags };

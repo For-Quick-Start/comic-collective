@@ -12,6 +12,7 @@ function RegisterPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,9 +24,8 @@ function RegisterPage() {
     }
 
     try {
-      const { data } = await api.post('/api/users/register', { name, email, password });
-      localStorage.setItem('userInfo', JSON.stringify(data));
-      window.location.href = '/dashcust';
+      const { data } = await api.post('/api/users/register', { name, email, password }); 
+      setSuccess(data.message || 'Registration successful! Please check your email to verify your account.');
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred');
     }
@@ -39,38 +39,42 @@ function RegisterPage() {
       <div className={layout1.rightHalf}>
         <div className={form.formContainer}>
           <h1>Register</h1>
-          {error && <p className={global.error}>{error}</p>}
-          <form onSubmit={handleSubmit}>
-            <div className={form.formGroup}>
-              <label htmlFor="name">Name</label>
-              <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} required autoComplete="new-password" />
-            </div>
-            <div className={form.formGroup}>
-              <label htmlFor="email">Email</label>
-              <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="new-password" />
-            </div>
-            <div className={form.formGroup}>
-              <label htmlFor="password">Password</label>
-              <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete="new-password" />
-            </div>
-            <div className={form.formGroup}>
-              <label htmlFor="confirmPassword">Password (again, to confirm)</label>
-              <input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required autoComplete="new-password" />
-            </div>
+          {error && <p className={global.error}>{error}</p>} 
+          {success ? (
+            <p className={global.success}>{success}</p>
+          ) : (
+            <form onSubmit={handleSubmit}>
+              <div className={form.formGroup}>
+                <label htmlFor="name">Name</label>
+                <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} required autoComplete="new-password" />
+              </div>
+              <div className={form.formGroup}>
+                <label htmlFor="email">Email</label>
+                <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="new-password" />
+              </div>
+              <div className={form.formGroup}>
+                <label htmlFor="password">Password</label>
+                <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete="new-password" />
+              </div>
+              <div className={form.formGroup}>
+                <label htmlFor="confirmPassword">Password (again, to confirm)</label>
+                <input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required autoComplete="new-password" />
+              </div>
 
-            <p className={global.passwordReqs}>
-              {`Minimum password length is 8 characters and must contain at least one of:
+              <p className={global.passwordReqs}>
+                {`Minimum password length is 8 characters and must contain at least one of:
   - Uppercase letter
   - Lowercase letter
   - Number
   - Symbol`}
-            </p>
+              </p>
 
-            <div className={form.formActions}>
-              <button type="submit" className={buttons.submitButton}>Register</button>
-              <Link to="/login" className={global.link}>Already have an account? Sign in</Link>
-            </div>
-          </form>
+              <div className={form.formActions}>
+                <button type="submit" className={buttons.submitButton}>Register</button>
+                <Link to="/login" className={global.link}>Already have an account? Sign in</Link>
+              </div>
+            </form>
+          )}
         </div>
       </div>
     </div>

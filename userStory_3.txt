@@ -1,0 +1,4 @@
+As an employee, I want to see at-a-glance dashboard statistics for sales and 
+inventory for different time periods (e.g., last week, current week, next 
+week), so that I can make informed decisions about ordering new stock and 
+identify sales trends.

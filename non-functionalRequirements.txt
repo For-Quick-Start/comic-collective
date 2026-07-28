@@ -1,0 +1,22 @@
+These define the quality attributes and constraints of the system.
+
+Performance
+Dashboard pages should load all data and render completely within 3 seconds on a standard broadband connection.
+UI interactions (e.g., adding a book to a pull list, marking an item as pulled) should provide immediate visual feedback to the user without requiring a full page refresh.
+The backend API should handle at least 50 concurrent user requests without a significant degradation in response time.
+
+Security
+All user passwords must be securely hashed and salted before being stored in the database.
+Communication between the frontend and backend must be encrypted using HTTPS.
+The system must use role-based access control (RBAC) to ensure customers cannot access employee-only API endpoints or data.
+API endpoints for modifying data (e.g., creating inventory, updating pull lists) must be protected and require a valid authentication token.
+
+Usability & Accessibility
+The application must have a responsive design that is usable on desktop, tablet, and mobile screen sizes.
+Navigation must be clear and consistent across the application for both user roles.
+Interactive elements like buttons and links must have clear hover and focus states.
+The application should follow WCAG 2.1 AA guidelines for accessibility.
+
+Reliability
+The system should have an uptime of at least 99.5%.
+The database should be backed up regularly to prevent data loss.
