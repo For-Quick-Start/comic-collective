@@ -26,6 +26,7 @@ function ResetPasswordTokenPage() {
     try {
       const { data } = await api.put(`/api/users/reset-password/${token}`, { password });
       setMessage(data.message);
+      localStorage.removeItem('userInfo'); // Clear any existing user session
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to reset password.');
     }

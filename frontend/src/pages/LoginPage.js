@@ -60,7 +60,7 @@ function LoginPage() {
             </div>
             <div className={form.formActions}>
               <button type="submit" className={button.submitButton}>Log in</button>
-              <Link to="/resetpass" className={global.link}>Forgot password?</Link>
+              <Link to="/forgot-password" className={global.link}>Forgot password?</Link>
               <Link to="/register" className={global.link}>Sign up here</Link>
             </div>
           </form>

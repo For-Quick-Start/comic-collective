@@ -171,13 +171,28 @@ const forgotPassword = asyncHandler(async (req, res) => {
 // @route   PUT /api/users/reset-password/:token
 // @access  Public
 const resetPasswordWithToken = asyncHandler(async (req, res) => {
-  // FIX: Use 'sha256' to match the hashing algorithm used in createPasswordResetToken
   const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
   const user = await User.findOne({ passwordResetToken: hashedToken, passwordResetExpires: { $gt: Date.now() } });
 
   if (!user) {
     return res.status(400).json({ message: 'Token is invalid or has expired' });
   }
+
+  const { password } = req.body;
+
+  if (!passwordIsValid(password)) {
+    return res.status(400).json({
+      message:
+        'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
+    });
+  }
+
+  user.password = password;
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+  await user.save();
+
+  res.status(200).json({ message: 'Password has been reset successfully.' });
 });
 
 // @desc    Register a new employee
