@@ -1,11 +1,10 @@
 const path = require('path');
 const asyncHandler = require('express-async-handler');
 const Book = require('../models/bookModel');
-const { Storage } = require('@google-cloud/storage');
+const { uploadFileToGCS, bucket } = require('../utils/gcsUpload'); // Import bucket for archiving
 
-// Setup Google Cloud Storage
-const storage = new Storage();
-const bucket = storage.bucket(process.env.GCS_BUCKET_NAME);
+console.log('uploadController: GCS_BUCKET_NAME:', process.env.GCS_BUCKET_NAME);
+console.log('uploadController: GOOGLE_APPLICATION_CREDENTIALS status:', process.env.GOOGLE_APPLICATION_CREDENTIALS ? 'Loaded' : 'Not loaded');
 // @desc    Upload a cover image for a book
 // @route   POST /api/books/:id/upload-cover
 // @access  Private/Employee
@@ -42,23 +41,21 @@ const uploadCover = asyncHandler(async (req, res) => {
   }
 
   // Upload the new file to GCS, overwriting the old one
-  const fileExtension = path.extname(req.file.originalname);
-  const newFileName = `covers/${bookId}${fileExtension}`;
-  const file = bucket.file(newFileName);
-  const stream = file.createWriteStream({
-    metadata: { contentType: req.file.mimetype },
-    resumable: false,
-  });
-  stream.end(req.file.buffer);
-  
-  const newCoverArtUrl = `https://storage.googleapis.com/${bucket.name}/${newFileName}`;
-  book.coverArt = newCoverArtUrl;
-  await book.save();
+  const newFileName = `covers/${bookId}${path.extname(req.file.originalname)}`;
+  try {
+    const newCoverArtUrl = await uploadFileToGCS(req.file.buffer, req.file.mimetype, newFileName);
+    book.coverArt = newCoverArtUrl;
+    await book.save();
 
-  res.status(200).json({
-    message: 'Image uploaded successfully',
-    coverArt: newCoverArtUrl,
-  });
+    res.status(200).json({
+      message: 'Image uploaded successfully',
+      coverArt: newCoverArtUrl,
+    });
+  } catch (uploadError) {
+    console.error('uploadController: Failed to upload cover art to GCS for existing book:', uploadError);
+    res.status(500).json({ message: 'Failed to upload new cover art.' });
+    return;
+  }
 });
 
 module.exports = {

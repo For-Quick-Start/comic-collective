@@ -2,12 +2,12 @@ const asyncHandler = require('express-async-handler');
 const Book = require('../models/bookModel');
 const User = require('../models/userModel');
 const mongoose = require('mongoose');
-const path = require('path');
-const { Storage } = require('@google-cloud/storage');
+const { uploadFileToGCS } = require('../utils/gcsUpload');
+const path = require('path'); // path is needed for extname in controllers
 
-// Setup Google Cloud Storage
-const storage = new Storage();
-const bucket = storage.bucket(process.env.GCS_BUCKET_NAME);
+console.log('bookController: GCS_BUCKET_NAME:', process.env.GCS_BUCKET_NAME);
+console.log('bookController: GOOGLE_APPLICATION_CREDENTIALS status:', process.env.GOOGLE_APPLICATION_CREDENTIALS ? 'Loaded' : 'Not loaded');
+
 // @desc    Create a book
 // @route   POST /api/books
 // @access  Private/Employee
@@ -20,25 +20,17 @@ const createBook = asyncHandler(async (req, res) => {
   }
 
   const book = await Book.create(req.body);
-
   if (req.file) {
-    const fileExtension = path.extname(req.file.originalname);
-    const fileName = `covers/${book._id}${fileExtension}`;
-    const file = bucket.file(fileName);
-    
-    const stream = file.createWriteStream({
-      metadata: {
-        contentType: req.file.mimetype,
-      },
-      resumable: false,
-    });
-    
-    stream.end(req.file.buffer);
-    
-    // Make the file public and get the URL
-    const newCoverArtUrl = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
-    book.coverArt = newCoverArtUrl;
-    await book.save();
+    const fileName = `covers/${book._id}${path.extname(req.file.originalname)}`;
+    try {
+      const newCoverArtUrl = await uploadFileToGCS(req.file.buffer, req.file.mimetype, fileName);
+      book.coverArt = newCoverArtUrl;
+      await book.save();
+    } catch (uploadError) {
+      console.error('bookController: Failed to upload cover art to GCS for new book:', uploadError);
+      res.status(500).json({ message: 'Failed to upload cover art.' });
+      return;
+    }
   }
 
   const createdBook = await Book.findById(book._id);
