@@ -20,6 +20,7 @@ const createBook = asyncHandler(async (req, res) => {
   }
 
   const book = await Book.create(req.body);
+
   if (req.file) {
     const fileName = `covers/${book._id}${path.extname(req.file.originalname)}`;
     try {
@@ -27,20 +28,16 @@ const createBook = asyncHandler(async (req, res) => {
       book.coverArt = newCoverArtUrl;
       await book.save();
     } catch (uploadError) {
+      // If upload fails, it's good practice to clean up the created book document
+      await Book.findByIdAndDelete(book._id);
       console.error('bookController: Failed to upload cover art to GCS for new book:', uploadError);
-      res.status(500).json({ message: 'Failed to upload cover art.' });
-      return;
+      // Re-throw to be caught by asyncHandler and send a generic server error
+      throw new Error('Failed to upload cover art.');
     }
   }
 
-  const createdBook = await Book.findById(book._id);
-
-  if (createdBook) {
-    res.status(201).json(createdBook);
-  } else {
-    res.status(400);
-    throw new Error('Invalid book data');
-  }
+  // Respond with the book object (which now includes the coverArt URL if uploaded)
+  res.status(201).json(book);
 });
 
 // @desc    Get all books with pull counts
