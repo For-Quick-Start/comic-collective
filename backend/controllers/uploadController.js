@@ -12,7 +12,7 @@ const uploadCover = asyncHandler(async (req, res) => {
   const bookId = req.params.id;
   const book = await Book.findById(bookId);
 
-  if (!book) {
+  if (!book) { 
     res.status(404);
     throw new Error('Book not found');
   }
