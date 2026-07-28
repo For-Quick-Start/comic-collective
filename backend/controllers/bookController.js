@@ -3,8 +3,11 @@ const Book = require('../models/bookModel');
 const User = require('../models/userModel');
 const mongoose = require('mongoose');
 const path = require('path');
-const fs = require('fs');
+const { Storage } = require('@google-cloud/storage');
 
+// Setup Google Cloud Storage
+const storage = new Storage();
+const bucket = storage.bucket(process.env.GCS_BUCKET_NAME);
 // @desc    Create a book
 // @route   POST /api/books
 // @access  Private/Employee
@@ -19,25 +22,21 @@ const createBook = asyncHandler(async (req, res) => {
   const book = await Book.create(req.body);
 
   if (req.file) {
-    const fileExtension = path.extname(req.file.originalname).toLowerCase();
-    const newFilename = `${book._id}${fileExtension}`;
-    const newPath = path.join(__dirname, '../../frontend/public/covers', newFilename);
-
-    // Ensure the covers directory exists
-    const coversDir = path.dirname(newPath);
-    if (!fs.existsSync(coversDir)) {
-      fs.mkdirSync(coversDir, { recursive: true });
-    }
-
-    // Using copy and unlink to avoid cross-device link errors
-    try {
-      fs.copyFileSync(req.file.path, newPath);
-      fs.unlinkSync(req.file.path); // remove temp file
-    } catch (err) {
-      console.error('Error moving file:', err);
-    }
-
-    const newCoverArtUrl = `/covers/${newFilename}`;
+    const fileExtension = path.extname(req.file.originalname);
+    const fileName = `covers/${book._id}${fileExtension}`;
+    const file = bucket.file(fileName);
+    
+    const stream = file.createWriteStream({
+      metadata: {
+        contentType: req.file.mimetype,
+      },
+      resumable: false,
+    });
+    
+    stream.end(req.file.buffer);
+    
+    // Make the file public and get the URL
+    const newCoverArtUrl = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
     book.coverArt = newCoverArtUrl;
     await book.save();
   }

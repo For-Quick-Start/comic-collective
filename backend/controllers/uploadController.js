@@ -1,10 +1,11 @@
 const path = require('path');
-const fs = require('fs');
 const asyncHandler = require('express-async-handler');
 const Book = require('../models/bookModel');
+const { Storage } = require('@google-cloud/storage');
 
-const COVERS_DIR = path.join(__dirname, '../../frontend/public/covers');
-
+// Setup Google Cloud Storage
+const storage = new Storage();
+const bucket = storage.bucket(process.env.GCS_BUCKET_NAME);
 // @desc    Upload a cover image for a book
 // @route   POST /api/books/:id/upload-cover
 // @access  Private/Employee
@@ -22,37 +23,35 @@ const uploadCover = asyncHandler(async (req, res) => {
     throw new Error('Please provide an image file');
   }
 
-  // if path to old cover was set, rename it for archiving rather than overwrite
+  // If an old cover exists, archive it by renaming it in GCS
   if (book.coverArt) {
-    const oldPath = path.join(__dirname, '../../frontend/public', book.coverArt);
-    if (fs.existsSync(oldPath)) {
+    try {
+      const oldFileName = book.coverArt.split(`${bucket.name}/`)[1];
+      const oldFile = bucket.file(oldFileName);
+      const [exists] = await oldFile.exists();
+      
+      if (exists) {
       const timestamp = Math.floor(Date.now() / 1000);
-      const extension = path.extname(oldPath);
-      const newName = `${book._id}-${timestamp}${extension}`;
-      const archivePath = path.join(COVERS_DIR, newName);
-      try {
-        fs.renameSync(oldPath, archivePath);
-      } catch (renameErr) {
-        // log error but don't fail the upload
-        console.error(`Could not rename old cover art: ${renameErr.message}`);
+        const extension = path.extname(oldFileName);
+        const newName = `covers/${book._id}-${timestamp}${extension}`;
+        await oldFile.copy(bucket.file(newName));
       }
+    } catch (err) {
+      console.error('Could not archive old cover art:', err.message);
     }
   }
 
-  const fileExtension = path.extname(req.file.originalname).toLowerCase();
-  const newFilename = `${bookId}${fileExtension}`;
-  const newPath = path.join(COVERS_DIR, newFilename);
-
-  // move uploaded file from multer temp dir to final dir
-  // use copy and unlink to avoid cross-device link errors
-  try {
-    fs.copyFileSync(req.file.path, newPath);
-    fs.unlinkSync(req.file.path); // remove temp file
-  } catch (err) {
-    console.error('Error moving file:', err);
-  }
-
-  const newCoverArtUrl = `/covers/${newFilename}`;
+  // Upload the new file to GCS, overwriting the old one
+  const fileExtension = path.extname(req.file.originalname);
+  const newFileName = `covers/${bookId}${fileExtension}`;
+  const file = bucket.file(newFileName);
+  const stream = file.createWriteStream({
+    metadata: { contentType: req.file.mimetype },
+    resumable: false,
+  });
+  stream.end(req.file.buffer);
+  
+  const newCoverArtUrl = `https://storage.googleapis.com/${bucket.name}/${newFileName}`;
   book.coverArt = newCoverArtUrl;
   await book.save();
 

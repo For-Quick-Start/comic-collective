@@ -153,7 +153,9 @@ function EditBookPage() {
 
       const { data } = await api.post(`/api/books/${id}/upload-cover`, uploadFormData, config);
 
-      setFormData({ ...formData, coverArt: data.coverArt });
+      // Add a cache-busting query parameter to the URL to force the browser to reload the image
+      const newCoverArtUrl = `${data.coverArt}?t=${new Date().getTime()}`;
+      setFormData({ ...formData, coverArt: newCoverArtUrl });
       setMessage('Cover image updated successfully!');
       setTimeout(() => setMessage(''), 3000);
     } catch (err) {
