@@ -1,3 +1,13 @@
+// Decode Google Cloud credentials if they are Base64 encoded
+if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+  try {
+    const decodedCreds = Buffer.from(process.env.GOOGLE_APPLICATION_CREDENTIALS, 'base64').toString('utf-8');
+    process.env.GOOGLE_APPLICATION_CREDENTIALS = decodedCreds;
+  } catch (e) {
+    console.log('GOOGLE_APPLICATION_CREDENTIALS is not Base64 encoded, using as is.');
+  }
+}
+
 require('dotenv').config();
 
 const express = require('express');
