@@ -6,7 +6,7 @@ if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
   } catch (e) {
     console.log('GOOGLE_APPLICATION_CREDENTIALS is not Base64 encoded, using as is.');
   }
-}
+} 
 
 require('dotenv').config();
 
