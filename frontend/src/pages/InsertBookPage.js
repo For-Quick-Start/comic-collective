@@ -20,7 +20,7 @@ function InsertBookPage() {
     releaseDate: '',
     coverArt: '',
     inventory: 0,
-  });
+  }); 
   const [tags, setTags] = useState([]);
   const [currentTag, setCurrentTag] = useState('');
   const [error, setError] = useState('');
