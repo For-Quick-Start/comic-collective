@@ -34,7 +34,7 @@ const createBook = asyncHandler(async (req, res) => {
       // Re-throw to be caught by asyncHandler and send a generic server error
       throw new Error('Failed to upload cover art.');
     }
-  }
+  } 
 
   // Respond with the book object (which now includes the coverArt URL if uploaded)
   res.status(201).json(book);
