@@ -21,7 +21,7 @@ const createBook = asyncHandler(async (req, res) => {
 
   const book = await Book.create(req.body);
 
-  if (req.file) {
+  if (req.file) { 
     const fileName = `covers/${book._id}${path.extname(req.file.originalname)}`;
     try {
       const newCoverArtUrl = await uploadFileFromPathToGCS(req.file.path, fileName);
