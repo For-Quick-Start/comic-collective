@@ -3,7 +3,28 @@ const path = require('path'); // path is needed for extname in controllers
 const fs = require('fs');
 
 // Setup Google Cloud Storage
-const storage = new Storage();
+let storage;
+const gcsCredentials = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+
+if (gcsCredentials) {
+  let credentials;
+  try {
+    // Try parsing as JSON (might be a raw JSON string)
+    credentials = JSON.parse(gcsCredentials);
+  } catch (e) {
+    try {
+      // If that fails, try decoding from Base64 (for Vercel)
+      const decodedCreds = Buffer.from(gcsCredentials, 'base64').toString('utf-8');
+      credentials = JSON.parse(decodedCreds);
+    } catch (e2) {
+      // If both fail, it's likely a file path for local dev, so we let the library handle it.
+    }
+  }
+  storage = new Storage(credentials ? { credentials } : undefined);
+} else {
+  storage = new Storage(); // No credentials, will use ADC or other mechanisms
+}
+
 const bucket = storage.bucket(process.env.GCS_BUCKET_NAME);
 
 const uploadFileFromPathToGCS = async (localPath, destinationPath) => {
