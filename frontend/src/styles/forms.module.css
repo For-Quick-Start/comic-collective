@@ -2,6 +2,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    max-width: 500px; /* Constrain form width on larger screens */
     gap: 1.25rem; /* Space between form elements */
 }
 
