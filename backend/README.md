@@ -52,10 +52,16 @@ This project uses environment variables for configuration. Create a `.env` file 
 .env
 
 NODE_ENV=development
-PORT=5001
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-GEMINI_API_KEY=your_google_gemini_api_key
+PORT -- port that the backend is running on
+MONGODB_URI -- connection string for MongoDB
+JWT_SECRET -- secret used to sign JWTs
+JWT_EXPIRES_IN -- expiration of active sessions
+GEMINI_API_KEY -- app key for Google Gemini AI
+GMAIL_USER -- login for GMail for sending registration and password reset emails
+GMAIL_APP_PASSWORD -- password for GMail user above
+FRONTEND_URL -- URL of the frontend
+GOOGLE_APPLICATION_CREDENTIALS -- location of JSON file containing key used for Google Cloud Storage
+GCS_BUCKET_NAME -- name of bucket in Google Cloud Storage
 ```
 
 *   `NODE_ENV`: Set to `development` for development mode or `production` for production.

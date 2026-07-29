@@ -53,18 +53,6 @@ Follow these instructions to get the frontend development environment up and run
 
 The project is configured to proxy API requests to `http://localhost:5001` via the `proxy` setting in the `package.json` file. If your backend is running on a different port, you will need to update this value.
 
-The backend .env file should contain the following variables:
-* PORT -- port that the backend is running on
-* MONGODB_URI -- connection string for MongoDB
-* JWT_SECRET -- secret used to sign JWTs
-* JWT_EXPIRES_IN -- expiration of active sessions
-* GEMINI_API_KEY -- app key for Google Gemini AI
-* GMAIL_USER -- login for GMail for sending registration and password reset emails
-* GMAIL_APP_PASSWORD -- password for GMail user above
-* FRONTEND_URL -- URL of the frontend
-* GOOGLE_APPLICATION_CREDENTIALS -- location of JSON file containing key used for Google Cloud Storage
-* GCS_BUCKET_NAME -- name of bucket in Google Cloud Storage
-
 For other environment-specific variables, you can create a `.env` file in the `frontend` directory.
 
 One variable that needs to be set in the .env file of the frontend is `REACT_APP_BACKEND_URL`.
