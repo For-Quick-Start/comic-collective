@@ -91,8 +91,10 @@ function EmployeeEditPage() {
                   </div>
                 </div>
                 <div className={form.formActions}>
-                  <button type="button" onClick={() => navigate('/empl')} className={button.cancelButton}>Cancel</button>
-                  <button type="submit" className={button.submitButton}>Save Changes</button>
+                  <div className={user.actionsRow}>
+                    <button type="button" onClick={() => navigate('/empl')} className={button.cancelButton}>Cancel</button>
+                    <button type="submit" className={button.submitButton}>Save Changes</button>
+                  </div>
                 </div>
               </form>
             </div>
