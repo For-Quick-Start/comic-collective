@@ -12,13 +12,13 @@ Customers can log in to their personal dashboard to:
 *   **View a Personalized Dashboard**: Get at-a-glance statistics for new comic releases and their personal pull list for the current week, past weeks, and upcoming weeks.
 *   **Browse Releases**: Explore a comprehensive catalog of all available comic books.
 *   **Manage a Pull List**: Request new comics to be "pulled" and set aside for them at the store. They can also view the status of their pulled items (e.g., requested, pulled, purchased) and drop titles they no longer want.
-*   **Get Recommendations**: Discover new series based on their interests.
+*   **Get Recommendations**: Discover new series based on their interests. This feature is powered by Google Gemini AI.
 
 ### For Employees
 
 Employees have access to a powerful administrative interface that allows them to:
 *   **Access a Store Dashboard**: View store-wide statistics on inventory and customer pull lists across different timeframes.
-*   **Manage Inventory**: Add new comic books to the store's catalog, edit existing entries, and manage stock levels.
+*   **Manage Inventory**: Add new comic books to the store's catalog, edit existing entries, and manage stock levels.  When new books are added, cover art images of the releases can also be uploaded.  These image files are stored securely in Google Cloud Storage.
 *   **Process Pull Lists**: View and manage all customer pull requests, marking items as "pulled" from the shelves or "purchased" by the customer.
 *   **Manage Users**: View and manage both customer and employee accounts within the system.
 
@@ -53,7 +53,21 @@ Follow these instructions to get the frontend development environment up and run
 
 The project is configured to proxy API requests to `http://localhost:5001` via the `proxy` setting in the `package.json` file. If your backend is running on a different port, you will need to update this value.
 
+The backend .env file should contain the following variables:
+* PORT -- port that the backend is running on
+* MONGODB_URI -- connection string for MongoDB
+* JWT_SECRET -- secret used to sign JWTs
+* JWT_EXPIRES_IN -- expiration of active sessions
+* GEMINI_API_KEY -- app key for Google Gemini AI
+* GMAIL_USER -- login for GMail for sending registration and password reset emails
+* GMAIL_APP_PASSWORD -- password for GMail user above
+* FRONTEND_URL -- URL of the frontend
+* GOOGLE_APPLICATION_CREDENTIALS -- location of JSON file containing key used for Google Cloud Storage
+* GCS_BUCKET_NAME -- name of bucket in Google Cloud Storage
+
 For other environment-specific variables, you can create a `.env` file in the `frontend` directory.
+
+One variable that needs to be set in the .env file of the frontend is `REACT_APP_BACKEND_URL`.
 
 ## Available Scripts
 
