@@ -45,6 +45,11 @@
     justify-content: space-between;
 }
 
+.detailsSection {
+    overflow-wrap: break-word;
+    min-width: 0;
+}
+
 .actionsRow {
     display: flex;
     justify-content: space-around;

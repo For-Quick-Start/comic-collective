@@ -1,5 +1,5 @@
 .formContainer {
-    width: 70%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 1.25rem; /* Space between form elements */
@@ -36,6 +36,7 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 1rem;
+    max-width: 100%;
 }
 
 .formActions {
